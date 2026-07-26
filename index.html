@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>藍圖執行系統 · Blueprint Execution System</title>
+<style>
+  :root{
+    --navy:#4A3323; --navy-2:#5c4530; --gold:#C9A227; --gold-light:#E4C765;
+    --bg:#14261F; --card:#1C332A; --rule:#33493B; --text:#DCD6C2; --mid:#9FAE9C;
+    --green:#6FBF73; --red:#E08A7D; --blue:#C98A3E; --ink:#F0E6C8; --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; line-height:1.6;}
+  a{color:inherit;}
+  header.top{background:var(--navy); color:#fff; padding:18px 22px; display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:10px; position:sticky; top:0; z-index:50; box-shadow:0 2px 10px rgba(0,0,0,.15);}
+  header.top .brand{display:flex; flex-direction:column; gap:2px;}
+  header.top .brand .kicker{font-size:11px; letter-spacing:3px; color:var(--gold-light); font-weight:700;}
+  header.top .brand h1{margin:0; font-size:20px; font-weight:800;}
+  nav.tabs{display:flex; gap:4px; flex-wrap:wrap;}
+  nav.tabs button{background:transparent; border:1px solid rgba(255,255,255,.25); color:#e9e6dc; padding:8px 14px;
+    border-radius:999px; font-size:13px; cursor:pointer; transition:.15s; font-family:inherit;}
+  nav.tabs button:hover{background:rgba(255,255,255,.1);}
+  nav.tabs button.active{background:var(--gold); border-color:var(--gold); color:#1a1206; font-weight:700;}
+  main{max-width:1080px; margin:0 auto; padding:22px 16px 80px;}
+  .section{display:none;} .section.active{display:block;}
+  .periodbar{display:flex; align-items:center; justify-content:center; gap:14px; background:var(--card); border:1px solid var(--rule);
+    border-radius:999px; padding:8px 16px; margin-bottom:20px; max-width:420px; margin-left:auto; margin-right:auto;}
+  .periodbar button{background:var(--navy); color:#fff; border:none; width:30px; height:30px; border-radius:50%; cursor:pointer; font-size:15px;}
+  .periodbar .label{font-weight:700; color:var(--ink); font-size:14px; min-width:170px; text-align:center;}
+  .periodbar .today-btn{background:transparent; border:1px solid var(--rule); color:var(--mid); border-radius:999px; width:auto; padding:4px 10px; font-size:12px;}
+  h2.pagetitle{color:var(--ink); font-size:22px; margin:0 0 4px; font-weight:800;}
+  p.pagesub{color:var(--mid); font-size:13px; margin:0 0 20px;}
+
+  .grid-dash{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin-bottom:10px;}
+  .dcard{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:16px; display:flex; flex-direction:column;
+    gap:8px; cursor:pointer; transition:.15s;}
+  .dcard:hover{border-color:var(--gold); transform:translateY(-1px);}
+  .dcard .toprow{display:flex; justify-content:space-between; align-items:flex-start;}
+  .dcard .num{font-size:11px; letter-spacing:2px; color:var(--gold); font-weight:700;}
+  .dcard .typechip{font-size:10px; padding:2px 8px; border-radius:999px; font-weight:700;}
+  .dcard .typechip.project{background:#EFE3C8; color:var(--blue);}
+  .dcard .typechip.system{background:#eee6d3; color:var(--gold);}
+  .dcard .name{font-size:16px; font-weight:800; color:var(--ink);}
+  .dcard .name .en{font-weight:400; font-style:italic; color:var(--mid); font-size:12px; margin-left:4px;}
+  .barwrap{background:#eee6d3; border-radius:8px; height:8px; overflow:hidden;}
+  .barfill{height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:8px; transition:width .3s;}
+  .barfill.project{background:linear-gradient(90deg,var(--blue),#E0B368);}
+  .dcard .meta{display:flex; justify-content:space-between; font-size:12px; color:var(--mid);}
+  .streak{color:var(--green); font-weight:700;}
+  .sectiongap{margin:26px 0 12px; display:flex; align-items:center; gap:10px;}
+  .sectiongap h3{margin:0; font-size:13px; letter-spacing:1px; color:var(--mid); font-weight:800; white-space:nowrap;}
+  .sectiongap .line{flex:1; height:1px; background:var(--rule);}
+
+  .core-section{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:18px 18px 14px; margin-bottom:16px;}
+  .core-section h3{margin:0 0 4px; font-size:16px; color:var(--ink); display:flex; align-items:center; gap:8px;}
+  .core-section h3 .tag{font-size:11px; color:var(--gold); font-weight:800; letter-spacing:1px;}
+  .core-section h3 .en{font-weight:400; font-style:italic; color:var(--mid); font-size:12px;}
+  .core-section .outcome{font-size:12.5px; color:var(--mid); margin:2px 0 12px; font-style:italic;}
+  .task-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px dashed var(--rule);}
+  .task-row:first-of-type{border-top:none;}
+  .task-row input[type=checkbox]{width:20px; height:20px; margin-top:1px; accent-color:var(--gold); flex:none; cursor:pointer;}
+  .task-row label{font-size:14px; cursor:pointer; flex:1;}
+  .task-row.done label{color:var(--mid); text-decoration:line-through;}
+  .task-row textarea, .task-row input[type=text], .task-row input[type=number]{width:100%; border:1px solid var(--rule); border-radius:8px;
+    padding:8px 10px; font-family:inherit; font-size:13.5px; margin-top:6px; resize:vertical; background:#fbfaf7;}
+  .task-row .field-wrap{flex:1;}
+  .task-row .field-wrap .qlabel{font-size:14px; font-weight:600; color:var(--text); display:block;}
+  .task-row .field-wrap .hint{font-size:11.5px; color:var(--gold); display:block; margin-top:2px;}
+  .badge{display:inline-block; font-size:10.5px; padding:2px 8px; border-radius:999px; background:#eee6d3; color:var(--gold); font-weight:700; letter-spacing:.5px;}
+  .badge.q{background:#e6ece7; color:var(--green);} .badge.y{background:#efe1df; color:var(--red);}
+
+  .corecheck{background:#fbf3e3; border:1px solid #ecd9ac; border-radius:var(--radius); padding:18px; margin-bottom:20px;}
+  .corecheck h3{margin:0 0 4px; color:#6b4f16; font-size:15px;}
+  .corecheck p.sub{margin:0 0 14px; font-size:12px; color:#8a6a2a;}
+  .corecheck .q{margin-bottom:12px;}
+  .corecheck .q label{display:block; font-size:13.5px; font-weight:700; color:#6b4f16; margin-bottom:5px;}
+  .corecheck textarea{width:100%; border:1px solid #ecd9ac; border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13.5px; resize:vertical; background:#fffdf7;}
+  .corecheck .npline{display:flex; align-items:center; gap:8px; margin-top:6px;}
+  .corecheck .npline input{width:20px; height:20px; accent-color:var(--gold);}
+  .corecheck .npline label{font-size:13.5px; color:#6b4f16; font-weight:700;}
+
+  .core-ref{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:20px; margin-bottom:16px;}
+  .core-ref .hd{display:flex; align-items:baseline; gap:10px; margin-bottom:6px; flex-wrap:wrap;}
+  .core-ref .hd .num{color:var(--gold); font-weight:800; font-size:13px; letter-spacing:1px;}
+  .core-ref .hd h3{margin:0; color:var(--ink); font-size:19px;}
+  .core-ref .hd .en{color:var(--mid); font-style:italic; font-size:13px;}
+  .core-ref .outcome{font-size:13.5px; color:var(--text); margin:6px 0 12px; padding:10px 12px; background:var(--bg); border-radius:8px; border-left:3px solid var(--gold);}
+  .core-ref .row{display:grid; grid-template-columns:110px 1fr; gap:10px; font-size:13px; margin-bottom:8px;}
+  .core-ref .row .k{color:var(--mid); font-weight:700;} .core-ref .row .v{color:var(--text);}
+  .core-ref .chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .core-ref .chip{background:#eef1f6; color:var(--navy); font-size:12px; padding:3px 10px; border-radius:999px;}
+  .core-ref .chip.anti{background:#f7e9e7; color:var(--red);}
+  .core-ref .keydata{background:#f1f0ea; border-radius:8px; padding:10px 12px; margin-top:4px;}
+  .core-ref .keydata li{font-size:12.5px; color:var(--text); margin-bottom:4px;}
+  .core-ref .identity{margin-top:12px; padding:12px; background:#fbf7ee; border:1px dashed var(--gold); border-radius:10px;}
+  .core-ref .identity label{display:block; font-size:11px; color:var(--gold); font-weight:700; letter-spacing:1px; margin-bottom:6px;}
+  .core-ref .identity textarea{width:100%; border:none; background:transparent; font-family:inherit; font-size:15px; color:var(--ink); font-weight:600; resize:vertical; min-height:40px;}
+  .core-ref .notes{margin-top:10px; padding:12px; background:#eef1f6; border-radius:10px;}
+  .core-ref .notes label{display:block; font-size:11px; color:var(--blue); font-weight:700; letter-spacing:1px; margin-bottom:6px;}
+  .core-ref .notes textarea{width:100%; border:1px solid #d7dfec; border-radius:8px; background:#fff; font-family:inherit; font-size:13px; resize:vertical; min-height:70px; padding:8px;}
+
+  .tip{background:#fbf3e3; border:1px solid #ecd9ac; border-radius:10px; padding:12px 14px; font-size:13px; color:#6b4f16; margin-bottom:18px;}
+  .databtns{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;}
+  .databtns button{background:var(--navy); color:#fff; border:none; padding:10px 18px; border-radius:8px; cursor:pointer; font-size:13.5px; font-family:inherit;}
+  .databtns button.danger{background:var(--red);} .databtns input[type=file]{display:none;}
+  .card-plain{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:18px; margin-bottom:16px; font-size:13.5px; color:var(--mid);}
+  footer.foot{text-align:center; font-size:12px; color:var(--mid); padding:30px 0 10px;}
+
+  /* Goals tab */
+  .goal-card{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:20px; margin-bottom:18px;}
+  .goal-card .hd{display:flex; align-items:baseline; gap:10px; margin-bottom:10px;}
+  .goal-card .hd .num{color:var(--blue); font-weight:800; font-size:13px;}
+  .goal-card .hd h3{margin:0; color:var(--ink); font-size:18px;}
+  .goal-card .hd .en{color:var(--mid); font-style:italic; font-size:12.5px;}
+  .goal-card .outcome{font-size:13px; color:var(--mid); margin-bottom:14px;}
+  .ladder{display:flex; flex-direction:column; gap:0;}
+  .ladder .stage{display:flex; align-items:center; gap:10px; padding:8px 0; border-top:1px dashed var(--rule);}
+  .ladder .stage:first-child{border-top:none;}
+  .ladder .stage input{width:18px; height:18px; accent-color:var(--blue);}
+  .ladder .stage label{font-size:14px;}
+  .ladder .stage.reached label{color:var(--blue); font-weight:700;}
+  .fieldrow{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;}
+  .fieldrow .f{flex:1; min-width:130px;}
+  .fieldrow .f label{display:block; font-size:12px; color:var(--mid); margin-bottom:4px;}
+  .fieldrow .f input{width:100%; border:1px solid var(--rule); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:14px;}
+  .metricpair{display:flex; align-items:center; gap:14px; padding:10px 0; border-top:1px dashed var(--rule);}
+  .metricpair:first-child{border-top:none;}
+  .metricpair .mlabel{width:90px; font-size:13.5px; font-weight:700; color:var(--text);}
+  .metricpair input{width:90px; border:1px solid var(--rule); border-radius:8px; padding:7px 9px; font-family:inherit; font-size:14px;}
+  .metricpair .arrow{color:var(--mid);}
+  .metricpair .status{font-size:12px; font-weight:700; margin-left:auto;}
+  .metricpair .status.ok{color:var(--green);} .metricpair .status.gap{color:var(--red);}
+  .counterbox{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .counterbox .big{font-size:34px; font-weight:800; color:var(--blue);}
+  .counterbox button{background:var(--navy); color:#fff; border:none; width:36px; height:36px; border-radius:8px; font-size:18px; cursor:pointer;}
+  .counterbox .targetf{width:80px; border:1px solid var(--rule); border-radius:8px; padding:7px 9px; font-family:inherit; font-size:14px;}
+  .checklist-goal .item{display:flex; align-items:center; gap:10px; padding:6px 0;}
+  .checklist-goal .item input[type=checkbox]{width:18px; height:18px; accent-color:var(--blue);}
+  .checklist-goal .item span{flex:1; font-size:14px;}
+  .checklist-goal .item.done span{color:var(--mid); text-decoration:line-through;}
+  .checklist-goal .item button{background:transparent; border:none; color:var(--red); cursor:pointer; font-size:16px;}
+  .addrow{display:flex; gap:8px; margin-top:8px;}
+  .addrow input{flex:1; border:1px solid var(--rule); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13.5px;}
+  .addrow button{background:var(--blue); color:#fff; border:none; padding:0 16px; border-radius:8px; cursor:pointer;}
+
+  /* Daily Schedule tab — weekly calendar grid */
+  .sched-scroll{overflow-x:auto; border:1px solid var(--rule); border-radius:var(--radius); background:var(--card);}
+  table.sched-grid{border-collapse:collapse; width:100%; min-width:920px;}
+  table.sched-grid th, table.sched-grid td{border:1px solid var(--rule); padding:6px 8px; vertical-align:top; text-align:left;}
+  table.sched-grid thead th{background:var(--navy); color:var(--ink); font-size:12.5px; position:sticky; top:0; z-index:2; white-space:nowrap;}
+  table.sched-grid thead th .d{font-size:10px; color:var(--gold-light); font-weight:400; display:block;}
+  table.sched-grid td.timecell, table.sched-grid th.timecell{
+    position:sticky; left:0; z-index:1; background:var(--navy); color:var(--ink); min-width:120px; max-width:120px;
+    font-size:11.5px; font-weight:700;
+  }
+  table.sched-grid td.timecell small{display:block; font-weight:400; color:var(--gold-light); margin-top:2px; font-size:10.5px;}
+  table.sched-grid thead th.timecell{z-index:3;}
+  table.sched-grid tr.tag-S td:not(.timecell){border-left:3px solid var(--green);}
+  table.sched-grid tr.tag-G td:not(.timecell){border-left:3px solid var(--gold);}
+  table.sched-grid tr.tag-D td:not(.timecell){border-left:3px solid var(--blue);}
+  table.sched-grid tr.info-row td{opacity:.55; font-size:11.5px; font-style:italic;}
+  .gcell{min-width:118px;}
+  .gitem{display:flex; align-items:flex-start; gap:4px; margin-bottom:4px; font-size:11.5px;}
+  .gitem input[type=checkbox]{width:15px; height:15px; accent-color:var(--gold); margin-top:1px; flex:none; cursor:pointer;}
+  .gitem input[type=text], .gitem input[type=number]{width:100%; border:1px solid var(--rule); border-radius:5px; padding:3px 5px; font-family:inherit; font-size:11px; background:var(--bg); color:var(--text);}
+  .gitem label{cursor:pointer; line-height:1.3;}
+  .gitem.done label{color:var(--mid); text-decoration:line-through;}
+
+  .nightreview{background:var(--card); border:1px solid var(--gold); border-radius:var(--radius); padding:18px;}
+  .nightreview .part{margin-bottom:18px; padding-top:16px; border-top:1px dashed var(--rule);}
+  .nightreview .part:first-of-type{border-top:none; padding-top:0;}
+  .nightreview .part-label{font-size:11px; color:var(--gold); font-weight:800; letter-spacing:1px; margin-bottom:10px;}
+  .nightreview .q{margin-bottom:14px;}
+  .nightreview .q label{display:block; font-size:13.5px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+  .nightreview .q textarea{width:100%; border:1px solid var(--rule); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:13.5px; resize:vertical; background:var(--bg); color:var(--text);}
+
+  .nr-link-btn{background:var(--navy); color:var(--ink); border:1px solid var(--gold); border-radius:8px; padding:6px 10px; font-size:11.5px; cursor:pointer; font-family:inherit; width:100%;}
+  .nr-link-btn.filled{background:var(--gold); color:#1a1206; border-color:var(--gold); font-weight:700;}
+
+  .cmap-card{background:var(--card); border:1px solid var(--rule); border-left:4px solid var(--gold); border-radius:10px; padding:12px 14px; margin-bottom:10px;}
+  .cmap-hd{font-size:13.5px; font-weight:800; margin-bottom:6px;}
+  .cmap-group{font-size:12.5px; color:var(--text); margin-bottom:4px; line-height:1.5;}
+  .cmap-group b{color:var(--ink);}
+  .cmap-empty{font-size:12px; color:var(--mid); font-style:italic;}
+
+  tr.water-row td{background:rgba(201,162,39,.08); font-weight:700;}
+  tr.water-row td.timecell{background:var(--navy);}
+
+  @media (max-width:640px){ header.top{flex-direction:column; align-items:flex-start;} .core-ref .row{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="kicker">BLUEPRINT</span><h1>藍圖執行系統</h1></div>
+  <nav class="tabs" id="tabnav">
+    <button data-tab="dash" class="active">總覽</button>
+    <button data-tab="schedule">時程</button>
+    <button data-tab="nightreview">Night Review</button>
+    <button data-tab="daily">每日</button>
+    <button data-tab="weekly">每週</button>
+    <button data-tab="monthly">每月</button>
+    <button data-tab="longterm">季／年</button>
+    <button data-tab="goals">計畫</button>
+    <button data-tab="cores">Core 對照</button>
+    <button data-tab="data">資料管理</button>
+  </nav>
+</header>
+
+<main>
+
+  <section class="section active" id="sec-dash">
+    <h2 class="pagetitle">總覽</h2>
+    <p class="pagesub" id="dash-date"></p>
+
+    <div class="sectiongap"><h3>專案型 · 朝目標推進</h3><div class="line"></div></div>
+    <div class="grid-dash" id="dash-project"></div>
+
+    <div class="sectiongap"><h3>系統型 · 維持水準</h3><div class="line"></div></div>
+    <div class="grid-dash" id="dash-system"></div>
+  </section>
+
+  <section class="section" id="sec-schedule">
+    <h2 class="pagetitle">每日時程</h2>
+    <p class="pagesub">週曆檢視，每一格都能打勾／填寫，跟每日分頁各自獨立存資料。23:30–24:00 那格點進去是獨立的 Night Review 頁面。</p>
+    <div class="periodbar">
+      <button id="sched-prev">‹</button><div class="label" id="sched-label"></div><button id="sched-next">›</button>
+      <button class="today-btn" id="sched-today">本週</button>
+    </div>
+    <div class="sched-scroll">
+      <table class="sched-grid" id="sched-grid"></table>
+    </div>
+
+    <div class="sectiongap"><h3>依 Core 分類</h3><div class="line"></div></div>
+    <p class="pagesub">每日時程裡的項目分別對應哪個 Core，方便回頭核對「今天做的事有沒有真的服務到 MDA」。</p>
+    <div id="sched-coremap"></div>
+  </section>
+
+  <section class="section" id="sec-nightreview">
+    <h2 class="pagetitle">Night Review</h2>
+    <p class="pagesub">從「時程」頁 23:30–24:00 那格點進來，或直接在這裡切換日期填寫。</p>
+    <div class="periodbar">
+      <button id="nr-prev">‹</button><div class="label" id="nr-label"></div><button id="nr-next">›</button>
+      <button class="today-btn" id="nr-today">今天</button>
+    </div>
+    <div class="nightreview">
+      <div class="part">
+        <div class="part-label">CORE REVIEW</div>
+        <div id="nr-corereview-fields"></div>
+      </div>
+      <div class="part">
+        <div class="part-label">DISCOVERY</div>
+        <div id="nr-discovery-fields"></div>
+      </div>
+    </div>
+    <div class="databtns" style="margin-top:20px;">
+      <button id="btn-nr-export">匯出所有 Night Review 記錄（給未來的 Claude 統整用）</button>
+    </div>
+  </section>
+
+  <section class="section" id="sec-daily">
+    <h2 class="pagetitle">每日執行</h2>
+    <p class="pagesub">不是每個 Core 每天都有事——只有真的需要每天做的才在這裡。</p>
+    <div class="periodbar">
+      <button id="daily-prev">‹</button><div class="label" id="daily-label"></div><button id="daily-next">›</button>
+      <button class="today-btn" id="daily-today">今天</button>
+    </div>
+    <div class="corecheck">
+      <h3>每日 Core Check（23:30–23:45）</h3>
+      <p class="sub">睡前固定儀式，涵蓋方向、自律、健康外貌、反思感謝四個面向。</p>
+      <div id="corecheck-fields"></div>
+      <div class="npline"><input type="checkbox" id="cc-np"><label for="cc-np">睡前 30 分鐘不用手機（No Phone）</label></div>
+    </div>
+    <div id="daily-list"></div>
+  </section>
+
+  <section class="section" id="sec-weekly">
+    <h2 class="pagetitle">每週執行</h2>
+    <p class="pagesub">每週檢視與校準，確保方向沒有偏移。</p>
+    <div class="periodbar">
+      <button id="weekly-prev">‹</button><div class="label" id="weekly-label"></div><button id="weekly-next">›</button>
+      <button class="today-btn" id="weekly-today">本週</button>
+    </div>
+    <div id="weekly-list"></div>
+  </section>
+
+  <section class="section" id="sec-monthly">
+    <h2 class="pagetitle">每月執行</h2>
+    <p class="pagesub">每月校準資產、能力與里程碑。</p>
+    <div class="periodbar">
+      <button id="monthly-prev">‹</button><div class="label" id="monthly-label"></div><button id="monthly-next">›</button>
+      <button class="today-btn" id="monthly-today">本月</button>
+    </div>
+    <div id="monthly-list"></div>
+  </section>
+
+  <section class="section" id="sec-longterm">
+    <h2 class="pagetitle">季度／年度</h2>
+    <p class="pagesub">低頻率但重要的行動——健檢、出國、家庭聚餐這類事情最容易被日常忽略。</p>
+    <div class="periodbar">
+      <button id="lt-prev">‹</button><div class="label" id="lt-label"></div><button id="lt-next">›</button>
+      <button class="today-btn" id="lt-today">本季／本年</button>
+    </div>
+    <div id="lt-list"></div>
+  </section>
+
+  <section class="section" id="sec-goals">
+    <h2 class="pagetitle">計畫 · Outcome → Plan → Action</h2>
+    <p class="pagesub">Core 1（自由）與 Core 11（自律）已依 Outcome/Plan/Milestone/Action 規格建立，作為之後其他 Core 的模板。其餘 Core 尚未定案，先沿用舊版的目標卡片或每日／每週維持任務。</p>
+    <div id="goals-list"></div>
+  </section>
+
+  <section class="section" id="sec-cores">
+    <h2 class="pagetitle">11 Core 對照表</h2>
+    <p class="pagesub">每個 Core 的 Outcome、Capability、KPI、反習慣、Database 關鍵數據，以及可自行編輯的身份宣言與參考筆記（可貼上 Database 原文）。</p>
+    <div id="cores-list"></div>
+  </section>
+
+  <section class="section" id="sec-data">
+    <h2 class="pagetitle">資料管理</h2>
+    <p class="pagesub">所有紀錄僅儲存在你目前使用的瀏覽器（localStorage），不會上傳到任何伺服器。換裝置或清除瀏覽器資料前，請先匯出備份。</p>
+    <div class="databtns">
+      <button id="btn-export">匯出備份（JSON）</button>
+      <button id="btn-import-trigger">匯入備份</button>
+      <input type="file" id="btn-import-file" accept=".json">
+      <button id="btn-reset" class="danger">重置所有資料</button>
+    </div>
+    <div class="card-plain">
+      <p><b>失敗恢復（Failure Recovery）</b>：如果這週全部爆掉，不用等到下週一，直接從明天重新開始。分數會歸零，但身份不會歸零——你今天做的選擇，才是真正決定你是誰的東西。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">Blueprint Execution System v2 · 資料只存在你的瀏覽器裡</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================================
+   DATA MODEL
+========================================================================= */
+const CORES = [
+  {
+    id:'c1', num:1, zh:'自由', en:'Freedom', type:'project', specified:true,
+    outcome:'真正擁有人生選擇權——不是「可以選工作」，而是完全不用工作也能靠被動收入支付生活。',
+    capabilities:['Income 收入能力','Capital 資產與投資','Portability 可攜技能','Optionality 選擇權'],
+    kpi:['淨資產','被動收入','收入來源數量'],
+    antiHabits:['衝動消費','沒有投資','沒有學新技能','依賴單一收入來源'],
+    identityDefault:'我是能夠自己決定人生的人。',
+    keyData:[
+      '不窒息工作的六條件：熱忱、自主性、成就感、現實收入能力、生活感、不出賣靈魂——缺一項都可能讓表面自由的工作仍然窒息',
+      'JUMP 計畫候選城市：里斯本、巴塞隆納、墨西哥城、布拉格'
+    ],
+    tasks:[]
+  },
+  {
+    id:'c2', num:2, zh:'生命力', en:'Vitality', type:'system',
+    outcome:'每天起床充滿精神，晚上睡前對這一天感到滿意。',
+    capabilities:['Physical Energy','Psychological Energy','Recovery','Emotional Stability'],
+    kpi:['Energy (1-10)','Mood (1-10)'],
+    antiHabits:['熬夜','久坐','長期慢性壓力累積'],
+    identityDefault:'我是持續補充自己生命力、而不是消耗殆盡的人。',
+    keyData:['人生底線（非偏好）：沒音樂、沒衝浪、沒朋友、沒自由、沒生活、沒生命感——這六項被明確定義為底線，不是可以彈性妥協的偏好'],
+    tasks:[
+      {id:'c2d1', freq:'daily', type:'checkbox', label:'睡滿 7.5 小時'},
+      {id:'c2d2', freq:'daily', type:'checkbox', label:'曬太陽'},
+      {id:'c2d3', freq:'daily', type:'checkbox', label:'感恩練習'},
+      {id:'c2d4', freq:'daily', type:'checkbox', label:'做一件自己真正想做的事'},
+      {id:'c2d5', freq:'daily', type:'number', label:'今日 Energy 評分（1-10）'},
+      {id:'c2d6', freq:'daily', type:'number', label:'今日 Mood 評分（1-10）'},
+      {id:'c2w1', freq:'weekly', type:'textarea', label:'本週能量與情緒回顧'},
+    ]
+  },
+  {
+    id:'c3', num:3, zh:'人生方向與意義', en:'Meaning', type:'system',
+    outcome:'每天清楚知道自己為什麼努力，方向與每日行動保持一致。',
+    capabilities:['長期目標','每月目標','每週目標'],
+    kpi:['Weekly Review 完成度'],
+    antiHabits:['漫無目的度過一天','目標與行動脫節'],
+    identityDefault:'我是為自己人生方向負責的人。',
+    tasks:[
+      {id:'c3w1', freq:'weekly', type:'textarea', label:'Weekly Review：本週方向是否一致？'},
+      {id:'c3m1', freq:'monthly', type:'textarea', label:'下個月最重要的三件事'},
+    ]
+  },
+  {
+    id:'c4', num:4, zh:'健康與身體基礎', en:'Health', type:'system',
+    outcome:'身體維持穩定健康，作為所有人生目標成立的必要前提。',
+    capabilities:['飲食','運動','睡眠','壓力管理'],
+    kpi:['體重','每日巨量營養素達標率'],
+    antiHabits:['熬夜','抽菸','久坐','忽略健檢'],
+    identityDefault:'我是重視身體的人。',
+    keyData:['已有 InBody / DXA 身體組成檢測與固定訓練課表（含拳擊）習慣，是目前生活中執行度最高的領域之一——健康是可以直接複製這套「原始慾望→明確目標→執行系統」模式的參考案例'],
+    tasks:[
+      {id:'c4d1', freq:'daily', type:'number', label:'熱量攝取（大卡）', hint:'目標約 1900 大卡'},
+      {id:'c4d2', freq:'daily', type:'number', label:'蛋白質（g）', hint:'目標 170–180g'},
+      {id:'c4d3', freq:'daily', type:'number', label:'脂肪（g）', hint:'目標約 60g'},
+      {id:'c4d4', freq:'daily', type:'number', label:'碳水（g）', hint:'目標 150–160g，纖維越多越好'},
+      {id:'c4d5', freq:'daily', type:'number', label:'喝水量（ml）', hint:'目標 3000ml，少量多次'},
+      {id:'c4d6', freq:'daily', type:'checkbox', label:'完成今日訓練（30 天健身挑戰）'},
+      {id:'c4d7', freq:'daily', type:'checkbox', label:'睡眠環境檢查', hint:'睡前3H抗藍光眼鏡・光線越暗越好・溫度18–22°C・白噪音/粉紅噪音'},
+      {id:'c4w1', freq:'weekly', type:'number', label:'體重紀錄（kg）'},
+      {id:'c4y1', freq:'yearly', type:'checkbox', label:'全面健檢（每年）'},
+      {id:'c4y2', freq:'yearly', type:'checkbox', label:'看牙科（每半年）'},
+      {id:'c4y3', freq:'yearly', type:'checkbox', label:'看眼科（每 2 年）'},
+    ]
+  },
+  {
+    id:'c5', num:5, zh:'外貌與自我形象', en:'Appearance', type:'project',
+    outcome:'透過真實改善建立穩定自信，重點是降低自卑，而非追求完美外貌。',
+    capabilities:['Body 體態','Skin 肌膚','Confidence 心理自信'],
+    kpi:['體脂率','體重','自信評分'],
+    antiHabits:['過度比較','忽略保養與體態','逃避鏡子／影片曝露'],
+    identityDefault:'我是自在展現真實自己的人。',
+    keyData:['五官在意優先順序：提眼肌（優先度最高，已有實際整形意願）＞鼻型＞抬頭紋／髮際線（後兩項目前只是「常注意但不急迫」）'],
+    tasks:[
+      {id:'c5d1', freq:'daily', type:'checkbox', label:'晨間皮膚保養（洗→乳→曬）'},
+      {id:'c5d2', freq:'daily', type:'checkbox', label:'晚間皮膚保養（卸→洗→寶→乳→藥）'},
+      {id:'c5d3', freq:'daily', type:'checkbox', label:'Mirror Exposure（鏡子曝露）'},
+      {id:'c5d4', freq:'daily', type:'checkbox', label:'Video Exposure（影片曝露）'},
+      {id:'c5w1', freq:'weekly', type:'checkbox', label:'自拍／體態照紀錄'},
+    ],
+    goal:{ kind:'metric', fields:[
+      {id:'bodyfat', label:'體脂率', unit:'%'},
+      {id:'weight', label:'體重', unit:'kg'},
+    ]}
+  },
+  {
+    id:'c6', num:6, zh:'創作', en:'Idea → Reality', type:'project',
+    outcome:'持續把想法轉化為真實作品，透過創造而非消費，對世界留下影響。',
+    capabilities:['固定輸出習慣','跨領域創作能力'],
+    kpi:['每季 Output 數量'],
+    antiHabits:['只消費不創造','等靈感才行動','完美主義導致不發布'],
+    identityDefault:'我是持續創造、而不是只消費的人。',
+    keyData:['卡點通常在工具學習（例如 Logic Pro/DAW），強項是想旋律、鼓、創作概念本身——與其死磕工具，先用低門檻工具（含 AI）把概念做出來，比學會完整工具鏈更重要'],
+    tasks:[
+      {id:'c6d1', freq:'daily', type:'checkbox', label:'今日至少一項創作輸出（音樂／文字／AI／料理／產品）'},
+      {id:'c6w1', freq:'weekly', type:'checkbox', label:'檢視本週產出並發布／紀錄一項作品'},
+    ],
+    goal:{ kind:'counter', periodLabel:'本季', defaultTarget:6 }
+  },
+  {
+    id:'c7', num:7, zh:'探索與世界體驗', en:'Exploration', type:'project',
+    outcome:'持續拓展世界觀與人生經驗，探索真正適合自己的生活方式。',
+    capabilities:['學習新知','體驗新事物','國際視野'],
+    kpi:['清單完成數'],
+    antiHabits:['長期待在舒適圈','拒絕新體驗'],
+    identityDefault:'我是持續拓展世界、更新自己世界模型的人。',
+    keyData:['JUMP 計畫候選城市（高靈感城市，目的是轉換環境／重啟靈感／提升語感與國際感）：里斯本、巴塞隆納、墨西哥城、布拉格'],
+    tasks:[
+      {id:'c7d1', freq:'daily', type:'checkbox', label:'學一件今天不知道的新事物'},
+      {id:'c7w1', freq:'weekly', type:'checkbox', label:'去一個沒去過的地方'},
+      {id:'c7m1', freq:'monthly', type:'checkbox', label:'體驗一項全新活動'},
+      {id:'c7y1', freq:'yearly', type:'checkbox', label:'至少一次出國／深度旅行'},
+    ],
+    goal:{ kind:'checklist', seed:['巴塞隆納生活體驗','里斯本','墨西哥城','布拉格','世界美食巡禮','衝浪打工度假'] }
+  },
+  {
+    id:'c8', num:8, zh:'關係、親密與性', en:'Relationships', type:'system',
+    outcome:'與家人、伴侶、摯友持續投資與深化真誠連結。',
+    capabilities:['溝通能力','陪伴時間管理'],
+    kpi:['每週聯繫達成率'],
+    antiHabits:['忽略重要的人','只用訊息不真正陪伴','長期不主動聯繫'],
+    identityDefault:'我是珍惜並主動投資重要關係的人。',
+    tasks:[
+      {id:'c8d1', freq:'daily', type:'checkbox', label:'主動關心一位重要的人'},
+      {id:'c8w1', freq:'weekly', type:'checkbox', label:'安排一次約會或深度相處'},
+      {id:'c8m1', freq:'monthly', type:'checkbox', label:'主動聯繫／找朋友聚會'},
+      {id:'c8q1', freq:'quarterly', type:'checkbox', label:'家庭聚餐'},
+    ]
+  },
+  {
+    id:'c9', num:9, zh:'能力、成長與智慧', en:'Growth', type:'system',
+    outcome:'每一年都比去年更強，能力持續複利成長。',
+    capabilities:['學習系統','刻意練習'],
+    kpi:['技能成長評估'],
+    antiHabits:['只輸入不輸出','學習沒有專案驗證'],
+    identityDefault:'我是每一天都在進步的人。',
+    keyData:['「值得投入的能力」五條件：能自己創造收入、也能當工作保底、有市場需求且不易被 AI 取代、收入足以支撐生活、符合 ADHD 特質（需要創意／人／互動／project 導向／自主性）'],
+    tasks:[
+      {id:'c9d1', freq:'daily', type:'checkbox', label:'每日閱讀 30 分鐘（睡前 23:00–23:30）'},
+      {id:'c9d2', freq:'daily', type:'checkbox', label:'每日專精技能練習'},
+      {id:'c9w1', freq:'weekly', type:'checkbox', label:'完成一個 Mini Project'},
+      {id:'c9m1', freq:'monthly', type:'checkbox', label:'完成一門課程／認證進度'},
+    ]
+  },
+  {
+    id:'c10', num:10, zh:'人格與道德身份', en:'Character', type:'system',
+    outcome:'人格透過每一次選擇累積而成，不是一天養成的。',
+    capabilities:['誠實','負責','勇敢','善良','自律'],
+    kpi:['品格自評分數'],
+    antiHabits:['說謊／逃避責任','從不自我檢視'],
+    identityDefault:'我是每天用選擇來定義自己人格的人。',
+    tasks:[
+      {id:'c10w1', freq:'weekly', type:'textarea', label:'品格週回顧'},
+    ]
+  },
+  {
+    id:'c11', num:11, zh:'自律與衝動管理', en:'Self-Regulation', type:'system',
+    outcome:'掌控注意力與衝動——這是所有其他 Core 能否穩住的作業系統。',
+    capabilities:['Deep Work','Attention 管理','Delay Gratification'],
+    kpi:['深度專注達標率','每週次數上限達成率'],
+    antiHabits:['色情','手遊','短影音','過量社群媒體','衝動購物','拖延'],
+    identityDefault:'我是能掌控自己衝動、而不是被衝動掌控的人。',
+    specified:true,
+    keyData:[
+      'ADHD 超級專注觸發：有興趣、有刺激、有即時回饋、有明確目標與可見成果的任務（遊戲、音樂、衝浪、運動、煮飯、自由業賣票）',
+      'ADHD 快速消耗觸發：重複、沉悶、無聊、被動執行、無創造感的固定工作（純行政、純聽課）'
+    ],
+    tasks:[]
+  },
+];
+
+const FREQ_LABEL = {daily:'每日', weekly:'每週', monthly:'每月', quarterly:'每季', yearly:'每年'};
+const FREQ_BADGE_CLASS = {quarterly:'q', yearly:'y'};
+const STORAGE_KEY = 'bes_blueprint_v3';
+
+/* =========================================================================
+   CORE SPEC — Outcome → Plan → Milestone → Action (vertical slice: Core 1, Core 11)
+   Per Sophia's schema, agreed 2026-07. Other Cores stay on the legacy engine
+   until their own Planning Specification is defined.
+========================================================================= */
+const CORE_SPEC = {
+  c1: {
+    vision:'真正擁有人生選擇權——財務、工作、時間、地點都不再是被迫接受的枷鎖。',
+    priority:'Primary',
+    outcomes:[
+      { id:'o1', title:'財務自由', successDef:'被動收入覆蓋基本生活開銷，不再需要為生存工作', metrics:['淨資產','現金儲備','月收入','儲蓄率'],
+        plans:[
+          { id:'p1', title:'淨資產成長計畫', type:'Achievement Project', priority:'Primary', status:'Active',
+            milestones:[
+              {id:'m1', title:'50 萬', threshold:50},{id:'m2', title:'100 萬', threshold:100},
+              {id:'m3', title:'300 萬', threshold:300},{id:'m4', title:'1000 萬', threshold:1000},
+              {id:'m5', title:'財務自由（被動收入 ≥ 生活開銷）', threshold:99999},
+            ],
+            actions:[
+              {id:'c1p1_bookkeeping', title:'記帳', cadence:'daily', inputType:'checkbox'},
+              {id:'c1p1_investreview', title:'投資檢討', cadence:'weekly', inputType:'checkbox'},
+              {id:'c1p1_networth', title:'淨資產更新', cadence:'monthly', inputType:'number', unit:'萬元', driveMilestone:true},
+            ]
+          },
+          { id:'p2', title:'被動收入建立計畫', type:'Achievement Project', priority:'Secondary', status:'Active',
+            actions:[
+              {id:'c1p2_bizlearn', title:'商業／投資學習 30 分鐘', cadence:'daily', inputType:'checkbox'},
+              {id:'c1p2_findincome', title:'尋找一個新的收入機會', cadence:'weekly', inputType:'checkbox'},
+              {id:'c1p2_passiveincome_current', title:'目前月被動收入', cadence:'monthly', inputType:'number', unit:'元'},
+              {id:'c1p2_passiveincome_target', title:'目標月被動收入', cadence:'monthly', inputType:'number', unit:'元'},
+            ]
+          }
+        ]
+      },
+      { id:'o2', title:'工作自主', successDef:'收入來自真心喜歡、不用忍耐痛苦的事，且有自主性', metrics:['自主工作比例','喜歡工作比例','收入可控性'],
+        plans:[
+          { id:'p3', title:'可攜技能建立計畫', type:'Development Practice', priority:'Primary', status:'Active',
+            actions:[
+              {id:'c1p3_ai', title:'AI 學習 30 分鐘', cadence:'daily', inputType:'checkbox'},
+              {id:'c1p3_english', title:'英文學習 30 分鐘', cadence:'daily', inputType:'checkbox'},
+              {id:'c1p3_portfolio', title:'建立作品', cadence:'daily', inputType:'checkbox'},
+              {id:'c1p3_likework', title:'本週工作喜歡比例', cadence:'weekly', inputType:'rating'},
+            ]
+          }
+        ]
+      },
+      { id:'o3', title:'時間自由', successDef:'可自主安排時間的比例達到穩定高水準', metrics:['可自主安排時間比例'],
+        plans:[
+          { id:'p5', title:'時間自由指標追蹤', type:'Maintenance System', priority:'Maintain', status:'Active',
+            actions:[ {id:'c1p5_timeratio', title:'本月可自主安排時間比例', cadence:'monthly', inputType:'number', unit:'%'} ]
+          }
+        ]
+      },
+      { id:'o4', title:'地點自由', successDef:'收入不綁單一地點，具備國際移動準備度', metrics:['可遠端收入比例','國際移動準備度'],
+        plans:[
+          { id:'p4', title:'JUMP 計畫', type:'Exploration Experiment', priority:'Secondary', status:'Active',
+            milestones:[ {id:'m6', title:'候選城市選定'}, {id:'m7', title:'遠端收入達門檻'}, {id:'m8', title:'移動準備完成'} ],
+            actions:[]
+          }
+        ]
+      },
+      { id:'o5', title:'選擇權', successDef:'多重收入來源與備選方案，不被單一路徑綁死', metrics:['收入來源數','備選方案數'],
+        plans:[
+          { id:'p6', title:'選擇權指標追蹤', type:'Maintenance System', priority:'Maintain', status:'Active',
+            actions:[
+              {id:'c1p6_incomesources', title:'收入來源數', cadence:'monthly', inputType:'number'},
+              {id:'c1p6_altplans', title:'備選方案數', cadence:'monthly', inputType:'number'},
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  c11: {
+    vision:'掌控注意力與衝動——這是所有其他 Core 能否穩住的作業系統。',
+    priority:'Primary',
+    outcomes:[
+      { id:'o1', title:'有意識地使用高刺激活動，而不是被刺激牽著走', successDef:'深度專注穩定達標，高刺激行為維持在自訂上限內', metrics:['深度專注達標率','每週次數上限達成率'],
+        plans:[
+          { id:'p1', title:'深度專注建立', type:'Development Practice', priority:'Primary', status:'Active',
+            actions:[
+              {id:'c11p1_focusmin', title:'深度專注時長（19:00–21:00，不手機／不開社群／不回訊息）', cadence:'daily', inputType:'duration', unit:'分鐘', targetMin:60, targetMax:90},
+              {id:'c11p1_interrupt', title:'中斷原因（選填）', cadence:'instance', inputType:'text'},
+            ]
+          },
+          { id:'p2', title:'多巴胺刺激管理', type:'Maintenance System', priority:'Primary', status:'Active',
+            actions:[
+              {id:'c11p2_masturbation', title:'手淫次數', cadence:'weekly', inputType:'number', targetMax:2},
+              {id:'c11p2_porn', title:'色情內容使用次數', cadence:'weekly', inputType:'number'},
+              {id:'c11p2_game', title:'遊戲時間', cadence:'weekly', inputType:'duration', unit:'分鐘'},
+              {id:'c11p2_shortvideo', title:'短影音時間', cadence:'daily', inputType:'duration', unit:'分鐘'},
+              {id:'c11p2_gate', title:'今天先完成成長進度才娛樂', cadence:'daily', inputType:'checkbox'},
+              {id:'c11p2_altflow', title:'今天是否執行替代流程', cadence:'daily', inputType:'checkbox'},
+            ]
+          },
+          { id:'p3', title:'失控後快速復位', type:'Development Practice', priority:'Maintain', status:'Active',
+            actions:[], instanceLog:'c11p3_recovery'
+          }
+        ]
+      }
+    ]
+  }
+};
+
+/* =========================================================================
+   STORAGE
+========================================================================= */
+function defaultData(){
+  return { periods:{daily:{},weekly:{},monthly:{},quarterly:{},yearly:{}}, identity:{}, notes:{}, goals:{}, corecheck:{}, instances:{}, schedule:{} };
+}
+function loadData(){
+  try{ const raw=localStorage.getItem(STORAGE_KEY); if(raw){ const d=JSON.parse(raw);
+    ['periods','identity','notes','goals','corecheck','instances','schedule'].forEach(k=>{ if(!d[k]) d[k]= k==='periods' ? {daily:{},weekly:{},monthly:{},quarterly:{},yearly:{}} : {}; });
+    return d; } }catch(e){ console.warn('load failed', e); }
+  return defaultData();
+}
+let DATA = loadData();
+function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA)); }catch(e){ console.warn('save failed', e); } }
+function getPeriodObj(freq, key){
+  if(!DATA.periods[freq]) DATA.periods[freq]={};
+  if(!DATA.periods[freq][key]) DATA.periods[freq][key]={};
+  return DATA.periods[freq][key];
+}
+function seedInitialData(){
+  // 2026-07-23 對話中確認：淨資產 7 萬元，僅在使用者尚未自行輸入本月數字時填入一次
+  const mKey = monthStr(new Date());
+  const store = getPeriodObj('monthly', mKey);
+  if(store['c1p1_networth']===undefined){ store['c1p1_networth']=7; save(); }
+}
+
+/* =========================================================================
+   DATE HELPERS
+========================================================================= */
+function pad(n){ return String(n).padStart(2,'0'); }
+function dateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function addMonths(d,n){ const r=new Date(d); r.setMonth(r.getMonth()+n); return r; }
+function startOfWeek(d){ const r=new Date(d); const day=(r.getDay()+6)%7; r.setDate(r.getDate()-day); r.setHours(0,0,0,0); return r; }
+function isoWeekStr(d){ const target=new Date(d.valueOf()); const dayNr=(d.getDay()+6)%7; target.setDate(target.getDate()-dayNr+3);
+  const firstThursday=new Date(target.getFullYear(),0,4); const diff=target-firstThursday;
+  const week=1+Math.round(diff/(7*24*3600*1000)); return target.getFullYear()+'-W'+pad(week); }
+function monthStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1); }
+function quarterStr(d){ return d.getFullYear()+'-Q'+(Math.floor(d.getMonth()/3)+1); }
+function yearStr(d){ return String(d.getFullYear()); }
+const WEEKDAYS_ZH=['週日','週一','週二','週三','週四','週五','週六'];
+
+const state = { dailyOffsetDays:0, weeklyOffsetWeeks:0, monthlyOffsetMonths:0, ltOffsetQuarters:0 };
+function dailyDate(){ return addDays(new Date(), state.dailyOffsetDays); }
+function weeklyDate(){ const base=startOfWeek(new Date()); const r=new Date(base); r.setDate(r.getDate()+state.weeklyOffsetWeeks*7); return r; }
+function monthlyDate(){ return addMonths(new Date(), state.monthlyOffsetMonths); }
+function ltDate(){ return addMonths(new Date(), state.ltOffsetQuarters*3); }
+
+/* =========================================================================
+   TABS
+========================================================================= */
+document.getElementById('tabnav').addEventListener('click', function(e){
+  const btn=e.target.closest('button[data-tab]'); if(!btn) return;
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('main .section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+btn.dataset.tab).classList.add('active');
+  renderAll();
+});
+
+/* =========================================================================
+   GENERIC TASK FIELD RENDERING (daily/weekly/monthly/long-term habit engine)
+========================================================================= */
+function buildHint(a){
+  const parts=[];
+  if(a.targetMin!==undefined && a.targetMax!==undefined) parts.push(`目標 ${a.targetMin}–${a.targetMax}${a.unit||''}`);
+  else if(a.targetMax!==undefined) parts.push(`上限 ${a.targetMax}${a.unit||''}`);
+  else if(a.target!==undefined) parts.push(`目標 ${a.target}${a.unit||''}`);
+  else if(a.unit) parts.push(a.unit);
+  return parts.join('　');
+}
+function mapInputType(t){
+  if(t==='checkbox') return 'checkbox';
+  if(t==='text') return 'text';
+  if(t==='number'||t==='counter'||t==='duration'||t==='rating') return 'number';
+  return 'text';
+}
+// Flattens a specified core's Outcome→Plan→Action tree into legacy-shaped {id,type,label,hint,targetMin,targetMax,target} tasks for a given cadence.
+function getCoreTasksForFreq(core, freq){
+  if(!core.specified) return core.tasks.filter(t=>t.freq===freq);
+  const spec=CORE_SPEC[core.id]; if(!spec) return [];
+  const out=[];
+  spec.outcomes.forEach(o=>{
+    o.plans.forEach(p=>{
+      (p.actions||[]).forEach(a=>{
+        if(a.cadence!==freq) return;
+        out.push({ id:a.id, type:mapInputType(a.inputType), label:`${p.title} · ${a.title}`,
+          hint:buildHint(a), targetMin:a.targetMin, targetMax:a.targetMax, target:a.target });
+      });
+    });
+  });
+  return out;
+}
+// Completion test used for dashboard consistency/streak calculations.
+function actionCompletion(task, val){
+  if(task.type==='checkbox') return val===true;
+  if(task.type==='number'){
+    if(val===undefined||val==='') return false;
+    const n=parseFloat(val);
+    if(task.targetMin!==undefined && task.targetMax!==undefined) return n>=task.targetMin && n<=task.targetMax;
+    if(task.targetMax!==undefined) return n<=task.targetMax;
+    return true; // filled counts as attempted when no explicit range
+  }
+  return val!==undefined && val!=='';
+}
+
+function renderTaskField(task, store){
+  const val=store[task.id];
+  if(task.type==='checkbox'){
+    const row=document.createElement('div'); row.className='task-row'+(val?' done':'');
+    row.innerHTML=`<input type="checkbox" id="fld-${task.id}" ${val?'checked':''}>
+      <div class="field-wrap"><label for="fld-${task.id}">${task.label}</label>${task.hint?`<span class="hint">${task.hint}</span>`:''}</div>`;
+    row.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; row.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
+    return row;
+  }
+  if(task.type==='number'){
+    const row=document.createElement('div'); row.className='task-row';
+    row.innerHTML=`<div class="field-wrap"><span class="qlabel">${task.label}</span>${task.hint?`<span class="hint">${task.hint}</span>`:''}
+      <input type="number" value="${val!==undefined?val:''}"></div>`;
+    row.querySelector('input').addEventListener('input', e=>{ store[task.id]=e.target.value; save(); renderDashboard(); });
+    return row;
+  }
+  if(task.type==='text'){
+    const row=document.createElement('div'); row.className='task-row';
+    row.innerHTML=`<div class="field-wrap"><span class="qlabel">${task.label}</span><input type="text" value="${val?String(val).replace(/"/g,'&quot;'):''}"></div>`;
+    row.querySelector('input').addEventListener('input', e=>{ store[task.id]=e.target.value; save(); });
+    return row;
+  }
+  const row=document.createElement('div'); row.className='task-row';
+  const wrap=document.createElement('div'); wrap.className='field-wrap'; wrap.innerHTML=`<span class="qlabel">${task.label}</span>`;
+  const ta=document.createElement('textarea'); ta.rows=2; ta.value=val||'';
+  ta.addEventListener('input', e=>{ store[task.id]=e.target.value; save(); });
+  wrap.appendChild(ta); row.appendChild(wrap); return row;
+}
+
+function renderPeriodSection(containerId, freq, periodKey){
+  const container=document.getElementById(containerId); container.innerHTML='';
+  const store=getPeriodObj(freq, periodKey);
+  const coresWithTasks=CORES.filter(c=>getCoreTasksForFreq(c,freq).length>0);
+  if(coresWithTasks.length===0){ container.innerHTML='<div class="card-plain">此頻率目前沒有設定任務。</div>'; return; }
+  coresWithTasks.forEach(core=>{
+    const sec=document.createElement('div'); sec.className='core-section'; sec.id=`period-${freq}-${core.id}`;
+    sec.innerHTML=`<h3><span class="tag">CORE ${core.num}</span> ${core.zh} <span class="en">${core.en}</span></h3><p class="outcome">${core.outcome}</p>`;
+    const list=document.createElement('div');
+    getCoreTasksForFreq(core,freq).forEach(t=>list.appendChild(renderTaskField(t, store)));
+    sec.appendChild(list); container.appendChild(sec);
+  });
+}
+
+function renderDaily(){
+  const d=dailyDate();
+  document.getElementById('daily-label').textContent=`${dateStr(d)}（${WEEKDAYS_ZH[d.getDay()]}）`;
+  renderPeriodSection('daily-list','daily', dateStr(d));
+  renderCoreCheck(dateStr(d));
+}
+document.getElementById('daily-prev').onclick=()=>{state.dailyOffsetDays--; renderDaily();};
+document.getElementById('daily-next').onclick=()=>{state.dailyOffsetDays++; renderDaily();};
+document.getElementById('daily-today').onclick=()=>{state.dailyOffsetDays=0; renderDaily();};
+
+function renderWeekly(){
+  const d=weeklyDate(); const end=addDays(d,6);
+  document.getElementById('weekly-label').textContent=`${dateStr(d)} ～ ${dateStr(end)}`;
+  renderPeriodSection('weekly-list','weekly', isoWeekStr(d));
+}
+document.getElementById('weekly-prev').onclick=()=>{state.weeklyOffsetWeeks--; renderWeekly();};
+document.getElementById('weekly-next').onclick=()=>{state.weeklyOffsetWeeks++; renderWeekly();};
+document.getElementById('weekly-today').onclick=()=>{state.weeklyOffsetWeeks=0; renderWeekly();};
+
+function renderMonthly(){
+  const d=monthlyDate();
+  document.getElementById('monthly-label').textContent=`${d.getFullYear()} 年 ${d.getMonth()+1} 月`;
+  renderPeriodSection('monthly-list','monthly', monthStr(d));
+}
+document.getElementById('monthly-prev').onclick=()=>{state.monthlyOffsetMonths--; renderMonthly();};
+document.getElementById('monthly-next').onclick=()=>{state.monthlyOffsetMonths++; renderMonthly();};
+document.getElementById('monthly-today').onclick=()=>{state.monthlyOffsetMonths=0; renderMonthly();};
+
+function renderLongTerm(){
+  const d=ltDate();
+  document.getElementById('lt-label').textContent=`${quarterStr(d)} ／ ${yearStr(d)}`;
+  const container=document.getElementById('lt-list'); container.innerHTML='';
+  const qKey=quarterStr(d), yKey=yearStr(d);
+  ['quarterly','yearly'].forEach(freq=>{
+    const key=freq==='quarterly'?qKey:yKey; const store=getPeriodObj(freq, key);
+    CORES.filter(c=>getCoreTasksForFreq(c,freq).length>0).forEach(core=>{
+      const sec=document.createElement('div'); sec.className='core-section';
+      sec.innerHTML=`<h3><span class="tag">CORE ${core.num}</span> ${core.zh} <span class="en">${core.en}</span>
+        <span class="badge ${FREQ_BADGE_CLASS[freq]||''}">${FREQ_LABEL[freq]}</span></h3><p class="outcome">${core.outcome}</p>`;
+      const list=document.createElement('div');
+      getCoreTasksForFreq(core,freq).forEach(t=>list.appendChild(renderTaskField(t, store)));
+      sec.appendChild(list); container.appendChild(sec);
+    });
+  });
+  if(container.innerHTML==='') container.innerHTML='<div class="card-plain">此區間目前沒有設定任務。</div>';
+}
+document.getElementById('lt-prev').onclick=()=>{state.ltOffsetQuarters--; renderLongTerm();};
+document.getElementById('lt-next').onclick=()=>{state.ltOffsetQuarters++; renderLongTerm();};
+document.getElementById('lt-today').onclick=()=>{state.ltOffsetQuarters=0; renderLongTerm();};
+
+/* =========================================================================
+   DAILY CORE CHECK (unified nightly ritual, not tied to one Core)
+========================================================================= */
+const CORECHECK_Q=[
+  {id:'goal', label:'今天有沒有朝目標前進？'},
+  {id:'selfreg', label:'今天自律與成長如何？'},
+  {id:'health', label:'今天健康與外貌照顧了嗎？'},
+  {id:'grateful', label:'今天有什麼反思與感謝？'},
+];
+function renderCoreCheck(dateKey){
+  if(!DATA.corecheck[dateKey]) DATA.corecheck[dateKey]={};
+  const store=DATA.corecheck[dateKey];
+  const container=document.getElementById('corecheck-fields'); container.innerHTML='';
+  CORECHECK_Q.forEach(q=>{
+    const div=document.createElement('div'); div.className='q';
+    div.innerHTML=`<label>${q.label}</label><textarea rows="2">${store[q.id]||''}</textarea>`;
+    div.querySelector('textarea').addEventListener('input', e=>{ store[q.id]=e.target.value; save(); });
+    container.appendChild(div);
+  });
+  const npBox=document.getElementById('cc-np');
+  npBox.checked=!!store.np;
+  npBox.onchange=(e)=>{ store.np=e.target.checked; save(); };
+}
+
+/* =========================================================================
+   DAILY SCHEDULE — weekly calendar grid, every cell checkable
+   更新於 2026-07-26（第二輪）：飲水量三次登記、23:30–24:00 併成單一入口連到
+   Night Review 專屬頁面、22:00–23:00 拿掉抗藍光眼鏡、時段改名、每個項目標上
+   對應 Core 供下方「依 Core 分類」參照表使用。
+========================================================================= */
+const SCHEDULE_BLOCKS=[
+  { time:'07:00', title:'起床', tag:'S', items:[
+      {id:'sch_water_am', type:'number', label:'飲水量（早上，ml）', core:[4]},
+      {id:'sch_skincare_am', type:'checkbox', label:'晨間皮膚保養', core:[5]},
+      {id:'sch_mirror', type:'checkbox', label:'照鏡子（Mirror Exposure）', core:[5]},
+      {id:'sch_review_day', type:'checkbox', label:'檢視今日行程＆目標', core:[3]},
+      {id:'sch_tgr', type:'checkbox', label:'T&GR 目標', core:[9]},
+  ]},
+  { time:'12:00', title:'午餐', tag:'S', items:[
+      {id:'sch_lunch', type:'checkbox', label:'飲食控制', core:[4]},
+      {id:'sch_water_noon', type:'number', label:'飲水量（中午，ml）', core:[4]},
+  ]},
+  { time:'14:00–14:30', title:'下班＆通勤', tag:'S', info:true },
+  { time:'14:30–15:30', title:'Recovery 下班儀式', tag:'S', items:[
+      {id:'sch_recovery', type:'checkbox', label:'沖澡＆休息', core:[2]},
+  ]},
+  { time:'15:30–17:30', title:'碩士申請', tag:'G', items:[
+      {id:'sch_masters', type:'checkbox', label:'碩士申請（目標 2 小時）', core:[1]},
+  ]},
+  { time:'17:30–18:00', title:'30 天健身訓練', tag:'S', items:[
+      {id:'sch_exercise', type:'checkbox', label:'30 天健身', core:[4,5]},
+  ]},
+  { time:'18:00–18:30', title:'洗澡', tag:'S', info:true },
+  { time:'18:30–19:30', title:'晚餐＆休息', tag:'S', items:[
+      {id:'sch_dinner', type:'checkbox', label:'飲食控制', core:[4]},
+      {id:'sch_water_dinner', type:'number', label:'飲水量（晚餐，ml）', core:[4]},
+  ]},
+  { time:'19:30–21:30', title:'成長', tag:'G', items:[
+      {id:'sch_growth_focus', type:'checkbox', label:'深度專注', core:[11]},
+      {id:'sch_blueblock_evening', type:'checkbox', label:'抗藍光眼鏡', core:[4]},
+  ]},
+  { time:'21:30–22:00', title:'Discovery 時間', tag:'D', items:[
+      {id:'sch_discovery', type:'checkbox', label:'Follow Curiosity', core:[7]},
+  ]},
+  { time:'22:00', title:'保養', tag:'S', items:[
+      {id:'sch_skincare_pm', type:'checkbox', label:'晚間皮膚保養', core:[5]},
+      {id:'sch_me_ve', type:'checkbox', label:'ME＋VE', core:[5]},
+  ]},
+  { time:'22:00–23:00', title:'休息', tag:'S', info:true },
+  { time:'23:00–23:30', title:'閱讀', tag:'G', items:[
+      {id:'sch_read', type:'checkbox', label:'每日閱讀 30 分鐘', core:[9]},
+  ]},
+  { time:'23:30–24:00', title:'Night Review', tag:'G', nightReviewLink:true },
+  { time:'24:00', title:'睡覺', tag:'S', items:[
+      {id:'sch_sound', type:'checkbox', label:'聲音（耳塞／白噪音）', core:[4]},
+      {id:'sch_light', type:'checkbox', label:'光線（越暗越好）', core:[4]},
+      {id:'sch_temp', type:'checkbox', label:'溫度（18–22°C）', core:[4]},
+  ]},
+];
+const WATER_ITEM_IDS=['sch_water_am','sch_water_noon','sch_water_dinner'];
+const WATER_TARGET=3000;
+const NIGHT_REVIEW_COREREVIEW=[
+  {id:'nr_growth_knowledge', label:'今日：知識／學習？'},
+  {id:'nr_growth_skill', label:'今日：技能／專業？'},
+];
+const NIGHT_REVIEW_DISCOVERY=[
+  {id:'nr_d1', label:'今天哪一刻，我忘記時間？'},
+  {id:'nr_d2', label:'今天哪件事，做完後還一直想？'},
+  {id:'nr_d3', label:'今天哪件事，我一直拖？是不是根本不想做？'},
+  {id:'nr_d4', label:'今天哪件事，讓我「原來如此」？'},
+  {id:'nr_d5', label:'今天哪件事，我想再靠近？'},
+  {id:'nr_tomorrow', label:'明天我最期待的是？'},
+];
+let nrCurrentDate=dateStr(new Date());
+
+const schedState={ weekOffset:0 };
+function getScheduleDay(dateKey){
+  if(!DATA.schedule) DATA.schedule={};
+  if(!DATA.schedule[dateKey]) DATA.schedule[dateKey]={ items:{} };
+  if(!DATA.schedule[dateKey].items) DATA.schedule[dateKey].items={};
+  return DATA.schedule[dateKey];
+}
+function updateWaterSummary(dateKey){
+  const cell=document.getElementById(`wsum-${dateKey}`); if(!cell) return;
+  const items=getScheduleDay(dateKey).items;
+  const total=WATER_ITEM_IDS.reduce((sum,id)=>sum+(parseFloat(items[id])||0), 0);
+  cell.textContent=`${total} / ${WATER_TARGET}ml`;
+  cell.style.color= total>=WATER_TARGET ? 'var(--green)' : 'var(--mid)';
+}
+function renderGridItem(task, store, dateKey){
+  const val=store[task.id];
+  const wrap=document.createElement('div'); wrap.className='gitem'+(task.type==='checkbox'&&val?' done':'');
+  if(task.type==='checkbox'){
+    const uid=`g-${task.id}-${Math.random().toString(36).slice(2,7)}`;
+    wrap.innerHTML=`<input type="checkbox" id="${uid}" ${val?'checked':''}><label for="${uid}">${task.label}</label>`;
+    wrap.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; wrap.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
+  } else if(task.type==='number'){
+    wrap.innerHTML=`<input type="number" placeholder="${task.label}" value="${val!==undefined?val:''}" title="${task.label}">`;
+    wrap.querySelector('input').addEventListener('input', e=>{
+      store[task.id]=e.target.value; save();
+      if(WATER_ITEM_IDS.includes(task.id) && dateKey) updateWaterSummary(dateKey);
+    });
+  } else {
+    wrap.innerHTML=`<input type="text" placeholder="${task.label}" value="${val?String(val).replace(/"/g,'&quot;'):''}" title="${task.label}">`;
+    wrap.querySelector('input').addEventListener('input', e=>{ store[task.id]=e.target.value; save(); });
+  }
+  return wrap;
+}
+function renderSchedule(){
+  const base=startOfWeek(new Date());
+  const weekStart=new Date(base); weekStart.setDate(weekStart.getDate()+schedState.weekOffset*7);
+  const days=[]; for(let i=0;i<7;i++) days.push(addDays(weekStart,i));
+  document.getElementById('sched-label').textContent=`${dateStr(days[0])} ～ ${dateStr(days[6])}`;
+
+  const table=document.getElementById('sched-grid'); table.innerHTML='';
+  const thead=document.createElement('thead'); const htr=document.createElement('tr');
+  htr.innerHTML=`<th class="timecell">時間</th>`+days.map(d=>`<th>${WEEKDAYS_ZH[d.getDay()]}<span class="d">${dateStr(d).slice(5)}</span></th>`).join('');
+  thead.appendChild(htr); table.appendChild(thead);
+
+  const tbody=document.createElement('tbody');
+
+  // Water summary row (pinned near top for visibility)
+  const wtr=document.createElement('tr'); wtr.className='water-row';
+  wtr.innerHTML=`<td class="timecell">今日累積<small>飲水量</small></td>`;
+  days.forEach(d=>{ const td=document.createElement('td'); const dateKey=dateStr(d);
+    td.innerHTML=`<span id="wsum-${dateKey}" style="font-size:12px;font-weight:700;color:var(--mid);"></span>`; wtr.appendChild(td); });
+  tbody.appendChild(wtr);
+
+  SCHEDULE_BLOCKS.forEach(b=>{
+    const tr=document.createElement('tr'); tr.className=`tag-${b.tag}`+(b.info?' info-row':'');
+    const timeTd=document.createElement('td'); timeTd.className='timecell';
+    timeTd.innerHTML=`${b.time}<small>${b.title}</small>`;
+    tr.appendChild(timeTd);
+    days.forEach(d=>{
+      const td=document.createElement('td'); td.className='gcell';
+      const dateKey=dateStr(d);
+      if(b.nightReviewLink){
+        const day=getScheduleDay(dateKey);
+        const filled=NIGHT_REVIEW_DISCOVERY.concat(NIGHT_REVIEW_COREREVIEW).some(q=>day.items[q.id]);
+        const btn=document.createElement('button'); btn.className='nr-link-btn'+(filled?' filled':'');
+        btn.textContent= filled ? '✓ 已記錄' : '→ 記錄';
+        btn.addEventListener('click', ()=>openNightReview(dateKey));
+        td.appendChild(btn);
+      } else if(!b.info){
+        const day=getScheduleDay(dateKey);
+        b.items.forEach(t=>td.appendChild(renderGridItem(t, day.items, dateKey)));
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  days.forEach(d=>updateWaterSummary(dateStr(d)));
+  renderScheduleCoreMap();
+}
+document.getElementById('sched-prev').onclick=()=>{schedState.weekOffset--; renderSchedule();};
+document.getElementById('sched-next').onclick=()=>{schedState.weekOffset++; renderSchedule();};
+document.getElementById('sched-today').onclick=()=>{schedState.weekOffset=0; renderSchedule();};
+
+/* =========================================================================
+   SCHEDULE → CORE MAP — which Core each schedule item serves (reference view)
+========================================================================= */
+const CORE_MAP_COLORS={1:'#E08A7D',2:'#E08A7D',3:'#E08A7D',4:'#6FBF73',5:'#6FBF73',
+  6:'#8FB3D9',7:'#8FB3D9',8:'#C9A6D9',9:'#C9A227',10:'#E4C765',11:'#D2924B'};
+function renderScheduleCoreMap(){
+  const container=document.getElementById('sched-coremap'); if(!container) return;
+  container.innerHTML='';
+  CORES.forEach(core=>{
+    const groups={};
+    SCHEDULE_BLOCKS.forEach(b=>{
+      (b.items||[]).forEach(it=>{
+        if((it.core||[]).includes(core.num)){
+          if(!groups[b.title]) groups[b.title]=[];
+          groups[b.title].push(it.label);
+        }
+      });
+    });
+    const card=document.createElement('div'); card.className='cmap-card';
+    card.style.borderLeftColor=CORE_MAP_COLORS[core.num]||'var(--gold)';
+    const groupKeys=Object.keys(groups);
+    card.innerHTML=`<div class="cmap-hd" style="color:${CORE_MAP_COLORS[core.num]||'var(--gold)'}">CORE ${core.num} · ${core.zh}</div>
+      ${groupKeys.length? groupKeys.map(g=>`<div class="cmap-group"><b>${g}</b>：${groups[g].join('、')}</div>`).join('')
+        : `<div class="cmap-empty">（今日時程中無對應項目）</div>`}`;
+    container.appendChild(card);
+  });
+}
+
+/* =========================================================================
+   NIGHT REVIEW — dedicated page (reached from the schedule grid or its own tab)
+========================================================================= */
+function openNightReview(dateKey){
+  nrCurrentDate=dateKey;
+  document.querySelector('nav.tabs button[data-tab="nightreview"]').click();
+}
+function renderNightReviewPage(){
+  const d=new Date(nrCurrentDate+'T00:00:00');
+  document.getElementById('nr-label').textContent=`${nrCurrentDate}（${WEEKDAYS_ZH[d.getDay()]}）`;
+  const day=getScheduleDay(nrCurrentDate);
+  const crContainer=document.getElementById('nr-corereview-fields'); crContainer.innerHTML='';
+  NIGHT_REVIEW_COREREVIEW.forEach(q=>{
+    const div=document.createElement('div'); div.className='q';
+    div.innerHTML=`<label>${q.label}</label><textarea rows="2">${day.items[q.id]||''}</textarea>`;
+    div.querySelector('textarea').addEventListener('input', e=>{ day.items[q.id]=e.target.value; save(); });
+    crContainer.appendChild(div);
+  });
+  const dvContainer=document.getElementById('nr-discovery-fields'); dvContainer.innerHTML='';
+  NIGHT_REVIEW_DISCOVERY.forEach(q=>{
+    const div=document.createElement('div'); div.className='q';
+    div.innerHTML=`<label>${q.label}</label><textarea rows="2">${day.items[q.id]||''}</textarea>`;
+    div.querySelector('textarea').addEventListener('input', e=>{ day.items[q.id]=e.target.value; save(); });
+    dvContainer.appendChild(div);
+  });
+}
+document.getElementById('nr-prev').onclick=()=>{ nrCurrentDate=dateStr(addDays(new Date(nrCurrentDate+'T00:00:00'),-1)); renderNightReviewPage(); };
+document.getElementById('nr-next').onclick=()=>{ nrCurrentDate=dateStr(addDays(new Date(nrCurrentDate+'T00:00:00'),1)); renderNightReviewPage(); };
+document.getElementById('nr-today').onclick=()=>{ nrCurrentDate=dateStr(new Date()); renderNightReviewPage(); };
+
+function generateNightReviewDigest(){
+  const dates=Object.keys(DATA.schedule||{}).sort();
+  const allQ=NIGHT_REVIEW_COREREVIEW.concat(NIGHT_REVIEW_DISCOVERY);
+  let out=`Blueprint Night Review 匯出\n產生時間：${dateStr(new Date())}\n${'='.repeat(40)}\n\n`;
+  let any=false;
+  dates.forEach(dateKey=>{
+    const items=(DATA.schedule[dateKey]||{}).items||{};
+    const hasAny=allQ.some(q=>items[q.id]);
+    if(!hasAny) return;
+    any=true;
+    out+=`【${dateKey}】\n`;
+    out+=`-- Core Review --\n`;
+    NIGHT_REVIEW_COREREVIEW.forEach(q=>{ if(items[q.id]) out+=`${q.label} ${items[q.id]}\n`; });
+    out+=`-- Discovery --\n`;
+    NIGHT_REVIEW_DISCOVERY.forEach(q=>{ if(items[q.id]) out+=`${q.label} ${items[q.id]}\n`; });
+    out+=`\n`;
+  });
+  if(!any) out+='（目前沒有任何 Night Review 記錄）\n';
+  return out;
+}
+document.getElementById('btn-nr-export').onclick=()=>{
+  const text=generateNightReviewDigest();
+  const blob=new Blob([text], {type:'text/plain'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`night_review_export_${dateStr(new Date())}.txt`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+};
+
+/* =========================================================================
+   DASHBOARD — branch by core type
+========================================================================= */
+function coreDailyCheckboxStats(core, key){
+  const tasks=getCoreTasksForFreq(core,'daily');
+  if(tasks.length===0) return null;
+  const store=getPeriodObj('daily', key);
+  const done=tasks.filter(t=>actionCompletion(t, store[t.id])).length;
+  return Math.round(done/tasks.length*100);
+}
+function coreStreak(core){
+  let streak=0, d=new Date();
+  for(let i=0;i<365;i++){ const pct=coreDailyCheckboxStats(core, dateStr(d)); if(pct===null) break;
+    if(pct>=100){ streak++; d=addDays(d,-1); } else break; }
+  return streak;
+}
+// Ladder progress driven by a monthly-updated Action (e.g. Core1's 淨資產更新).
+function ladderProgressFromAction(actionId, milestones){
+  const current=latestValueForAction(actionId, 'monthly');
+  if(current===null) return {pct:0, label:'尚未填寫數字'};
+  const last=milestones[milestones.length-1].threshold;
+  let stageLabel=null;
+  milestones.forEach(m=>{ if(current>=m.threshold) stageLabel=m.title; });
+  const pct=Math.max(0, Math.min(100, Math.round(current/last*100)));
+  return {pct, label: stageLabel ? `目前 ${current}｜已達：${stageLabel}` : `目前 ${current}｜尚未達第一階（${milestones[0].title}）`};
+}
+function latestValueForAction(actionId, cadence){
+  const keys=Object.keys(DATA.periods[cadence]||{}).sort().reverse();
+  for(const k of keys){ const v=DATA.periods[cadence][k][actionId]; if(v!==undefined && v!==''){ return parseFloat(v); } }
+  return null;
+}
+function nowPeriodKey(freq){
+  const d=new Date();
+  if(freq==='daily') return dateStr(d);
+  if(freq==='weekly') return isoWeekStr(startOfWeek(d));
+  if(freq==='monthly') return monthStr(d);
+  if(freq==='quarterly') return quarterStr(d);
+  if(freq==='yearly') return yearStr(d);
+}
+function recentHistory(actionId, cadence, n){
+  const keys=Object.keys(DATA.periods[cadence]||{}).sort().reverse();
+  const out=[];
+  for(const k of keys){ const v=DATA.periods[cadence][k][actionId]; if(v!==undefined && v!==''){ out.push(`${k}：${v}`); if(out.length>=n) break; } }
+  return out;
+}
+function actionToTask(a){ return {id:a.id, type:mapInputType(a.inputType), label:a.title, hint:buildHint(a)}; }
+
+function goalProgress(core){
+  if(core.specified){
+    // Vertical-slice project cores: use the primary Achievement Project's milestone-driving action.
+    if(core.id==='c1'){
+      return ladderProgressFromAction('c1p1_networth', CORE_SPEC.c1.outcomes[0].plans[0].milestones);
+    }
+    return {pct:0, label:'—'};
+  }
+  const g=core.goal; if(!g) return {pct:0, label:'—'};
+  const gd=DATA.goals[core.id]||{};
+  if(g.kind==='ladder'){
+    const current=parseFloat(gd.current)||0;
+    const last=g.stages[g.stages.length-1].value;
+    let stageLabel=g.stages[0].label; let reachedIdx=-1;
+    g.stages.forEach((s,i)=>{ if(current>=s.value){ reachedIdx=i; stageLabel=s.label; } });
+    const pct=Math.max(0, Math.min(100, Math.round(current/last*100)));
+    return {pct, label: reachedIdx>=0 ? `已達：${stageLabel}` : `尚未達第一階（${g.stages[0].label}）`};
+  }
+  if(g.kind==='metric'){
+    let onTarget=0, total=0;
+    g.fields.forEach(f=>{
+      const cur=gd[f.id+'_current'], tgt=gd[f.id+'_target'];
+      if(cur!=='' && cur!==undefined && tgt!=='' && tgt!==undefined && tgt!==null && cur!==null){
+        total++; if(Math.abs(parseFloat(cur)-parseFloat(tgt))<=0.5) onTarget++;
+      }
+    });
+    const pct= total>0 ? Math.round(onTarget/total*100) : 0;
+    return {pct, label: total>0 ? `${onTarget}/${total} 項達標` : '尚未填寫現況／目標'};
+  }
+  if(g.kind==='counter'){
+    const count=gd.count||0; const target=gd.target!==undefined && gd.target!=='' ? gd.target : g.defaultTarget;
+    const pct=target>0 ? Math.min(100, Math.round(count/target*100)) : 0;
+    return {pct, label:`${count} / ${target}（${g.periodLabel}）`};
+  }
+  if(g.kind==='checklist'){
+    const items=gd.items || g.seed.map(s=>({label:s, done:false}));
+    const done=items.filter(i=>i.done).length;
+    const pct= items.length>0 ? Math.round(done/items.length*100) : 0;
+    return {pct, label:`${done} / ${items.length} 項完成`};
+  }
+  return {pct:0, label:'—'};
+}
+
+function renderDashboard(){
+  const today=new Date();
+  document.getElementById('dash-date').textContent=`${dateStr(today)}（${WEEKDAYS_ZH[today.getDay()]}）`;
+  const todayKey=dateStr(today);
+
+  const projWrap=document.getElementById('dash-project'); projWrap.innerHTML='';
+  const sysWrap=document.getElementById('dash-system'); sysWrap.innerHTML='';
+
+  CORES.forEach(core=>{
+    const card=document.createElement('div'); card.className='dcard';
+    if(core.type==='project'){
+      const gp=goalProgress(core);
+      card.innerHTML=`<div class="toprow"><span class="num">CORE ${core.num}</span><span class="typechip project">專案型</span></div>
+        <span class="name">${core.zh}<span class="en">${core.en}</span></span>
+        <div class="barwrap"><div class="barfill project" style="width:${gp.pct}%"></div></div>
+        <div class="meta"><span>${gp.label}</span><span>${gp.pct}%</span></div>`;
+      card.addEventListener('click', ()=>{
+        document.querySelector('nav.tabs button[data-tab="goals"]').click();
+        setTimeout(()=>{
+          const target=document.getElementById(`goal-card-${core.id}`);
+          if(target && typeof target.scrollIntoView==='function') target.scrollIntoView({behavior:'smooth', block:'start'});
+        }, 50);
+      });
+      projWrap.appendChild(card);
+    } else {
+      const pct=coreDailyCheckboxStats(core, todayKey);
+      const streak=coreStreak(core);
+      card.innerHTML=`<div class="toprow"><span class="num">CORE ${core.num}</span><span class="typechip system">系統型</span></div>
+        <span class="name">${core.zh}<span class="en">${core.en}</span></span>
+        <div class="barwrap"><div class="barfill" style="width:${pct===null?0:pct}%"></div></div>
+        <div class="meta"><span>${pct===null?'今日無檢查項':pct+'% 今日維持'}</span><span class="streak">${streak>0?'🔥 '+streak+' 天':''}</span></div>`;
+      card.addEventListener('click', ()=>{
+        document.querySelector('nav.tabs button[data-tab="daily"]').click();
+        setTimeout(()=>{
+          const target=document.getElementById(`period-daily-${core.id}`);
+          if(target && typeof target.scrollIntoView==='function') target.scrollIntoView({behavior:'smooth', block:'start'});
+        }, 50);
+      });
+      sysWrap.appendChild(card);
+    }
+  });
+}
+
+/* =========================================================================
+   PLANS TAB — Outcome → Plan → Milestone → Action (specified cores)
+   + legacy goal widgets (unspecified project-type cores)
+========================================================================= */
+function renderMilestones(core, plan){
+  const wrap=document.createElement('div'); wrap.className='ladder'; wrap.style.marginBottom='10px';
+  const drivingAction=(plan.actions||[]).find(a=>a.driveMilestone);
+  if(drivingAction){
+    const current=latestValueForAction(drivingAction.id, drivingAction.cadence);
+    plan.milestones.forEach(m=>{
+      const reached=current!==null && current>=m.threshold;
+      const div=document.createElement('div'); div.className='stage'+(reached?' reached':'');
+      div.innerHTML=`<span>${reached?'✅':'⬜️'}</span><label>${m.title}</label>`;
+      wrap.appendChild(div);
+    });
+  } else {
+    const storeKey=`${plan.id}_ms`;
+    if(!DATA.goals[storeKey]) DATA.goals[storeKey]={};
+    const store=DATA.goals[storeKey];
+    plan.milestones.forEach(m=>{
+      const div=document.createElement('div'); div.className='stage'+(store[m.id]?' reached':'');
+      div.innerHTML=`<input type="checkbox" id="ms-${plan.id}-${m.id}" ${store[m.id]?'checked':''}><label for="ms-${plan.id}-${m.id}">${m.title}</label>`;
+      div.querySelector('input').addEventListener('change', e=>{ store[m.id]=e.target.checked; save(); div.classList.toggle('reached', e.target.checked); renderDashboard(); });
+      wrap.appendChild(div);
+    });
+  }
+  return wrap;
+}
+function renderInstanceAction(a){
+  const row=document.createElement('div'); row.className='task-row';
+  if(!DATA.instances[a.id]) DATA.instances[a.id]=[];
+  const list=DATA.instances[a.id];
+  const wrap=document.createElement('div'); wrap.className='field-wrap';
+  wrap.innerHTML=`<span class="qlabel">${a.title}</span><span class="hint">需要時才填，不是每天固定要看到的清單</span>`;
+  const addrow=document.createElement('div'); addrow.className='addrow';
+  addrow.innerHTML=`<input type="text" placeholder="輸入內容..."><button>新增</button>`;
+  addrow.querySelector('button').addEventListener('click', ()=>{
+    const inp=addrow.querySelector('input');
+    if(inp.value.trim()){ list.unshift({ts:dateStr(new Date()), value:inp.value.trim()}); save(); inp.value=''; renderGoals(); }
+  });
+  wrap.appendChild(addrow);
+  if(list.length){
+    const hist=document.createElement('div'); hist.style.marginTop='6px';
+    list.slice(0,5).forEach(r=>{ const p=document.createElement('div'); p.style.cssText='font-size:12px;color:var(--mid);padding:3px 0;'; p.textContent=`${r.ts}　${r.value}`; hist.appendChild(p); });
+    wrap.appendChild(hist);
+  }
+  row.appendChild(wrap); return row;
+}
+function renderRecoveryLog(plan){
+  const row=document.createElement('div'); row.className='task-row';
+  const key=plan.instanceLog;
+  if(!DATA.instances[key]) DATA.instances[key]=[];
+  const list=DATA.instances[key];
+  const wrap=document.createElement('div'); wrap.className='field-wrap';
+  wrap.innerHTML=`<span class="qlabel">新增復位紀錄</span><span class="hint">失控之後才填，記錄有沒有當天復位、觸發因素、復位行動</span>`;
+  const form=document.createElement('div'); form.style.cssText='display:flex;flex-direction:column;gap:6px;margin-top:6px;';
+  form.innerHTML=`
+    <label style="font-size:12.5px;"><input type="checkbox" id="rec-same-day" style="width:16px;height:16px;vertical-align:middle;"> 有於當日復位</label>
+    <input type="text" id="rec-trigger" placeholder="觸發因素">
+    <input type="text" id="rec-action" placeholder="復位行動">
+    <button style="align-self:flex-start;background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;">新增紀錄</button>
+  `;
+  form.querySelector('button').addEventListener('click', ()=>{
+    const sameDay=form.querySelector('#rec-same-day').checked;
+    const trigger=form.querySelector('#rec-trigger').value.trim();
+    const action=form.querySelector('#rec-action').value.trim();
+    if(!trigger && !action) return;
+    list.unshift({ts:dateStr(new Date()), sameDay, trigger, action}); save(); renderGoals();
+  });
+  wrap.appendChild(form);
+  if(list.length){
+    const hist=document.createElement('div'); hist.style.marginTop='8px';
+    list.slice(0,5).forEach(r=>{ const p=document.createElement('div'); p.style.cssText='font-size:12px;color:var(--mid);padding:4px 0;border-top:1px dashed var(--rule);';
+      p.textContent=`${r.ts}　${r.sameDay?'✅已復位':'—'}　觸發：${r.trigger||'—'}　行動：${r.action||'—'}`; hist.appendChild(p); });
+    wrap.appendChild(hist);
+  }
+  row.appendChild(wrap); return row;
+}
+function renderSpecCoreCard(container, core){
+  const spec=CORE_SPEC[core.id];
+  const card=document.createElement('div'); card.className='goal-card'; card.id=`goal-card-${core.id}`;
+  card.innerHTML=`<div class="hd"><span class="num">CORE ${core.num}</span><h3>${core.zh}</h3><span class="en">${core.en}</span></div>
+    <p class="outcome"><b>Vision：</b>${spec.vision}</p>`;
+  const body=document.createElement('div');
+  spec.outcomes.forEach(o=>{
+    const oDiv=document.createElement('div');
+    oDiv.style.cssText='margin-top:16px;padding-top:14px;border-top:2px solid var(--rule);';
+    oDiv.innerHTML=`<div style="font-size:11px;color:var(--gold);font-weight:800;letter-spacing:1px;">OUTCOME</div>
+      <div style="font-size:16px;font-weight:800;color:var(--ink);margin:2px 0 4px;">${o.title}</div>
+      <div style="font-size:12.5px;color:var(--mid);margin-bottom:8px;">${o.successDef}</div>
+      <div class="chips">${(o.metrics||[]).map(m=>`<span class="chip">${m}</span>`).join('')}</div>`;
+    body.appendChild(oDiv);
+
+    o.plans.forEach(p=>{
+      const pWrap=document.createElement('div');
+      pWrap.style.cssText='margin:10px 0 6px 10px;padding:12px 14px;background:var(--bg);border-radius:10px;';
+      pWrap.innerHTML=`<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+        <span style="font-weight:700;color:var(--ink);font-size:14px;">${p.title}</span>
+        <span class="badge">${p.type}</span>
+        <span class="badge" style="background:#EFE3C8;color:var(--blue);">${p.priority}</span>
+        <span class="badge" style="background:#e6ece7;color:var(--green);">${p.status}</span>
+      </div>`;
+      if(p.milestones && p.milestones.length) pWrap.appendChild(renderMilestones(core, p));
+      (p.actions||[]).forEach(a=>{
+        if(a.cadence==='instance'){ pWrap.appendChild(renderInstanceAction(a)); return; }
+        const row=renderTaskField(actionToTask(a), getPeriodObj(a.cadence, nowPeriodKey(a.cadence)));
+        if(a.inputType==='number'||a.inputType==='counter'||a.inputType==='duration'||a.inputType==='rating'){
+          const hist=recentHistory(a.id, a.cadence, 3);
+          if(hist.length){ const h=document.createElement('div'); h.style.cssText='font-size:11px;color:var(--mid);margin-top:-4px;margin-bottom:4px;'; h.textContent='最近：'+hist.join('　'); row.appendChild(h); }
+        }
+        pWrap.appendChild(row);
+      });
+      if(p.instanceLog) pWrap.appendChild(renderRecoveryLog(p));
+      body.appendChild(pWrap);
+    });
+  });
+  card.appendChild(body); container.appendChild(card);
+}
+
+function renderGoals(){
+  const container=document.getElementById('goals-list'); container.innerHTML='';
+
+  CORES.filter(c=>c.specified).forEach(core=>renderSpecCoreCard(container, core));
+
+  CORES.filter(c=>c.type==='project' && !c.specified).forEach(core=>{
+    if(!DATA.goals[core.id]) DATA.goals[core.id]={};
+    const gd=DATA.goals[core.id]; const g=core.goal;
+    const card=document.createElement('div'); card.className='goal-card'; card.id=`goal-card-${core.id}`;
+    card.innerHTML=`<div class="hd"><span class="num">CORE ${core.num}</span><h3>${core.zh}</h3><span class="en">${core.en}</span></div>
+      <p class="outcome">${core.outcome}</p>`;
+    const body=document.createElement('div');
+
+    if(g.kind==='ladder'){
+      const fr=document.createElement('div'); fr.className='fieldrow';
+      fr.innerHTML=`<div class="f"><label>目前存款／資產（${g.unit}）</label><input type="number" id="goal-${core.id}-current" value="${gd.current!==undefined?gd.current:''}"></div>`;
+      body.appendChild(fr);
+      const ladder=document.createElement('div'); ladder.className='ladder';
+      g.stages.forEach(s=>{ const div=document.createElement('div'); div.className='stage';
+        div.innerHTML=`<span>${(parseFloat(gd.current)||0)>=s.value?'✅':'⬜️'}</span><label>${s.label}</label>`;
+        ladder.appendChild(div); });
+      body.appendChild(ladder);
+      fr.querySelector('input').addEventListener('input', e=>{ gd.current=e.target.value; save(); renderGoals(); renderDashboard(); });
+    }
+
+    if(g.kind==='metric'){
+      g.fields.forEach(f=>{
+        const row=document.createElement('div'); row.className='metricpair';
+        const cur=gd[f.id+'_current']!==undefined?gd[f.id+'_current']:'';
+        const tgt=gd[f.id+'_target']!==undefined?gd[f.id+'_target']:'';
+        row.innerHTML=`<span class="mlabel">${f.label}</span>
+          <input type="number" placeholder="現況" value="${cur}">
+          <span class="arrow">→</span>
+          <input type="number" placeholder="目標" value="${tgt}">
+          <span class="unit">${f.unit}</span>
+          <span class="status"></span>`;
+        const inputs=row.querySelectorAll('input');
+        const statusEl=row.querySelector('.status');
+        function refreshStatus(){
+          const c=parseFloat(inputs[0].value), t=parseFloat(inputs[1].value);
+          if(!isNaN(c)&&!isNaN(t)){ const ok=Math.abs(c-t)<=0.5; statusEl.textContent= ok?'✓ 達標':`差 ${Math.abs(c-t).toFixed(1)}`; statusEl.className='status '+(ok?'ok':'gap'); }
+          else statusEl.textContent='';
+        }
+        inputs[0].addEventListener('input', e=>{ gd[f.id+'_current']=e.target.value; save(); refreshStatus(); renderDashboard(); });
+        inputs[1].addEventListener('input', e=>{ gd[f.id+'_target']=e.target.value; save(); refreshStatus(); renderDashboard(); });
+        refreshStatus();
+        body.appendChild(row);
+      });
+    }
+
+    if(g.kind==='counter'){
+      if(gd.target===undefined) gd.target=g.defaultTarget;
+      if(gd.count===undefined) gd.count=0;
+      const box=document.createElement('div'); box.className='counterbox';
+      box.innerHTML=`<button id="ctr-minus-${core.id}">－</button><span class="big" id="ctr-num-${core.id}">${gd.count}</span><button id="ctr-plus-${core.id}">＋</button>
+        <span>／ 目標</span><input class="targetf" type="number" value="${gd.target}"> <span>（${g.periodLabel}，可手動重置歸零）</span>`;
+      body.appendChild(box);
+      box.querySelector(`#ctr-plus-${core.id}`).onclick=()=>{ gd.count=(gd.count||0)+1; save(); renderGoals(); renderDashboard(); };
+      box.querySelector(`#ctr-minus-${core.id}`).onclick=()=>{ gd.count=Math.max(0,(gd.count||0)-1); save(); renderGoals(); renderDashboard(); };
+      box.querySelector('.targetf').addEventListener('input', e=>{ gd.target=e.target.value; save(); renderDashboard(); });
+    }
+
+    if(g.kind==='checklist'){
+      if(!gd.items) gd.items=g.seed.map(s=>({label:s, done:false}));
+      const list=document.createElement('div'); list.className='checklist-goal';
+      gd.items.forEach((item,idx)=>{
+        const row=document.createElement('div'); row.className='item'+(item.done?' done':'');
+        row.innerHTML=`<input type="checkbox" ${item.done?'checked':''}><span>${item.label}</span><button title="刪除">×</button>`;
+        row.querySelector('input').addEventListener('change', e=>{ item.done=e.target.checked; save(); renderGoals(); renderDashboard(); });
+        row.querySelector('button').addEventListener('click', ()=>{ gd.items.splice(idx,1); save(); renderGoals(); renderDashboard(); });
+        list.appendChild(row);
+      });
+      body.appendChild(list);
+      const addrow=document.createElement('div'); addrow.className='addrow';
+      addrow.innerHTML=`<input type="text" placeholder="新增體驗項目..."><button>加入</button>`;
+      addrow.querySelector('button').addEventListener('click', ()=>{
+        const inp=addrow.querySelector('input'); if(inp.value.trim()){ gd.items.push({label:inp.value.trim(), done:false}); save(); renderGoals(); } });
+      body.appendChild(addrow);
+    }
+
+    card.appendChild(body); container.appendChild(card);
+  });
+
+  CORES.filter(c=>c.type==='system' && !c.specified).forEach(core=>{
+    const card=document.createElement('div'); card.className='card-plain';
+    card.innerHTML=`<b>CORE ${core.num} ${core.zh}</b>　尚未建立 Outcome／Plan 規格，目前用「每日／每週」分頁的維持任務追蹤。`;
+    container.appendChild(card);
+  });
+}
+
+/* =========================================================================
+   CORES REFERENCE PAGE
+========================================================================= */
+function renderCoresRef(){
+  const container=document.getElementById('cores-list'); container.innerHTML='';
+  CORES.forEach(core=>{
+    const div=document.createElement('div'); div.className='core-ref';
+    const capsChips=core.capabilities.map(c=>`<span class="chip">${c}</span>`).join('');
+    const antiChips=(core.antiHabits||[]).map(c=>`<span class="chip anti">${c}</span>`).join('');
+    div.innerHTML=`
+      <div class="hd"><span class="num">CORE ${core.num}</span><h3>${core.zh}</h3><span class="en">${core.en}</span>
+        <span class="typechip ${core.type}">${core.type==='project'?'專案型':'系統型'}</span></div>
+      <div class="outcome">${core.outcome}</div>
+      <div class="row"><div class="k">Capability</div><div class="v chips">${capsChips}</div></div>
+      <div class="row"><div class="k">KPI</div><div class="v">${core.kpi.join('　·　')}</div></div>
+      ${core.antiHabits?`<div class="row"><div class="k">反習慣</div><div class="v chips">${antiChips}</div></div>`:''}
+      ${core.keyData?`<div class="row"><div class="k">Database 關鍵數據</div><div class="v"><ul class="keydata">${core.keyData.map(k=>`<li>${k}</li>`).join('')}</ul></div></div>`:''}
+      <div class="identity"><label>身份宣言（可編輯，自動儲存）</label>
+        <textarea data-core="${core.id}" rows="2">${(DATA.identity[core.id]!==undefined?DATA.identity[core.id]:core.identityDefault)}</textarea></div>
+      <div class="notes"><label>參考筆記（可貼上 Database 原文，僅存在你的瀏覽器）</label>
+        <textarea data-notecore="${core.id}" rows="3" placeholder="從 Database 貼上跟這個 Core 有關的段落...">${DATA.notes[core.id]||''}</textarea></div>
+    `;
+    container.appendChild(div);
+  });
+  container.querySelectorAll('textarea[data-core]').forEach(ta=>{
+    ta.addEventListener('input', e=>{ DATA.identity[e.target.dataset.core]=e.target.value; save(); });
+  });
+  container.querySelectorAll('textarea[data-notecore]').forEach(ta=>{
+    ta.addEventListener('input', e=>{ DATA.notes[e.target.dataset.notecore]=e.target.value; save(); });
+  });
+}
+
+/* =========================================================================
+   DATA MANAGEMENT
+========================================================================= */
+document.getElementById('btn-export').onclick=()=>{
+  const blob=new Blob([JSON.stringify(DATA,null,2)], {type:'application/json'});
+  const url=URL.createObjectURL(blob); const a=document.createElement('a');
+  a.href=url; a.download=`blueprint_backup_${dateStr(new Date())}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+};
+document.getElementById('btn-import-trigger').onclick=()=>{ document.getElementById('btn-import-file').click(); };
+document.getElementById('btn-import-file').onchange=(e)=>{
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    try{ const parsed=JSON.parse(ev.target.result); if(!parsed.periods) throw new Error('格式不正確');
+      DATA=parsed; ['identity','notes','goals','corecheck'].forEach(k=>{ if(!DATA[k]) DATA[k]={}; });
+      save(); renderAll(); alert('匯入成功');
+    }catch(err){ alert('匯入失敗：檔案格式不正確'); }
+  };
+  reader.readAsText(file); e.target.value='';
+};
+document.getElementById('btn-reset').onclick=()=>{
+  if(confirm('確定要重置所有資料嗎？此動作無法復原，建議先匯出備份。')){ DATA=defaultData(); save(); renderAll(); }
+};
+
+/* =========================================================================
+   RENDER ALL
+========================================================================= */
+function renderAll(){
+  renderDashboard(); renderSchedule(); renderNightReviewPage(); renderDaily(); renderWeekly(); renderMonthly(); renderLongTerm(); renderGoals(); renderCoresRef();
+}
+seedInitialData();
+renderAll();
+
+})();
+</script>
+</body>
+</html>
