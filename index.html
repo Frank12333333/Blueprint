@@ -21,19 +21,19 @@
   body{margin:0; background:var(--bg); color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; line-height:1.6;}
   a{color:inherit;}
-  header.top{background:var(--navy); color:#fff; padding:14px 18px; display:flex; flex-direction:column;
-    gap:10px; position:sticky; top:0; z-index:50; box-shadow:0 2px 10px rgba(0,0,0,.15); transition:transform .25s ease;}
+  header.top{background:var(--navy); color:#fff; padding:8px 14px; display:flex; flex-direction:column;
+    gap:6px; position:sticky; top:0; z-index:50; box-shadow:0 2px 10px rgba(0,0,0,.15); transition:transform .25s ease;}
   header.top.hide{transform:translateY(-100%);}
-  header.top .brand{display:flex; flex-direction:column; gap:2px;}
-  header.top .brand .kicker{font-size:11px; letter-spacing:3px; color:var(--gold-light); font-weight:700;}
-  header.top .brand h1{margin:0; font-size:20px; font-weight:800;}
-  .mode-switch{display:flex; gap:6px; width:100%;}
+  header.top .brand{display:flex; flex-direction:row; align-items:baseline; gap:6px;}
+  header.top .brand .kicker{font-size:9px; letter-spacing:2px; color:var(--gold-light); font-weight:700;}
+  header.top .brand h1{margin:0; font-size:15px; font-weight:800;}
+  .mode-switch{display:flex; gap:5px; width:100%;}
   .mode-switch button{flex:1; background:transparent; border:1px solid rgba(255,255,255,.3); color:#e9e6dc;
-    padding:9px 10px; border-radius:10px; font-size:13.5px; cursor:pointer; font-family:inherit; font-weight:600;}
+    padding:5px 8px; border-radius:8px; font-size:12px; cursor:pointer; font-family:inherit; font-weight:600;}
   .mode-switch button.active{background:var(--gold); color:#1a1206; border-color:var(--gold); font-weight:800;}
   nav.tabs{display:flex; gap:4px; flex-wrap:wrap;}
-  nav.tabs button{background:transparent; border:1px solid rgba(255,255,255,.25); color:#e9e6dc; padding:8px 14px;
-    border-radius:999px; font-size:13px; cursor:pointer; transition:.15s; font-family:inherit;}
+  nav.tabs button{background:transparent; border:1px solid rgba(255,255,255,.25); color:#e9e6dc; padding:5px 11px;
+    border-radius:999px; font-size:11.5px; cursor:pointer; transition:.15s; font-family:inherit;}
   nav.tabs button:hover{background:rgba(255,255,255,.1);}
   nav.tabs button.active{background:var(--gold); border-color:var(--gold); color:#1a1206; font-weight:700;}
   main{max-width:1080px; margin:0 auto; padding:22px 16px 80px;}
@@ -71,11 +71,32 @@
   .core-section h3 .tag{font-size:11px; color:var(--gold); font-weight:800; letter-spacing:1px;}
   .core-section h3 .en{font-weight:400; font-style:italic; color:var(--mid); font-size:12px;}
   .core-section .outcome{font-size:12.5px; color:var(--mid); margin:2px 0 12px; font-style:italic;}
-  .task-row{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-top:1px dashed var(--rule);}
+  .task-row{display:flex; align-items:flex-start; gap:10px; padding:10px 8px; margin:0 -8px; border-top:1px dashed var(--rule); border-radius:8px; -webkit-tap-highlight-color:transparent;}
+  label.task-row{cursor:pointer;}
+  label.task-row:active{background:rgba(201,162,39,.12);}
   .task-row:first-of-type{border-top:none;}
-  .task-row input[type=checkbox]{width:20px; height:20px; margin-top:1px; accent-color:var(--gold); flex:none; cursor:pointer;}
-  .task-row label{font-size:14px; cursor:pointer; flex:1;}
-  .task-row.done label{color:var(--mid); text-decoration:line-through;}
+  .task-row input[type=checkbox]{width:22px; height:22px; margin-top:1px; accent-color:var(--gold); flex:none; cursor:pointer;}
+  .task-row.done .qlabel{color:var(--mid); text-decoration:line-through;}
+
+  .diet-block-wrap{padding:10px 8px; margin:0 -8px; border-top:1px dashed var(--rule);}
+  .diet-block-wrap:first-child{border-top:none;}
+  .diet-block-wrap .task-row{padding:0; margin:0; border-top:none; margin-bottom:8px;}
+  .macro-grid{display:grid; grid-template-columns:1fr 1fr; gap:6px; padding-left:32px;}
+  .macro-field{display:flex; align-items:center; gap:6px; font-size:12px;}
+  .macro-field span{color:var(--mid); min-width:34px; flex:none;}
+  .macro-field input{width:100%; min-width:0; border:1px solid var(--rule); border-radius:6px; padding:4px 6px;
+    font-family:inherit; font-size:12.5px; background:var(--bg); color:var(--text);}
+
+  .choice-group{display:flex; gap:8px; margin-top:6px;}
+  .choice-btn{flex:1; background:var(--bg); border:1px solid var(--rule); color:var(--text); padding:8px 6px;
+    border-radius:8px; font-size:12.5px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
+  .choice-btn.active{background:var(--gold); border-color:var(--gold); color:#1a1206; font-weight:700;}
+  .aliveness-choices{flex-wrap:wrap;}
+  .aliveness-choices .choice-btn{flex:none; min-width:100px;}
+  .aliveness-evidence{margin-top:10px; padding-top:10px; border-top:1px dashed var(--rule);}
+  .aliveness-evidence .q{margin-bottom:8px;}
+  .aliveness-evidence .q label{display:block; font-size:12px; color:var(--mid); margin-bottom:3px;}
+  .aliveness-evidence .q input{width:100%; border:1px solid var(--rule); border-radius:6px; padding:6px 8px; font-family:inherit; font-size:12.5px; background:var(--bg); color:var(--text);}
   .task-row textarea, .task-row input[type=text], .task-row input[type=number]{width:100%; border:1px solid var(--rule); border-radius:8px;
     padding:8px 10px; font-family:inherit; font-size:13.5px; margin-top:6px; resize:vertical; background:#fbfaf7;}
   .task-row .field-wrap{flex:1;}
@@ -232,6 +253,7 @@
     <button data-tab="longterm">季／年</button>
     <button data-tab="goals">計畫</button>
     <button data-tab="cores">Core 對照</button>
+    <button data-tab="fourtracks">四條主線</button>
     <button data-tab="data">資料管理</button>
   </nav>
   <nav class="tabs" id="tabnav-schedule" style="display:none;">
@@ -279,7 +301,7 @@
 
   <section class="section" id="sec-nightreview">
     <h2 class="pagetitle">Daily Review</h2>
-    <p class="pagesub">從「時程」頁點進來，或直接在這裡切換日期填寫。</p>
+    <p class="pagesub">從「時程」頁點進來，或直接在這裡切換日期填寫。不用每題都填，忙的日子留空也沒關係。</p>
     <div class="periodbar">
       <button id="nr-prev">‹</button><div class="label" id="nr-label"></div><button id="nr-next">›</button>
       <button class="today-btn" id="nr-today">今天</button>
@@ -290,12 +312,28 @@
         <div id="nr-masters-fields"></div>
       </div>
       <div class="part">
-        <div class="part-label">CORE REVIEW</div>
-        <div id="nr-corereview-fields"></div>
+        <div class="part-label">底盤 FOUNDATION</div>
+        <div id="nr-foundation-fields"></div>
+      </div>
+      <div class="part">
+        <div class="part-label">學習／精進 GROWTH</div>
+        <div id="nr-growth-fields"></div>
+      </div>
+      <div class="part">
+        <div class="part-label">人格 CHARACTER</div>
+        <div id="nr-character-fields"></div>
+      </div>
+      <div class="part">
+        <div class="part-label">外貌 APPEARANCE</div>
+        <div id="nr-appearance-fields"></div>
       </div>
       <div class="part">
         <div class="part-label">DISCOVERY</div>
         <div id="nr-discovery-fields"></div>
+      </div>
+      <div class="part">
+        <div class="part-label">TOMORROW</div>
+        <div id="nr-tomorrow-fields"></div>
       </div>
     </div>
     <div class="databtns" style="margin-top:20px;">
@@ -361,6 +399,56 @@
     <div id="cores-list"></div>
   </section>
 
+  <section class="section" id="sec-fourtracks">
+    <h2 class="pagetitle">四條主線</h2>
+    <p class="pagesub">2026/07/27 定案。Blueprint 11 個 Core 不變，這是目前階段的執行策略：同時推進四條線，不是先做完一條才做下一條。</p>
+
+    <div class="core-ref">
+      <div class="hd"><h3>① 收入</h3><span class="en">Survival</span></div>
+      <div class="outcome">維持生活與基本選擇權。白天已經在做，晚上不用額外塞。這不是人生目的，但沒有它，碩士申請、能力培養、生命力恢復都很難穩定進行。</div>
+    </div>
+
+    <div class="core-ref">
+      <div class="hd"><h3>② 碩士方向與申請</h3><span class="en">Time-boxed Project</span></div>
+      <div class="outcome">15:30–18:00「碩士衝刺」。目的是選一個「目前最合理、最可逆、保留最多可能性」的下一個環境，不是找到終極熱情、不是證明方向，是探索方向。</div>
+      <div class="row"><div class="k">決策四問</div><div class="v">① 有沒有探索空間？② 符不符合你的大腦（project/創造/自主/回饋/變化，不是重複固定純行政）？③ 畢業後有沒有很多種可能？④ 有沒有保留音樂/創作/創業/世界/自由這些人生？</div></div>
+      <div class="row"><div class="k">時程</div><div class="v">7/26–9/1 完成方向決策；候選方向：Product Management、HCI/UX、Integrated Design+Business+Technology、Innovation、Creative Technology</div></div>
+    </div>
+
+    <div class="core-ref">
+      <div class="hd"><h3>③ 培養可複利能力</h3><span class="en">Compound Skills</span></div>
+      <div class="outcome">19:00–20:30，依星期輪替，週四不開新領域、只做深化，避免又分散成第四條線。</div>
+      <div class="row"><div class="k">週一</div><div class="v">AI／Claude 應用——選真實任務→用 AI 完成→找出哪裡不好→改流程→存成模板。輸出比看教學重要。</div></div>
+      <div class="row"><div class="k">週二</div><div class="v">投資／交易——市場理解、交易系統、風險管理、統計思維、紀律、復盤能力。不是晚上找單進場，是把「容易被短回饋捕捉」的特質導向有規則、可記錄、可驗證的任務。</div></div>
+      <div class="row"><div class="k">週三</div><div class="v">音樂——作品導向，不只學理論：重製一段喜歡的歌、練音色、做鼓組、寫 8–16 小節、每月至少一個可播放作品。</div></div>
+      <div class="row"><div class="k">週四</div><div class="v">加強週一～三最重要的一條，做深或做出成果。</div></div>
+    </div>
+
+    <div class="core-ref">
+      <div class="hd"><h3>④ 找回生命力</h3><span class="en">Aliveness Practice</span></div>
+      <div class="outcome">21:30–23:00 Wonder Time。目的不是進步，是接觸、感受、記錄、重複驗證——恢復與自己、世界、真實慾望的連結。一次興奮不代表方向，重複出現才算數。</div>
+      <div class="row"><div class="k">四種模式</div><div class="v">Create 創造（音樂/寫作/AI小工具/料理）・Experience 體驗（新地方/電影/展覽/深聊）・Wonder 好奇（跟著一個問題一路挖下去）・Silence 安靜（不帶手機散步/整張專輯/發呆）</div></div>
+      <div class="row"><div class="k">誠實選項</div><div class="v">手遊／耍廢——不評判，如實記錄。這本身也是資料：長期回頭看四選一 vs 耍廢的比例，比逼自己每天都要「有意義」更接近真相。</div></div>
+      <div class="row"><div class="k">體驗後只問</div><div class="v">身體有沒有比較醒？是否自然投入？做完後是否仍在腦中迴盪？是真的被吸引還是只是新鮮刺激？——不要問「有沒有用」「能不能當科系」。</div></div>
+    </div>
+
+    <div class="core-ref">
+      <div class="hd"><h3>閱讀系統</h3></div>
+      <div class="outcome">23:00–23:30，同時維持兩本書：一本理性（世界／思想／專業），一本感性（人物／小說／散文／旅行）。依當天狀態選一本讀 30 分鐘，不用每天切換、不用嚴格比例。</div>
+    </div>
+
+    <div class="core-ref">
+      <div class="hd"><h3>週末節奏（不用修理，本來就對）</h3></div>
+      <div class="row"><div class="k">週五</div><div class="v">接 Chloe、吃飯、耍廢到睡覺。這是 Core8 關係，不是沒有成長，不安排強制精進。</div></div>
+      <div class="row"><div class="k">週六</div><div class="v">完全放鬆日，出去玩、休息，不補進度。唯一要求：不要放鬆變成整天被演算法吃掉（滑手機/遊戲到凌晨）。</div></div>
+      <div class="row"><div class="k">週日</div><div class="v">2–3 小時整合：完成當週作品、交易復盤、AI 專案，或碩士階段整理——挑一個主要成果，不要三條線都碰一點。</div></div>
+    </div>
+
+    <div class="tip">
+      這份文件會隨時間調整，跟時程頁一起看：時程頁是「今天要做什麼」，這頁是「為什麼這樣安排」。已經同步匯出一份 Word 文件，方便你離開 App 時也能讀。
+    </div>
+  </section>
+
   <section class="section" id="sec-data">
     <h2 class="pagetitle">資料管理</h2>
     <p class="pagesub">所有紀錄僅儲存在你目前使用的瀏覽器（localStorage），不會上傳到任何伺服器。換裝置或清除瀏覽器資料前，請先匯出備份。</p>
@@ -401,6 +489,7 @@ const CORES = [
     identityDefault:'我是能夠自己決定人生的人。',
     keyData:[
       '不窒息工作的六條件：熱忱、自主性、成就感、現實收入能力、生活感、不出賣靈魂——缺一項都可能讓表面自由的工作仍然窒息',
+      '2026/07 反思：自由的核心也許更精確地說是「選擇權」——不被單一路徑綁死，這與 O5 選擇權 Outcome 呼應（僅記錄，未更動 Core 架構或 Blueprint 文件）',
       'JUMP 計畫候選城市：里斯本、巴塞隆納、墨西哥城、布拉格'
     ],
     tasks:[]
@@ -796,9 +885,9 @@ function wrapLabel(label){
 function renderTaskField(task, store){
   const val=store[task.id];
   if(task.type==='checkbox'){
-    const row=document.createElement('div'); row.className='task-row'+(val?' done':'');
-    row.innerHTML=`<input type="checkbox" id="fld-${task.id}" ${val?'checked':''}>
-      <div class="field-wrap"><label for="fld-${task.id}">${wrapLabel(task.label)}</label>${task.hint?`<span class="hint">${task.hint}</span>`:''}</div>`;
+    const row=document.createElement('label'); row.className='task-row'+(val?' done':'');
+    row.innerHTML=`<input type="checkbox" ${val?'checked':''}>
+      <div class="field-wrap"><span class="qlabel">${wrapLabel(task.label)}</span>${task.hint?`<span class="hint">${task.hint}</span>`:''}</div>`;
     row.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; row.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
     return row;
   }
@@ -926,12 +1015,13 @@ const SCHEDULE_BLOCKS=[
       {id:'sch_water_morning', type:'checkbox', label:'喝水 600ml', hint:'09:00–11:30，分 2–3 次', core:[4]},
   ]},
   { time:'12:00', title:'午餐＆休息', tag:'S', items:[
-      {id:'sch_lunch', type:'checkbox', label:'飲食控制', core:[4]},
+      {id:'sch_diet_noon', type:'dietcheck', label:'飲食控制', macros:[
+        {id:'sch_cal_noon', label:'熱量', unit:'大卡'},
+        {id:'sch_protein_noon', label:'蛋白質', unit:'g'},
+        {id:'sch_carb_noon', label:'碳水', unit:'g'},
+        {id:'sch_fat_noon', label:'脂肪', unit:'g'},
+      ], core:[4]},
       {id:'sch_water_lunch', type:'checkbox', label:'喝水 500ml', hint:'餐前 250ml，餐後 250ml', core:[4]},
-      {id:'sch_cal_noon', type:'number', label:'熱量（大卡）', core:[4]},
-      {id:'sch_protein_noon', type:'number', label:'蛋白質（g）', core:[4]},
-      {id:'sch_carb_noon', type:'number', label:'碳水（g）', core:[4]},
-      {id:'sch_fat_noon', type:'number', label:'脂肪（g）', core:[4]},
   ]},
   { time:'14:00–15:30', title:'下班＆休息', tag:'S', info:true },
   { time:'15:30–18:00', title:'碩士衝刺（2.5h）', tag:'G', items:[
@@ -939,34 +1029,41 @@ const SCHEDULE_BLOCKS=[
       {id:'sch_water_afternoon', type:'checkbox', label:'喝水 600ml', hint:'14:30–17:30，分段補充', core:[4]},
   ]},
   { time:'18:00–19:00', title:'晚餐＆休息', tag:'S', items:[
-      {id:'sch_dinner', type:'checkbox', label:'飲食控制', core:[4]},
+      {id:'sch_diet_dinner', type:'dietcheck', label:'飲食控制', macros:[
+        {id:'sch_cal_dinner', label:'熱量', unit:'大卡'},
+        {id:'sch_protein_dinner', label:'蛋白質', unit:'g'},
+        {id:'sch_carb_dinner', label:'碳水', unit:'g'},
+        {id:'sch_fat_dinner', label:'脂肪', unit:'g'},
+      ], core:[4]},
       {id:'sch_water_dinner', type:'checkbox', label:'喝水 500ml', hint:'配合晚餐，勿一次太多', core:[4]},
-      {id:'sch_cal_dinner', type:'number', label:'熱量（大卡）', core:[4]},
-      {id:'sch_protein_dinner', type:'number', label:'蛋白質（g）', core:[4]},
-      {id:'sch_carb_dinner', type:'number', label:'碳水（g）', core:[4]},
-      {id:'sch_fat_dinner', type:'number', label:'脂肪（g）', core:[4]},
   ]},
   { time:'19:00–20:30', title:'技能＆專精（90m）', tag:'G', items:[
-      {id:'sch_growth_focus', type:'checkbox', label:'深度專注', core:[11]},
+      {id:'sch_skill_focus', type:'checkbox', label:'技能精進', hint:'依星期輪替：一 AI／二 投資／三 音樂／四 深化', core:[1,6,9]},
       {id:'sch_blueblock_evening', type:'note', label:'抗藍光眼鏡', core:[4]},
   ]},
   { time:'20:30–21:00', title:'運動', tag:'S', items:[
-      {id:'sch_exercise', type:'checkbox', label:'30 天健身', core:[4,5]},
-      {id:'sch_cardio', type:'checkbox', label:'有氧運動', core:[4,5]},
+      {id:'sch_exercise_choice', type:'choice', label:'運動方式（擇一）', options:[
+        {value:'gym', label:'30 天健身'}, {value:'cardio', label:'有氧運動（散步／跑步）'}
+      ], core:[4,5]},
+      {id:'sch_weight', type:'number', label:'體重（kg）', core:[5]},
+      {id:'sch_bodyfat', type:'number', label:'體脂率（%）', core:[5]},
+      {id:'sch_diet_note', type:'text', label:'飲食紀錄', hint:'簡短記錄吃了什麼', core:[4]},
   ]},
   { time:'21:00–21:30', title:'洗澡＆保養', tag:'S', items:[
       {id:'sch_skincare_pm', type:'checkbox', label:'晚間保養', hint:'卸妝→洗面乳→寶拉珍選→乳液→藥物', core:[5]},
       {id:'sch_me_ve', type:'checkbox', label:'ME＋VE', core:[5]},
-      {id:'sch_weight', type:'number', label:'體重（kg）', core:[5]},
-      {id:'sch_bodyfat', type:'number', label:'體脂率（%）', core:[5]},
-      {id:'sch_diet_note', type:'text', label:'飲食紀錄', hint:'簡短記錄吃了什麼', core:[4]},
       {id:'sch_water_night', type:'checkbox', label:'喝水 300ml', hint:'睡前 1–2 小時，適量', core:[4]},
   ]},
-  { time:'21:30–23:00', title:'生命力恢復時間（90m）', tag:'D', items:[
-      {id:'sch_discovery', type:'checkbox', label:'Discovery 時間', hint:'Follow Curiosity', core:[7]},
+  { time:'21:30–23:00', title:'Wonder Time（90m）', tag:'D', items:[
+      {id:'sch_aliveness', type:'aliveness', label:'生命力恢復', options:[
+        {value:'create', label:'Create 創造'}, {value:'experience', label:'Experience 體驗'},
+        {value:'wonder', label:'Wonder 好奇'}, {value:'silence', label:'Silence 安靜'},
+        {value:'game', label:'手遊／耍廢（誠實記錄）'},
+      ], core:[7]},
   ]},
-  { time:'23:00–23:30', title:'知識', tag:'G', items:[
-      {id:'sch_read', type:'checkbox', label:'每日閱讀', core:[9]},
+  { time:'23:00–23:30', title:'閱讀', tag:'G', items:[
+      {id:'sch_read_rational', type:'text', label:'理性書', hint:'世界／思想／專業，今天讀了什麼或進度', core:[9]},
+      {id:'sch_read_emotional', type:'text', label:'感性書', hint:'人物／小說／散文，今天讀了什麼或進度', core:[9]},
   ]},
   { time:'23:30–23:45', title:'Daily Review', tag:'G', nightReviewLink:true },
   { time:'23:45', title:'睡覺', tag:'S', items:[
@@ -992,10 +1089,24 @@ const NIGHT_REVIEW_MASTERS=[
   {id:'nr_masters_today', label:'今天為碩士申請做了什麼？'},
   {id:'nr_masters_blocker', label:'目前卡住的地方是什麼？'},
 ];
-const NIGHT_REVIEW_COREREVIEW=[
-  {id:'nr_identity', label:'我今天朝我想要成為的人更近一點了嗎？'},
+const NIGHT_REVIEW_FOUNDATION=[
+  {id:'nr_f1', label:'今天身體有沒有顧好？（睡眠／飲食／運動）'},
+  {id:'nr_f2', label:'今天自律做得如何？（有沒有守住上限）'},
+  {id:'nr_f3', label:'今天有沒有花時間在重要的人身上？'},
+];
+const NIGHT_REVIEW_GROWTH=[
   {id:'nr_growth_knowledge', label:'今日：知識／學習？'},
   {id:'nr_growth_skill', label:'今日：技能／專業？'},
+  {id:'nr_growth_progress', label:'今天有沒有比昨天進步一點？'},
+];
+const NIGHT_REVIEW_CHARACTER=[
+  {id:'nr_c1', label:'今天有沒有誠實？'},
+  {id:'nr_c2', label:'今天有沒有負責？'},
+  {id:'nr_identity', label:'我今天朝我想要成為的人更近一點了嗎？'},
+];
+const NIGHT_REVIEW_APPEARANCE=[
+  {id:'nr_a1', label:'今天保養／運動有沒有做到？'},
+  {id:'nr_a2', label:'今天面對鏡子／影片時感覺如何？'},
 ];
 const NIGHT_REVIEW_DISCOVERY=[
   {id:'nr_d1', label:'今天哪一刻，我忘記時間？'},
@@ -1004,8 +1115,12 @@ const NIGHT_REVIEW_DISCOVERY=[
   {id:'nr_d4', label:'今天哪件事，讓我「原來如此」？'},
   {id:'nr_d5', label:'今天哪件事，我想再靠近？'},
   {id:'nr_d6', label:'今天有沒有什麼事，沒人要求我，我還是想回去做？'},
+];
+const NIGHT_REVIEW_TOMORROW=[
   {id:'nr_tomorrow', label:'明天我最期待的是？'},
 ];
+const ALL_NIGHT_REVIEW_Q=NIGHT_REVIEW_MASTERS.concat(NIGHT_REVIEW_FOUNDATION, NIGHT_REVIEW_GROWTH,
+  NIGHT_REVIEW_CHARACTER, NIGHT_REVIEW_APPEARANCE, NIGHT_REVIEW_DISCOVERY, NIGHT_REVIEW_TOMORROW);
 let nrCurrentDate=dateStr(new Date());
 
 const schedState={ currentDate: dateStr(new Date()) };
@@ -1062,6 +1177,82 @@ function renderScheduleItem(task, store, dateKey){
     row.innerHTML=`<div class="field-wrap"><span class="hint">· ${task.label}${task.hint?'：'+task.hint:''}</span></div>`;
     return row;
   }
+  if(task.type==='dietcheck'){
+    const val=store[task.id];
+    const row=document.createElement('label'); row.className='task-row diet-block'+(val?' done':'');
+    row.innerHTML=`<input type="checkbox" ${val?'checked':''}><span class="qlabel">${task.label}</span>`;
+    row.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; row.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
+    const grid=document.createElement('div'); grid.className='macro-grid';
+    task.macros.forEach(m=>{
+      const f=document.createElement('div'); f.className='macro-field';
+      const mval=store[m.id]!==undefined?store[m.id]:'';
+      f.innerHTML=`<span>${m.label}</span><input type="number" value="${mval}" placeholder="${m.unit}">`;
+      const inp=f.querySelector('input');
+      inp.addEventListener('click', e=>e.stopPropagation());
+      inp.addEventListener('input', e=>{
+        store[m.id]=e.target.value; save();
+        if(CAL_ITEM_IDS.includes(m.id)) updateWaterSummary(dateKey);
+      });
+      grid.appendChild(f);
+    });
+    const wrap=document.createElement('div'); wrap.className='diet-block-wrap';
+    wrap.appendChild(row); wrap.appendChild(grid);
+    return wrap;
+  }
+  if(task.type==='choice'){
+    const val=store[task.id];
+    const row=document.createElement('div'); row.className='task-row';
+    const wrap=document.createElement('div'); wrap.className='field-wrap';
+    wrap.innerHTML=`<span class="qlabel">${task.label}</span>`;
+    const grp=document.createElement('div'); grp.className='choice-group';
+    task.options.forEach(opt=>{
+      const btn=document.createElement('button'); btn.type='button';
+      btn.className='choice-btn'+(val===opt.value?' active':'');
+      btn.textContent=opt.label;
+      btn.addEventListener('click', ()=>{
+        store[task.id] = (store[task.id]===opt.value) ? undefined : opt.value;
+        if(store[task.id]===undefined) delete store[task.id];
+        save();
+        grp.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('active'));
+        if(store[task.id]===opt.value) btn.classList.add('active');
+        renderDashboard();
+      });
+      grp.appendChild(btn);
+    });
+    wrap.appendChild(grp); row.appendChild(wrap);
+    return row;
+  }
+  if(task.type==='aliveness'){
+    const modeKey=task.id+'_mode', whatKey=task.id+'_what', feelKey=task.id+'_feel', nextKey=task.id+'_next';
+    const wrap=document.createElement('div'); wrap.className='task-row aliveness-block';
+    const head=document.createElement('div'); head.className='field-wrap';
+    head.innerHTML=`<span class="qlabel">${task.label}</span><span class="hint">選一種模式，不用每天都一樣</span>`;
+    const grp=document.createElement('div'); grp.className='choice-group aliveness-choices';
+    task.options.forEach(opt=>{
+      const btn=document.createElement('button'); btn.type='button';
+      btn.className='choice-btn'+(store[modeKey]===opt.value?' active':'');
+      btn.textContent=opt.label;
+      btn.addEventListener('click', ()=>{
+        store[modeKey] = (store[modeKey]===opt.value) ? undefined : opt.value;
+        if(store[modeKey]===undefined) delete store[modeKey];
+        save();
+        grp.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('active'));
+        if(store[modeKey]===opt.value) btn.classList.add('active');
+        renderDashboard();
+      });
+      grp.appendChild(btn);
+    });
+    head.appendChild(grp); wrap.appendChild(head);
+    const evGrid=document.createElement('div'); evGrid.className='aliveness-evidence';
+    [['體驗了什麼？', whatKey], ['當時感受？', feelKey], ['還想不想再靠近？', nextKey]].forEach(([lbl,key])=>{
+      const f=document.createElement('div'); f.className='q';
+      f.innerHTML=`<label>${lbl}</label><input type="text" value="${store[key]?String(store[key]).replace(/"/g,'&quot;'):''}">`;
+      f.querySelector('input').addEventListener('input', e=>{ store[key]=e.target.value; save(); });
+      evGrid.appendChild(f);
+    });
+    wrap.appendChild(evGrid);
+    return wrap;
+  }
   const row=renderTaskField({id:task.id, type:task.type, label:task.label, hint:task.hint}, store);
   if(WATER_ITEM_IDS.includes(task.id)){
     const input=row.querySelector('input');
@@ -1085,18 +1276,52 @@ function renderWeekStrip(){
     strip.appendChild(btn);
   }
 }
+const WEEKDAY_SKILL={
+  1:{title:'技能＆專精・AI（90m）', label:'AI／Claude 應用'},
+  2:{title:'技能＆專精・投資交易（90m）', label:'投資／交易'},
+  3:{title:'技能＆專精・音樂（90m）', label:'音樂創作'},
+  4:{title:'技能＆專精・深化（90m）', label:'加強週一～三最重要的一條'},
+};
+function applyWeekdayVariant(blocks, dow){
+  // dow: 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
+  const out=blocks.map(b=>({...b}));
+  const mastersIdx=out.findIndex(b=>b.time==='15:30–18:00');
+  const skillIdx=out.findIndex(b=>b.time==='19:00–20:30');
+
+  if(dow===5){ // Friday — Chloe, no forced精進
+    if(mastersIdx>=0) out[mastersIdx]={time:out[mastersIdx].time, title:'接 Chloe 下班＆晚餐', tag:'S', info:true};
+    if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:'與 Chloe（不安排強制精進）', tag:'S', info:true};
+  } else if(dow===6){ // Saturday — 完全放鬆日
+    if(mastersIdx>=0) out[mastersIdx]={time:out[mastersIdx].time, title:'完全放鬆日', tag:'S', info:true};
+    if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:'完全放鬆日（不補進度）', tag:'S', info:true};
+  } else if(dow===0){ // Sunday — 彈性＋2-3小時整合
+    if(mastersIdx>=0) out[mastersIdx]={time:out[mastersIdx].time, title:'彈性時間', tag:'S', info:true};
+    if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:'每週整合（2–3 小時）', tag:'G', items:[
+      {id:'sch_sunday_integration', type:'text', label:'本週整合任務', hint:'完成作品／交易復盤／AI專案／碩士整理，擇一', core:[9]},
+    ]};
+  } else if(WEEKDAY_SKILL[dow]){ // Mon–Thu
+    const sk=WEEKDAY_SKILL[dow];
+    if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:sk.title, tag:'G', items:[
+      {id:'sch_skill_focus', type:'checkbox', label:'深度專注：'+sk.label, core:[1,6,9]},
+      {id:'sch_blueblock_evening', type:'note', label:'抗藍光眼鏡', core:[4]},
+    ]};
+  }
+  return out;
+}
 function renderSchedule(){
   const dateKey=schedState.currentDate;
   renderWeekStrip();
 
   const container=document.getElementById('sched-blocks'); container.innerHTML='';
   const day=getScheduleDay(dateKey);
+  const dow=new Date(dateKey+'T00:00:00').getDay();
+  const blocks=applyWeekdayVariant(SCHEDULE_BLOCKS, dow);
 
-  SCHEDULE_BLOCKS.forEach(b=>{
+  blocks.forEach(b=>{
     const sec=document.createElement('div'); sec.className=`core-section tag-${b.tag}`;
     sec.innerHTML=`<h3><span class="tag">${b.time}</span> ${b.title}</h3>`;
     if(b.nightReviewLink){
-      const filled=NIGHT_REVIEW_DISCOVERY.concat(NIGHT_REVIEW_COREREVIEW, NIGHT_REVIEW_MASTERS).some(q=>day.items[q.id]);
+      const filled=ALL_NIGHT_REVIEW_Q.some(q=>day.items[q.id]);
       const btn=document.createElement('button'); btn.className='nr-link-btn'+(filled?' filled':'');
       btn.textContent= filled ? '✓ 已記錄 Daily Review' : '→ 記錄 Daily Review';
       btn.addEventListener('click', ()=>openNightReview(dateKey));
@@ -1209,8 +1434,12 @@ function renderNightReviewPage(){
     });
   }
   fillSection('nr-masters-fields', NIGHT_REVIEW_MASTERS);
-  fillSection('nr-corereview-fields', NIGHT_REVIEW_COREREVIEW);
+  fillSection('nr-foundation-fields', NIGHT_REVIEW_FOUNDATION);
+  fillSection('nr-growth-fields', NIGHT_REVIEW_GROWTH);
+  fillSection('nr-character-fields', NIGHT_REVIEW_CHARACTER);
+  fillSection('nr-appearance-fields', NIGHT_REVIEW_APPEARANCE);
   fillSection('nr-discovery-fields', NIGHT_REVIEW_DISCOVERY);
+  fillSection('nr-tomorrow-fields', NIGHT_REVIEW_TOMORROW);
 }
 document.getElementById('nr-prev').onclick=()=>{ nrCurrentDate=dateStr(addDays(new Date(nrCurrentDate+'T00:00:00'),-1)); renderNightReviewPage(); };
 document.getElementById('nr-next').onclick=()=>{ nrCurrentDate=dateStr(addDays(new Date(nrCurrentDate+'T00:00:00'),1)); renderNightReviewPage(); };
@@ -1218,21 +1447,21 @@ document.getElementById('nr-today').onclick=()=>{ nrCurrentDate=dateStr(new Date
 
 function generateNightReviewDigest(){
   const dates=Object.keys(DATA.schedule||{}).sort();
-  const allQ=NIGHT_REVIEW_MASTERS.concat(NIGHT_REVIEW_COREREVIEW, NIGHT_REVIEW_DISCOVERY);
+  const sections=[['碩士申請',NIGHT_REVIEW_MASTERS],['底盤 Foundation',NIGHT_REVIEW_FOUNDATION],
+    ['學習／精進 Growth',NIGHT_REVIEW_GROWTH],['人格 Character',NIGHT_REVIEW_CHARACTER],
+    ['外貌 Appearance',NIGHT_REVIEW_APPEARANCE],['Discovery',NIGHT_REVIEW_DISCOVERY],['Tomorrow',NIGHT_REVIEW_TOMORROW]];
   let out=`Blueprint Daily Review 匯出\n產生時間：${dateStr(new Date())}\n${'='.repeat(40)}\n\n`;
   let any=false;
   dates.forEach(dateKey=>{
     const items=(DATA.schedule[dateKey]||{}).items||{};
-    const hasAny=allQ.some(q=>items[q.id]);
+    const hasAny=ALL_NIGHT_REVIEW_Q.some(q=>items[q.id]);
     if(!hasAny) return;
     any=true;
     out+=`【${dateKey}】\n`;
-    out+=`-- 碩士申請 --\n`;
-    NIGHT_REVIEW_MASTERS.forEach(q=>{ if(items[q.id]) out+=`${q.label} ${items[q.id]}\n`; });
-    out+=`-- Core Review --\n`;
-    NIGHT_REVIEW_COREREVIEW.forEach(q=>{ if(items[q.id]) out+=`${q.label} ${items[q.id]}\n`; });
-    out+=`-- Discovery --\n`;
-    NIGHT_REVIEW_DISCOVERY.forEach(q=>{ if(items[q.id]) out+=`${q.label} ${items[q.id]}\n`; });
+    sections.forEach(([title,qs])=>{
+      const filled=qs.filter(q=>items[q.id]);
+      if(filled.length){ out+=`-- ${title} --\n`; filled.forEach(q=>{ out+=`${q.label} ${items[q.id]}\n`; }); }
+    });
     out+=`\n`;
   });
   if(!any) out+='（目前沒有任何 Daily Review 記錄）\n';
@@ -1737,14 +1966,23 @@ function renderAll(){
 seedInitialData();
 renderAll();
 
-// Auto-hide header on scroll down (mobile space-saving); reveal on scroll up.
+// Auto-hide header on scroll down (mobile space-saving); reveal only after a
+// sustained upward scroll, so small jitters/bounce don't pop it back immediately.
 (function(){
   let lastY=window.scrollY;
+  let upAccum=0;
+  const REVEAL_THRESHOLD=70; // px of sustained upward scroll needed to reveal
   const header=document.querySelector('header.top');
   window.addEventListener('scroll', ()=>{
     const curY=window.scrollY;
-    if(curY>lastY && curY>80) header.classList.add('hide');
-    else header.classList.remove('hide');
+    const delta=curY-lastY;
+    if(delta>0){
+      upAccum=0;
+      if(curY>80) header.classList.add('hide');
+    } else if(delta<0){
+      upAccum+=-delta;
+      if(upAccum>REVEAL_THRESHOLD || curY<=80) header.classList.remove('hide');
+    }
     lastY=curY;
   }, {passive:true});
 })();
