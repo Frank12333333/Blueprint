@@ -82,6 +82,7 @@
   .diet-block-wrap:first-child{border-top:none;}
   .diet-block-wrap .task-row{padding:0; margin:0; border-top:none; margin-bottom:8px;}
   .macro-grid{display:grid; grid-template-columns:1fr 1fr; gap:6px; padding-left:32px;}
+  .macro-grid.metricgroup-grid{padding-left:0;}
   .macro-field{display:flex; align-items:center; gap:6px; font-size:12px;}
   .macro-field span{color:var(--mid); min-width:34px; flex:none;}
   .macro-field input{width:100%; min-width:0; border:1px solid var(--rule); border-radius:6px; padding:4px 6px;
@@ -1038,15 +1039,18 @@ const SCHEDULE_BLOCKS=[
       {id:'sch_water_dinner', type:'checkbox', label:'喝水 500ml', hint:'配合晚餐，勿一次太多', core:[4]},
   ]},
   { time:'19:00–20:30', title:'技能＆專精（90m）', tag:'G', items:[
-      {id:'sch_skill_focus', type:'checkbox', label:'技能精進', hint:'依星期輪替：一 AI／二 投資／三 音樂／四 深化', core:[1,6,9]},
+      {id:'sch_skill_choice', type:'choice', label:'技能精進（擇一）', hint:'建議：一 AI・二 投資交易・三 音樂・四 深化其中一條', options:[
+        {value:'ai', label:'AI'}, {value:'invest', label:'投資交易'}, {value:'music', label:'音樂'}
+      ], core:[1,6,9]},
       {id:'sch_blueblock_evening', type:'note', label:'抗藍光眼鏡', core:[4]},
   ]},
   { time:'20:30–21:00', title:'運動', tag:'S', items:[
       {id:'sch_exercise_choice', type:'choice', label:'運動方式（擇一）', options:[
         {value:'gym', label:'30 天健身'}, {value:'cardio', label:'有氧運動（散步／跑步）'}
       ], core:[4,5]},
-      {id:'sch_weight', type:'number', label:'體重（kg）', core:[5]},
-      {id:'sch_bodyfat', type:'number', label:'體脂率（%）', core:[5]},
+      {id:'sch_bodylog', type:'metricgroup', label:'體態紀錄', fields:[
+        {id:'sch_weight', label:'體重', unit:'kg'}, {id:'sch_bodyfat', label:'體脂率', unit:'%'},
+      ], core:[5]},
       {id:'sch_diet_note', type:'text', label:'飲食紀錄', hint:'簡短記錄吃了什麼', core:[4]},
   ]},
   { time:'21:00–21:30', title:'洗澡＆保養', tag:'S', items:[
@@ -1180,7 +1184,7 @@ function renderScheduleItem(task, store, dateKey){
   if(task.type==='dietcheck'){
     const val=store[task.id];
     const row=document.createElement('label'); row.className='task-row diet-block'+(val?' done':'');
-    row.innerHTML=`<input type="checkbox" ${val?'checked':''}><span class="qlabel">${task.label}</span>`;
+    row.innerHTML=`<input type="checkbox" ${val?'checked':''}><div class="field-wrap"><span class="qlabel">${task.label}</span></div>`;
     row.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; row.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
     const grid=document.createElement('div'); grid.className='macro-grid';
     task.macros.forEach(m=>{
@@ -1203,7 +1207,7 @@ function renderScheduleItem(task, store, dateKey){
     const val=store[task.id];
     const row=document.createElement('div'); row.className='task-row';
     const wrap=document.createElement('div'); wrap.className='field-wrap';
-    wrap.innerHTML=`<span class="qlabel">${task.label}</span>`;
+    wrap.innerHTML=`<span class="qlabel">${task.label}</span>${task.hint?`<span class="hint">${task.hint}</span>`:''}`;
     const grp=document.createElement('div'); grp.className='choice-group';
     task.options.forEach(opt=>{
       const btn=document.createElement('button'); btn.type='button';
@@ -1221,6 +1225,23 @@ function renderScheduleItem(task, store, dateKey){
     });
     wrap.appendChild(grp); row.appendChild(wrap);
     return row;
+  }
+  if(task.type==='metricgroup'){
+    const wrap=document.createElement('div'); wrap.className='task-row';
+    const head=document.createElement('div'); head.className='field-wrap';
+    head.innerHTML=`<span class="qlabel">${task.label}</span>`;
+    wrap.appendChild(head);
+    const grid=document.createElement('div'); grid.className='macro-grid metricgroup-grid';
+    task.fields.forEach(m=>{
+      const f=document.createElement('div'); f.className='macro-field';
+      const mval=store[m.id]!==undefined?store[m.id]:'';
+      f.innerHTML=`<span>${m.label}</span><input type="number" value="${mval}" placeholder="${m.unit}">`;
+      f.querySelector('input').addEventListener('input', e=>{ store[m.id]=e.target.value; save(); });
+      grid.appendChild(f);
+    });
+    const outer=document.createElement('div'); outer.className='diet-block-wrap';
+    outer.appendChild(wrap); outer.appendChild(grid);
+    return outer;
   }
   if(task.type==='aliveness'){
     const modeKey=task.id+'_mode', whatKey=task.id+'_what', feelKey=task.id+'_feel', nextKey=task.id+'_next';
@@ -1276,12 +1297,6 @@ function renderWeekStrip(){
     strip.appendChild(btn);
   }
 }
-const WEEKDAY_SKILL={
-  1:{title:'技能＆專精・AI（90m）', label:'AI／Claude 應用'},
-  2:{title:'技能＆專精・投資交易（90m）', label:'投資／交易'},
-  3:{title:'技能＆專精・音樂（90m）', label:'音樂創作'},
-  4:{title:'技能＆專精・深化（90m）', label:'加強週一～三最重要的一條'},
-};
 function applyWeekdayVariant(blocks, dow){
   // dow: 0=Sun 1=Mon 2=Tue 3=Wed 4=Thu 5=Fri 6=Sat
   const out=blocks.map(b=>({...b}));
@@ -1299,13 +1314,8 @@ function applyWeekdayVariant(blocks, dow){
     if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:'每週整合（2–3 小時）', tag:'G', items:[
       {id:'sch_sunday_integration', type:'text', label:'本週整合任務', hint:'完成作品／交易復盤／AI專案／碩士整理，擇一', core:[9]},
     ]};
-  } else if(WEEKDAY_SKILL[dow]){ // Mon–Thu
-    const sk=WEEKDAY_SKILL[dow];
-    if(skillIdx>=0) out[skillIdx]={time:out[skillIdx].time, title:sk.title, tag:'G', items:[
-      {id:'sch_skill_focus', type:'checkbox', label:'深度專注：'+sk.label, core:[1,6,9]},
-      {id:'sch_blueblock_evening', type:'note', label:'抗藍光眼鏡', core:[4]},
-    ]};
   }
+  // Mon–Thu: no override, uses the base block (3-way skill choice shown every day)
   return out;
 }
 function renderSchedule(){
