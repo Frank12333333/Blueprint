@@ -30,10 +30,18 @@
   header.top .brand-name{font-size:16px; font-weight:500; letter-spacing:.2px; color:#EDF1F7;}
   header.top .brand-name b{font-weight:700; color:var(--gold-light); margin-left:3px;}
   header.top .brand-zh{font-size:11px; color:var(--gold-light); letter-spacing:1px;}
-  .mode-switch{display:flex; gap:5px; width:100%;}
+  .mode-switch-row{display:flex; gap:6px; align-items:stretch;}
+  .mode-switch{display:flex; gap:5px; flex:1;}
   .mode-switch button{flex:1; background:transparent; border:1px solid rgba(255,255,255,.3); color:#e9e6dc;
     padding:5px 8px; border-radius:8px; font-size:12px; cursor:pointer; font-family:inherit; font-weight:600;}
   .mode-switch button.active{background:var(--gold); color:#1a1206; border-color:var(--gold); font-weight:800;}
+  .mode-side-btn{flex:0 0 auto; background:transparent; border:1px dashed rgba(255,255,255,.35); color:#c9cddb;
+    padding:5px 12px; border-radius:8px; font-size:10.5px; cursor:pointer; font-family:inherit; font-weight:600; -webkit-tap-highlight-color:transparent;}
+  .mode-side-btn.active{background:rgba(255,255,255,.15); border-color:#c9cddb; color:#fff; font-weight:800;}
+  .review-subnav{display:flex; gap:8px; margin-bottom:18px;}
+  .review-subnav button{flex:1; background:var(--card); border:1px solid var(--rule); color:var(--mid); padding:9px 8px;
+    border-radius:10px; font-size:13px; cursor:pointer; font-family:inherit; font-weight:600; -webkit-tap-highlight-color:transparent;}
+  .review-subnav button.active{background:var(--gold); border-color:var(--gold); color:#1a1206; font-weight:800;}
   nav.tabs{display:flex; gap:4px; flex-wrap:wrap;}
   nav.tabs button{background:transparent; border:1px solid rgba(255,255,255,.25); color:#e9e6dc; padding:5px 11px;
     border-radius:999px; font-size:11.5px; cursor:pointer; transition:.15s; font-family:inherit;}
@@ -80,6 +88,14 @@
   .task-row:first-of-type{border-top:none;}
   .task-row input[type=checkbox]{width:22px; height:22px; margin-top:1px; accent-color:var(--gold); flex:none; cursor:pointer;}
   .reminder-row{cursor:default;}
+  .reminder-grid{display:flex; flex-wrap:nowrap; align-items:flex-start; gap:16px; border-top:1px dashed var(--rule); padding-top:8px; margin-top:2px;}
+  .reminder-col{flex:0 1 auto; min-width:90px; display:flex; gap:6px;}
+  .reminder-col-body{flex:1; min-width:0;}
+  .reminder-col-title{font-size:12.5px; font-weight:700; color:var(--text); line-height:1.3;}
+  .reminder-col .hint{display:block; font-size:10px; color:var(--gold); margin-top:2px; line-height:1.3;}
+  .reminder-col .tgr-list-compact{font-size:9.5px; margin-top:2px; line-height:1.35;}
+  .reminder-col .tgr-list-block{margin-top:3px;}
+  .reminder-col .tgr-list-block div{font-size:9.5px; color:var(--gold); line-height:1.5;}
   .reminder-dot{width:22px; height:22px; flex:none; margin-top:1px; display:flex; align-items:center; justify-content:center;}
   .reminder-dot::before{content:''; width:7px; height:7px; border-radius:50%; background:var(--rule);}
   .task-row.done .qlabel{color:var(--mid); text-decoration:line-through;}
@@ -100,8 +116,9 @@
   .choice-btn.active{background:var(--gold); border-color:var(--gold); color:#1a1206; font-weight:700;}
   .choice-btn.static{cursor:default; display:inline-block; text-align:center; flex:none; min-width:70px;}
   .reminder-row .choice-group{flex-wrap:wrap;}
-  .tgr-list{margin:4px 0 0; padding-left:16px; list-style:disc;}
-  .tgr-list li{font-size:11.5px; color:var(--gold); margin-bottom:2px; line-height:1.4;}
+  .tgr-list-compact{margin:3px 0 0; font-size:11px; color:var(--gold); line-height:1.5;}
+  .tgr-list-block{margin:3px 0 0;}
+  .tgr-list-block div{font-size:11px; color:var(--gold); line-height:1.5;}
   .dr-inline{display:flex; flex-direction:column; gap:14px;}
   .dr-group-label{font-size:11px; font-weight:800; letter-spacing:1px; color:var(--gold); margin-bottom:6px;}
   .dr-q{font-size:13px; color:var(--text); padding:4px 0; border-top:1px dashed var(--rule);}
@@ -130,6 +147,58 @@
   .corecheck .npline{display:flex; align-items:center; gap:8px; margin-top:6px;}
   .corecheck .npline input{width:20px; height:20px; accent-color:var(--gold);}
   .corecheck .npline label{font-size:13.5px; color:#6b4f16; font-weight:700;}
+
+  .gla-flow{display:flex; flex-direction:column; align-items:center; gap:4px; margin-bottom:20px;}
+  .gla-top-axis{background:linear-gradient(135deg,#3B3480,#4A3F9E); border:1px solid #5D52B8; border-radius:16px; padding:16px 24px;
+    text-align:center; width:100%; max-width:520px;}
+  .gla-top-title{font-size:18px; font-weight:800; color:#E8E4FF;}
+  .gla-top-sub{font-size:12px; color:#C4BEEA; margin-top:4px;}
+  .gla-arrow{color:var(--mid); font-size:18px; line-height:1;}
+  .gla-lifequality-label{text-align:center; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1px; margin:4px 0 8px;}
+  .gla-main-row{display:flex; gap:8px; width:100%; max-width:600px; align-items:stretch;}
+  .gla-pillars-col{flex:1 1 68%; display:flex; flex-direction:column; gap:8px; min-width:0;}
+  .gla-pillar-box{display:flex; flex-direction:row; align-items:baseline; gap:8px; background:rgba(255,255,255,.03);
+    border:1.5px solid var(--pc); border-radius:12px; padding:14px 14px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent; text-align:left;}
+  .gla-pillar-box:active{background:var(--pc);}
+  .gla-pillar-box:active .pt, .gla-pillar-box:active .pq, .gla-pillar-box:active .pe{color:#1a1206;}
+  .gla-pillar-box .pt{font-size:16px; font-weight:800; color:var(--pc); flex:none;}
+  .gla-pillar-box .pq{font-size:12px; color:var(--mid); flex:1;}
+  .gla-pillar-box .pe{font-size:11.5px; color:var(--text); font-weight:600; flex:none;}
+  .gla-side-col{flex:1 1 32%; display:flex; flex-direction:column; min-width:0;}
+  .gla-side-box{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:rgba(255,255,255,.02);
+    border:1px dashed var(--mid); border-radius:10px; padding:8px 5px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
+  .gla-side-box:active{background:var(--mid);}
+  .gla-side-box:active .pt, .gla-side-box:active .pq{color:#1a1206;}
+  .gla-side-box .pt{font-size:10.5px; font-weight:800; color:var(--mid); text-align:center;}
+  .gla-side-box .pq{font-size:8.5px; color:var(--mid); text-align:center; opacity:.8; line-height:1.4;}
+  .gla-foundation-box{display:flex; flex-direction:column; align-items:center; gap:3px; background:var(--card); border:1px solid var(--rule);
+    border-radius:14px; padding:14px 20px; width:100%; max-width:520px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
+  .gla-foundation-box:active{background:var(--rule);}
+  .gla-foundation-box .pt{font-size:14px; font-weight:800; color:var(--ink);}
+  .gla-foundation-box .pq{font-size:11px; color:var(--mid); text-align:center;}
+  .gla-detail{background:var(--card); border:1px solid var(--gold); border-radius:var(--radius); padding:18px; margin-top:6px;}
+  .gla-detail h3{margin:0 0 6px; color:var(--ink); font-size:16px;}
+  .gla-detail .gla-def{font-size:13px; color:var(--text); line-height:1.6; margin-bottom:14px;}
+  .gla-subitem{border-top:1px dashed var(--rule); padding:10px 0;}
+  .gla-subitem:first-of-type{border-top:none;}
+  .gla-subitem-head{display:flex; justify-content:space-between; align-items:center; cursor:pointer; -webkit-tap-highlight-color:transparent;}
+  .gla-subitem-head .name{font-size:13.5px; font-weight:700; color:var(--text);}
+  .gla-subitem-head .arrow{color:var(--mid); font-size:11px;}
+  .gla-subitem-core{display:none; margin-top:6px; font-size:12.5px; color:var(--gold); background:var(--bg); border-radius:8px; padding:8px 10px;}
+  .gla-subitem.open .gla-subitem-core{display:block;}
+  .gla-core-line{margin-bottom:4px;}
+  .gla-w-toggle{font-size:11px; color:var(--mid); cursor:pointer; -webkit-tap-highlight-color:transparent;}
+  .gla-w-toggle.open{color:var(--gold);}
+  .gla-w-list{display:none; margin-top:4px; padding-top:4px; border-top:1px dashed var(--rule);}
+  .gla-w-list.open{display:block;}
+  .gla-w-item{font-size:11.5px; color:var(--text); padding:2px 0;}
+  .gla-w-item b{color:var(--mid); font-weight:700;}
+  .gla-subitem.open .arrow{transform:rotate(90deg); display:inline-block;}
+  .gla-detail{position:relative;}
+  .gla-close-btn{position:absolute; top:12px; right:12px; background:var(--bg); border:1px solid var(--rule); color:var(--mid);
+    border-radius:50%; width:26px; height:26px; font-size:13px; cursor:pointer; font-family:inherit; line-height:1;
+    display:flex; align-items:center; justify-content:center; -webkit-tap-highlight-color:transparent;}
+  .gla-close-btn:active{background:var(--rule); color:var(--ink);}
 
   .core-ref{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:20px; margin-bottom:16px;}
   .core-ref .hd{display:flex; align-items:baseline; gap:10px; margin-bottom:6px; flex-wrap:wrap;}
@@ -295,24 +364,20 @@
 
 <header class="top">
   <div class="brand"><img class="brand-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAE/klEQVR42o1WSYtcZRQ9536vhu7qru6O0Y7pdIxpJXYQg2hQ0EACWehfUUEQ/Afi2o0bB8StCzcBwRkEd8YJxYBEMWocE9tOdXcN793j4vve1MnCquLVrcerc+703Xu4sP4ISdBIgiQMySBIgCQAIr2iofKnJACCBEgSJMGhaLukrIFuTIjWJEjvBF4SKH0x8UkQIcEJE0S4YIRnLXRaxG1z4KY4AEoCIRCQRFG3QBesjqAENZAxXYAl3PKrwhdEImUGJBwAYIAABwyNCCJcE73kSNGw9D3GgeR7ikOEkByX4JSJjjoCGGJZW+htjjIIRdjoaJn3iqZMkVMxAhLIKrib0K3dS5TQ6xLAdCYaSt/3lTddAUajhmabo6yKkUazEGw0tnOnwvkHdWNsIRjN6gduCr0yjCjdLGvLRl8x/d9IwrpnT26d3dyiZfV9s/1tUleUALP6WMVixHK0utZIzgqs3W4nDm0RxZGDd/wzYhYoF+ViqifgBKXUciJjvapuQUp3CtJI0syMWcZxHh7emC33R0v9vYfvmU5mIQsxSVY/jEbjpd6j1U1Yu8/C6UqfwpkXFDpnNre9mHmRP35iJFju+x+r81yOFRJZdBlVt4AAVxZtPDNaJwQGo4vrq3Zq7fpkRgCn1rfuWz907UYweuEqCsHzXgf/jkRQFZQokCv3no+1iv1gIUxznn8we+qJ68y3x3noZgDUCT5nN1wAYMSeL84KAzidod8plA1ffmf44ZfqduBFITnkcpc8zN12nJa6BWYAO5ld+lk//tE5s7l71/Jfnu/NZZOM40IWg3ega3v9MO5w5/DyzvZk8MJbC598E+b6FqcrG9M2zN22UTZyPRjmuuHyn513v1q58+D85truZOqurJFbuAKg4UL3/W+PPP/m7Zf/7A8HwV1xssYZFYduJGCTgKTA+R4nOd/7ajD24f1Hdw3T5jQlVWDwysfrL11YQsgGPRaFJ9AWgay8u/+VO7KA4Txe/WDp8yuHBr3CRYEC3Tno+cWfDr724fLSsJMF5H4LhJgjKxeUlJirG4AwzXVsFZuHtyczSggsAgsBkxlOro2OrWI28/0eKu6jhGZlMRpLsAyQ1HiCzSOT1cXt3QmHc/lesbSTLy3N57sTrg5Hm2uTvQnINPLiyqzcQ7UiGoQNW4K8EE8f32Gxe2CYfX318NOvH33mjY0vfl0/MAz0vdMbO4UDcOgWf4926B84XhYX5WJI586FXic8++Rvw3m9+tHRF99eGc26OxN75+JCjoWHju+uDIoLF4et5kkJSEpAUugfuLsaI0lEkCQDMRrzsZN49MT0uTcOXrg4WBxkmSGYQtCnl7qf/TA894Cu/N35/ir7mbtq9xu5Epc3zsUj1pjSaX5NC548yt+vFb//m60shsLTniQUDFsjHVr2O5aK735hN5PcJaUzHA13ybm8cbYCjUa1N4w2yZEF63ZYeC1fYpcE03SmvPBeBlfUQtW1JsuqdQrYvs3n8l5G0PM8nj412zHPFUyB8pT6JkdtZCj1DG7aqyTd0zpSUxSVDe1qa7oGR2VklVpCVBw1B6UGutiiKI+ibskBV6kHYgQiHDCx4qBgca4pKiuAagmv6nymgylvatPyZ6pB2qhI17ifvZEZEmhnKWGXCrjpfo0ea1DrSCa1FMUTxZQZikosbfwUiVocqKV1K4LyCtW+s+W7/qd8b0XwH43spXTUP3v6AAAAAElFTkSuQmCC" alt="Blueprint Tracker"><div class="brand-text"><span class="brand-name">Blueprint<b>Tracker</b></span><span class="brand-zh">藍圖執行系統</span></div></div>
-  <div class="mode-switch" id="modeswitch">
-    <button data-mode="blueprint">藍圖</button>
-    <button data-mode="schedule" class="active">時程</button>
+  <div class="mode-switch-row">
+    <div class="mode-switch" id="modeswitch">
+      <button data-mode="blueprint" class="active">藍圖</button>
+      <button data-mode="goodlife">人生架構</button>
+    </div>
+    <button class="mode-side-btn" id="datahub-side-btn">資料庫</button>
   </div>
-  <nav class="tabs" id="tabnav-blueprint" style="display:none;">
-    <button data-tab="dash" class="active">總覽</button>
-    <button data-tab="daily">每日</button>
-    <button data-tab="weekly">每週</button>
-    <button data-tab="monthly">每月</button>
-    <button data-tab="longterm">季／年</button>
-    <button data-tab="goals">計畫</button>
-    <button data-tab="cores">Core 對照</button>
-    <button data-tab="data">資料管理</button>
-  </nav>
-  <nav class="tabs" id="tabnav-schedule">
+  <nav class="tabs" id="tabnav-blueprint">
+    <button data-tab="dash">總覽</button>
     <button data-tab="schedule" class="active">時程</button>
+    <button data-tab="review">Review</button>
+    <button data-tab="goals">計畫</button>
     <button data-tab="fourtracks">四條主線</button>
-    <button data-tab="datahub">資料庫</button>
+    <button data-tab="data">資料管理</button>
   </nav>
 </header>
 
@@ -347,6 +412,38 @@
 
     <div class="databtns" style="margin-top:18px;">
       <button id="btn-ics-export">匯出行事曆提醒（.ics，可匯入 iOS 日曆自動響鬧）</button>
+    </div>
+  </section>
+
+  <section class="section" id="sec-review">
+    <h2 class="pagetitle">Review</h2>
+    <p class="pagesub">用想的就好，不用打字紀錄。每日是分類清楚的反思提示；每週／每月是你自己寫的累積式統整紀錄。</p>
+    <div class="review-subnav" id="review-subnav">
+      <button data-rv="daily" class="active">每日</button>
+      <button data-rv="weekly">每週</button>
+      <button data-rv="monthly">每月</button>
+    </div>
+
+    <div id="review-daily" class="review-pane">
+      <div class="dr-inline" id="review-daily-content"></div>
+    </div>
+
+    <div id="review-weekly" class="review-pane" style="display:none;">
+      <div class="synthesis-form">
+        <p class="hint" style="margin:0 0 10px;">寫這週的整體狀況、模式、下一步調整。</p>
+        <textarea id="review-weekly-text" rows="5" placeholder="這週的整體狀況、模式、下一步調整..."></textarea>
+        <button id="btn-review-weekly-add" class="nr-link-btn" style="margin-top:8px;">新增這筆週統整</button>
+      </div>
+      <div id="review-weekly-list" style="margin-top:14px;"></div>
+    </div>
+
+    <div id="review-monthly" class="review-pane" style="display:none;">
+      <div class="synthesis-form">
+        <p class="hint" style="margin:0 0 10px;">月統整可以選擇性想一下：如果沒有任何目標，我還會因為什麼而停下腳步？（不用每次都回答，想到再寫）</p>
+        <textarea id="review-monthly-text" rows="5" placeholder="這個月的整體狀況、模式、下一步調整..."></textarea>
+        <button id="btn-review-monthly-add" class="nr-link-btn" style="margin-top:8px;">新增這筆月統整</button>
+      </div>
+      <div id="review-monthly-list" style="margin-top:14px;"></div>
     </div>
   </section>
 
@@ -421,19 +518,6 @@
     <div class="databtns" style="margin-top:16px;">
       <button id="btn-datahub-export">匯出資料庫（給未來的 Claude 統整用）</button>
     </div>
-
-    <div class="sectiongap"><h3>週期統整紀錄</h3><div class="line"></div></div>
-    <p class="pagesub" style="margin-top:-8px;">每週或每月寫一次統整（可以先匯出資料庫貼給 Claude 分析，再把結論存在這裡）。舊的統整不會被覆蓋，會一直累積，方便比較進步。</p>
-    <div class="synthesis-form">
-      <div class="choice-group" id="dh-synth-type">
-        <button type="button" class="choice-btn active" data-type="weekly">週統整</button>
-        <button type="button" class="choice-btn" data-type="monthly">月統整</button>
-      </div>
-      <p class="hint" id="dh-synth-prompt" style="display:none; margin:10px 0 0;">月統整可以選擇性想一下：如果沒有任何目標，我還會因為什麼而停下腳步？（不用每次都回答，想到再寫）</p>
-      <textarea id="dh-synth-text" rows="5" placeholder="這週／這個月的整體狀況、模式、下一步調整..."></textarea>
-      <button id="btn-synth-add" class="nr-link-btn">新增這筆統整紀錄</button>
-    </div>
-    <div id="dh-synth-list" style="margin-top:14px;"></div>
   </section>
 
   <section class="section" id="sec-fourtracks">
@@ -485,6 +569,53 @@
       這份文件會隨時間調整，跟時程頁一起看：時程頁是「今天要做什麼」，這頁是「為什麼這樣安排」。已經同步匯出一份 Word 文件，方便你離開 App 時也能讀。
     </div>
   </section>
+
+  <section class="section" id="sec-goodlife">
+    <h2 class="pagetitle">人生架構 Good Life Architecture</h2>
+    <p class="pagesub">跟另一個 AI 討論收斂出的上位框架，純參考用——11 個 Core 本身沒有被改動，這裡只是多一種語言去理解它們。Life Quality（五大支柱）、Way of Being、Self-Relationship 是三個平行的分支，不是誰包住誰。點方框展開說明；點子項目看對應哪個 Core。</p>
+
+    <div class="gla-flow">
+      <div class="gla-top-axis">
+        <div class="gla-top-title">Worth Living × Enjoy Living</div>
+        <div class="gla-top-sub">值得嗎？享受嗎？——最好同時高</div>
+      </div>
+      <div class="gla-arrow">↑</div>
+
+      <div class="gla-lifequality-label">LIFE QUALITY — 我想過什麼樣的人生？</div>
+      <div class="gla-main-row">
+        <div class="gla-pillars-col">
+          <button class="gla-pillar-box" data-key="meaning" style="--pc:#E08A7D;">
+            <span class="pt">意義</span><span class="pe">Meaning</span><span class="pq">值得嗎？</span>
+          </button>
+          <button class="gla-pillar-box" data-key="relationships" style="--pc:#D98CA6;">
+            <span class="pt">關係</span><span class="pe">Relationships</span><span class="pq">愛、歸屬？</span>
+          </button>
+          <button class="gla-pillar-box" data-key="agency" style="--pc:#6FA8D9;">
+            <span class="pt">自主真實</span><span class="pe">Agency</span><span class="pq">能選、是我選的？</span>
+          </button>
+          <button class="gla-pillar-box" data-key="growth" style="--pc:#D9B25D;">
+            <span class="pt">投入成長</span><span class="pe">Engagement</span><span class="pq">投入、變強？</span>
+          </button>
+          <button class="gla-pillar-box" data-key="enjoyment" style="--pc:#6FBF9A;">
+            <span class="pt">享受生命力</span><span class="pe">Enjoyment</span><span class="pq">喜歡、有活力？</span>
+          </button>
+        </div>
+        <div class="gla-side-col">
+          <button class="gla-side-box" data-key="wob">
+            <span class="pt">Way of Being</span><span class="pq">我要成為怎樣的人？<br>我要怎麼跟自己相處？</span>
+          </button>
+        </div>
+      </div>
+      <div class="gla-arrow">↑</div>
+
+      <button class="gla-foundation-box" data-key="foundation">
+        <span class="pt">基礎條件 Foundation</span><span class="pq">健康・安全・心理穩定・財務——足夠就好</span>
+      </button>
+    </div>
+
+    <div id="gla-detail" class="gla-detail" style="display:none;"></div>
+  </section>
+
 
   <section class="section" id="sec-data">
     <h2 class="pagetitle">資料管理</h2>
@@ -855,17 +986,31 @@ document.querySelector('header.top').addEventListener('click', function(e){
   btn.classList.add('active');
   document.querySelectorAll('main .section').forEach(s=>s.classList.remove('active'));
   document.getElementById('sec-'+btn.dataset.tab).classList.add('active');
+  document.getElementById('datahub-side-btn').classList.remove('active');
+  document.querySelectorAll('.mode-switch button').forEach(b=>b.classList.remove('active'));
+  document.querySelector('.mode-switch button[data-mode="blueprint"]').classList.add('active');
   renderAll();
 });
 document.getElementById('modeswitch').addEventListener('click', function(e){
   const btn=e.target.closest('button[data-mode]'); if(!btn) return;
   document.querySelectorAll('.mode-switch button').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  const isSchedule=btn.dataset.mode==='schedule';
-  document.getElementById('tabnav-blueprint').style.display= isSchedule ? 'none' : 'flex';
-  document.getElementById('tabnav-schedule').style.display= isSchedule ? 'flex' : 'none';
-  const firstTab=document.querySelector((isSchedule?'#tabnav-schedule':'#tabnav-blueprint')+' button');
-  firstTab.click();
+  document.getElementById('datahub-side-btn').classList.remove('active');
+  const mode=btn.dataset.mode;
+  if(mode==='goodlife'){
+    document.querySelectorAll('main .section').forEach(s=>s.classList.remove('active'));
+    document.getElementById('sec-goodlife').classList.add('active');
+    renderGoodLife();
+  } else {
+    document.querySelector('#tabnav-blueprint button[data-tab="dash"]').click();
+  }
+});
+document.getElementById('datahub-side-btn').addEventListener('click', function(){
+  document.querySelectorAll('.mode-switch button').forEach(b=>b.classList.remove('active'));
+  this.classList.add('active');
+  document.querySelectorAll('main .section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-datahub').classList.add('active');
+  renderDataHub();
 });
 
 /* =========================================================================
@@ -927,11 +1072,16 @@ function wrapLabelBlueParen(label){
   const brk = label.length>18 ? '<br>' : '';
   return main+brk+`<span style="color:#5DADE2">${paren}</span>`;
 }
+function renderTaskList(task){
+  if(!task.list) return '';
+  if(task.listBlock) return `<div class="tgr-list-block">${task.list.map(l=>`<div>${l}</div>`).join('')}</div>`;
+  return `<div class="tgr-list-compact">${task.list.join('・')}</div>`;
+}
 function renderTaskField(task, store){
   const val=store[task.id];
   if(task.type==='checkbox'){
     const row=document.createElement('label'); row.className='task-row'+(val?' done':'');
-    const listHtml=task.list?`<ul class="tgr-list">${task.list.map(l=>`<li>${l}</li>`).join('')}</ul>`:'';
+    const listHtml=renderTaskList(task);
     row.innerHTML=`<input type="checkbox" ${val?'checked':''}>
       <div class="field-wrap"><span class="qlabel">${wrapLabel(task.label)}</span>${task.hint?`<span class="hint">${task.hint}</span>`:''}${listHtml}</div>`;
     row.querySelector('input').addEventListener('change', e=>{ store[task.id]=e.target.checked; row.classList.toggle('done', e.target.checked); save(); renderDashboard(); });
@@ -1056,8 +1206,8 @@ const SCHEDULE_BLOCKS=[
       {id:'sch_review_day', type:'reminder', label:'檢視今日行程', list:['行事曆', '提醒事項'], core:[3]},
       {id:'sch_desire_am', type:'reminder', label:'朗讀長期目標（Think and Grow Rich - Napoleon Hill）',
         hint:'今天要做什麼，才能接近我想要的？',
-        list:['明確的目標與成果是什麼', '我願意付出什麼來交換', '明確的達成期限', '具體的執行計畫，並立刻開始行動', '朗讀時想像並感受自己已經擁有它'],
-        blueParen:true, core:[9]},
+        list:['明確的目標與成果是什麼', '我願意付出什麼來交換', '明確的達成期限', '具體的執行計畫', '並立刻開始行動', '朗讀時想像並感受自己已經擁有它'],
+        listBlock:true, blueParen:true, core:[9]},
   ]},
   { time:'07:30–08:30', title:'運動', tag:'S', items:[
       {id:'sch_exercise_note', type:'choicedisplay', label:'運動', options:['30 天健身','有氧運動'],
@@ -1113,8 +1263,8 @@ const SCHEDULE_BLOCKS=[
   { time:'21:45', title:'睡覺', tag:'S', items:[
       {id:'sch_desire_pm', type:'reminder', label:'朗讀長期目標（Think and Grow Rich - Napoleon Hill）',
         hint:'我今天有沒有在接近我想要的？',
-        list:['明確的目標與成果是什麼', '我願意付出什麼來交換', '明確的達成期限', '具體的執行計畫，並立刻開始行動', '朗讀時想像並感受自己已經擁有它'],
-        blueParen:true, core:[9]},
+        list:['明確的目標與成果是什麼', '我願意付出什麼來交換', '明確的達成期限', '具體的執行計畫', '並立刻開始行動', '朗讀時想像並感受自己已經擁有它'],
+        listBlock:true, blueParen:true, core:[9]},
       {id:'sch_sleep_env', type:'reminder', label:'優質睡眠環境',
         list:['聲音：耳塞／白噪音', '光線：越暗越好', '溫度：18–22°C'], core:[4]},
   ]},
@@ -1238,49 +1388,65 @@ function renderDataHub(){
     bodyTable.innerHTML=rows+'</tbody>';
   }
 
-  renderSynthesisLog();
 }
 
-/* ---- Periodic synthesis log (accumulates; never overwritten) ---- */
-let synthCurrentType='weekly';
-function renderSynthesisLog(){
-  const listEl=document.getElementById('dh-synth-list');
+/* ---- Review tab: daily (categorized prompts) + weekly/monthly (accumulating synthesis) ---- */
+function renderReview(){
+  const dailyEl=document.getElementById('review-daily-content');
+  if(dailyEl){
+    const sections=[
+      ['生存＆收入', NIGHT_REVIEW_SURVIVAL], ['碩士申請', NIGHT_REVIEW_MASTERS],
+      ['藍圖面向（學習精進／人格／外貌）', NIGHT_REVIEW_BLUEPRINT], ['Discovery（找回生命力）', NIGHT_REVIEW_DISCOVERY],
+    ];
+    dailyEl.innerHTML=sections.map(([title,qs])=>`
+      <div class="dr-group">
+        <div class="dr-group-label">${title}</div>
+        ${qs.map(q=>`<div class="dr-q">・ ${q.label}${q.hint?`<span class="hint" style="display:block;margin-left:14px;">${q.hint}</span>`:''}</div>`).join('')}
+      </div>
+    `).join('');
+  }
+  renderSynthesisList('weekly');
+  renderSynthesisList('monthly');
+}
+function renderSynthesisList(type){
+  const listEl=document.getElementById('review-'+type+'-list');
   if(!listEl) return;
-  const entries=Object.keys(DATA.syntheses||{}).sort().reverse();
-  if(entries.length===0){ listEl.innerHTML='<p style="color:var(--mid); font-size:13px;">還沒有任何統整紀錄。</p>'; return; }
+  const entries=Object.keys(DATA.syntheses||{}).filter(id=>DATA.syntheses[id].type===type).sort().reverse();
+  if(entries.length===0){ listEl.innerHTML='<p style="color:var(--mid); font-size:13px;">還沒有任何'+(type==='weekly'?'週':'月')+'統整紀錄。</p>'; return; }
   listEl.innerHTML=entries.map(id=>{
     const e=DATA.syntheses[id];
-    const typeLabel = e.type==='monthly' ? '月統整' : '週統整';
-    return `<div class="synth-entry"><div class="synth-meta">${e.date}　${typeLabel}</div><div class="synth-text">${(e.text||'').replace(/</g,'&lt;')}</div></div>`;
+    return `<div class="synth-entry"><div class="synth-meta">${e.date}</div><div class="synth-text">${(e.text||'').replace(/</g,'&lt;')}</div></div>`;
   }).join('');
 }
 (function(){
-  const typeGrp=document.getElementById('dh-synth-type');
-  const promptEl=document.getElementById('dh-synth-prompt');
-  if(typeGrp){
-    typeGrp.querySelectorAll('.choice-btn').forEach(btn=>{
+  const subnav=document.getElementById('review-subnav');
+  if(subnav){
+    subnav.querySelectorAll('button').forEach(btn=>{
       btn.addEventListener('click', ()=>{
-        synthCurrentType=btn.dataset.type;
-        typeGrp.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('active'));
+        subnav.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        if(promptEl) promptEl.style.display = (synthCurrentType==='monthly') ? 'block' : 'none';
+        ['daily','weekly','monthly'].forEach(k=>{
+          document.getElementById('review-'+k).style.display = (k===btn.dataset.rv) ? 'block' : 'none';
+        });
       });
     });
   }
-  const addBtn=document.getElementById('btn-synth-add');
-  if(addBtn){
-    addBtn.addEventListener('click', ()=>{
-      const textEl=document.getElementById('dh-synth-text');
-      const text=textEl.value.trim();
-      if(!text) return;
-      const id=Date.now()+'_'+Math.random().toString(36).slice(2,7);
-      if(!DATA.syntheses) DATA.syntheses={};
-      DATA.syntheses[id]={ date:dateStr(new Date()), type:synthCurrentType, text };
-      save();
-      textEl.value='';
-      renderSynthesisLog();
-    });
-  }
+  ['weekly','monthly'].forEach(type=>{
+    const addBtn=document.getElementById('btn-review-'+type+'-add');
+    if(addBtn){
+      addBtn.addEventListener('click', ()=>{
+        const textEl=document.getElementById('review-'+type+'-text');
+        const text=textEl.value.trim();
+        if(!text) return;
+        const id=Date.now()+'_'+Math.random().toString(36).slice(2,7);
+        if(!DATA.syntheses) DATA.syntheses={};
+        DATA.syntheses[id]={ date:dateStr(new Date()), type, text };
+        save();
+        textEl.value='';
+        renderSynthesisList(type);
+      });
+    }
+  });
 })();
 
 function generateDataHubDigest(){
@@ -1347,6 +1513,13 @@ function updateWaterSummary(dateKey){
     '<span style="color:var(--mid)">纖維不限</span>',
   ].join('　');
 }
+function renderReminderGridCol(task){
+  const col=document.createElement('div'); col.className='reminder-col';
+  const labelHtml = task.blueParen ? wrapLabelBlueParen(task.label) : wrapLabel(task.label);
+  const listHtml=renderTaskList(task);
+  col.innerHTML=`<span class="reminder-dot"></span><div class="reminder-col-body"><div class="reminder-col-title">${labelHtml}</div>${task.hint?`<div class="hint">${task.hint}</div>`:''}${listHtml}</div>`;
+  return col;
+}
 function renderScheduleItem(task, store, dateKey){
   if(task.type==='note'){
     const row=document.createElement('div'); row.className='task-row';
@@ -1355,7 +1528,7 @@ function renderScheduleItem(task, store, dateKey){
   }
   if(task.type==='reminder'){
     const row=document.createElement('div'); row.className='task-row reminder-row';
-    const listHtml=task.list?`<ul class="tgr-list">${task.list.map(l=>`<li>${l}</li>`).join('')}</ul>`:'';
+    const listHtml=renderTaskList(task);
     const labelHtml = task.blueParen ? wrapLabelBlueParen(task.label) : wrapLabel(task.label);
     row.innerHTML=`<span class="reminder-dot"></span><div class="field-wrap"><span class="qlabel">${labelHtml}</span>${task.hint?`<span class="hint">${task.hint}</span>`:''}${listHtml}</div>`;
     return row;
@@ -1625,26 +1798,24 @@ function renderSchedule(){
     const sec=document.createElement('div'); sec.className=`core-section tag-${b.tag}`;
     sec.innerHTML=`<h3><span class="tag">${b.time}</span> ${b.title}</h3>`;
     if(b.dailyReviewInline){
-      const wrap=document.createElement('div'); wrap.className='dr-inline';
-      const sections=[
-        ['生存＆收入', NIGHT_REVIEW_SURVIVAL], ['碩士申請', NIGHT_REVIEW_MASTERS],
-        ['藍圖面向（學習精進／人格／外貌）', NIGHT_REVIEW_BLUEPRINT], ['Discovery（找回生命力）', NIGHT_REVIEW_DISCOVERY],
-      ];
-      sections.forEach(([title, qs])=>{
-        const group=document.createElement('div'); group.className='dr-group';
-        const label=document.createElement('div'); label.className='dr-group-label'; label.textContent=title;
-        group.appendChild(label);
-        qs.forEach(q=>{
-          const line=document.createElement('div'); line.className='dr-q';
-          line.innerHTML=`・ ${q.label}${q.hint?`<span class="hint" style="display:block;margin-left:14px;">${q.hint}</span>`:''}`;
-          group.appendChild(line);
-        });
-        wrap.appendChild(group);
-      });
-      sec.appendChild(wrap);
+      const note=document.createElement('div'); note.className='task-row reminder-row';
+      note.innerHTML=`<span class="reminder-dot"></span><div class="field-wrap"><span class="qlabel">Daily Review</span><span class="hint">內容移到「藍圖」＞「Review」＞「每日」查看</span></div>`;
+      sec.appendChild(note);
     } else if(!b.info){
       const list=document.createElement('div');
-      b.items.forEach(t=>list.appendChild(renderScheduleItem(t, day.items, dateKey)));
+      let reminderBuf=[];
+      function flushReminders(){
+        if(reminderBuf.length===0) return;
+        const grid=document.createElement('div'); grid.className='reminder-grid';
+        reminderBuf.forEach(t=>grid.appendChild(renderReminderGridCol(t)));
+        list.appendChild(grid);
+        reminderBuf=[];
+      }
+      b.items.forEach(t=>{
+        if(t.type==='reminder'){ reminderBuf.push(t); }
+        else { flushReminders(); list.appendChild(renderScheduleItem(t, day.items, dateKey)); }
+      });
+      flushReminders();
       sec.appendChild(list);
     }
     container.appendChild(sec);
@@ -2216,8 +2387,137 @@ document.getElementById('btn-reset').onclick=()=>{
 /* =========================================================================
    RENDER ALL
 ========================================================================= */
+/* =========================================================================
+   GOOD LIFE ARCHITECTURE — interactive reference diagram
+========================================================================= */
+const GLA_DATA={
+  meaning:{
+    title:'意義 Meaning', color:'#E08A7D',
+    def:'這一切對我而言值得嗎？回答的是「值得」，不是「開心」——即使很累很難，仍可能覺得值得。',
+    subs:[
+      {name:'Purpose 方向與目的', core:'Core 3 意義', w:[{id:'W001',text:'我真的真的好想要，過那種每天早上起來，有對我來說很值得努力的目標，或是能燃起我的衝勁的一個方向，讓我充滿激情，讓我每天都可以很期待一整天的東西。然後每天睡覺前都可以覺得：哇，今天又過得好棒啊，要是我這輩子每天都能這樣過 那該有多棒。我感覺我已經太久太久沒有快樂了。一直被迫做自己不喜歡的事情。如果能達成這樣，同時賺很多錢，那再好不過了。'}, {id:'W014',text:'我想要每天都活得很有明確目標'}, {id:'W091',text:'我想要每天都能提醒自己 我要成為怎樣的人 每天都提醒自己我的目標 每天都讓自己更有動力 而不是每天都意志消沉 不知道要去哪'}]},
+      {name:'Significance / Contribution 貢獻', core:'Core 3 意義・Core 6 創作', w:[{id:'W025',text:'開跑車、豪車，但不是炫耀，而是享受自己的成功'}, {id:'W041',text:'好啦 我其實蠻想要有一點小名氣 不過不想要是因為很膚淺的原因 反而比較想要是因為我的努力 或是我的才華被認可之類的原因'}, {id:'W062',text:'我想要當youtuber, 到處旅遊＆紀錄, 分享各種事情'}]},
+      {name:'Coherence 一致與可理解性（我的經歷說得通嗎）', core:'Core 3 意義', w:[{id:'W044',text:'在這只有一次的人生裡，活得精彩，不留遺憾。'}, {id:'W069',text:'我要在死前沒有後悔'}, {id:'W096',text:'我要把『Think and Grow Rich』裡面的每一章節，的每一大章的所有內容，好好審視＆整理，納入我的規則、藍圖、原圖、計劃 制定中。我要清楚所有『成功因子』、『失敗因子』，並且努力學習成功，避免失敗，我要學習當一個領導人。'}]},
+    ]
+  },
+  relationships:{
+    title:'關係 Relationships', color:'#D98CA6',
+    def:'我有沒有愛、被愛、連結與歸屬？Relationships ≠ Approval——被很多人喜歡，不等於真正有深度關係。',
+    subs:[
+      {name:'Love & Intimacy 愛與親密', core:'Core 8 關係', w:[{id:'W029',text:'幫助家人，如果真的哪一天我成功了，我真的想要好好幫助身邊的所有人，因為我吃過苦，知道難受，所以不想我的愛人朋友也吃這樣的苦。'}, {id:'W030',text:'我真的好想要擁有很多女人喔，想像一下，可以每天揉不同女人的奶，把我的屌放到他們身體裡的感覺，我真的好想要啊⋯真的好可惜我20多歲沒有達到'}, {id:'W059',text:'我想幹很多身材很好 又漂亮的女生 差爆他們，讓他們都很享受'}]},
+      {name:'Friendship & Support 友誼支持', core:'Core 8 關係', w:[{id:'W064',text:'我想要有幾個真的很好的好朋友，可以讓我一輩子傾訴心事'}]},
+      {name:'Belonging 歸屬（我是不是這裡的一份子）', core:'Core 8 關係', w:[]},
+    ]
+  },
+  agency:{
+    title:'自主與真實 Agency & Authenticity', color:'#6FA8D9',
+    def:'我能不能決定自己的人生，這真的是我要的嗎？濃縮成兩句：Agency＝我能不能選？Authenticity＝我選的是不是我？注意邊界：Authenticity ≠ Morality——一個人可以完全自主、完全忠於自己選的價值，但如果那個價值本身傷人，這裡仍會給高分，這不是這根支柱的問題，是它本來就不負責判斷「這個人的人格好不好」，那是 Way of Being 的事。',
+    subs:[
+      {name:'Autonomy 自主', core:'Core 1 自由', w:[{id:'W017',text:'我想要能一直保有活在當下的心思，能夠一直活在當下，不要被手機、被各種媒體或娛樂控制，能一直保有這種活在當下，即便無聊也不拿手機的那種精神狀態，隨時保持腦袋清晰'}]},
+      {name:'Real Choice / Freedom 真實選擇權', core:'Core 1 自由', w:[{id:'W004',text:'錢：錢是一切的基礎，但是不要追求錢，錢只是一種『讓你有更多選擇權』的工具'}, {id:'W006',text:'自由：無拘無束、無憂無慮，逍遙自在'}, {id:'W023',text:'巴塞隆納生活（其實更像是能在各種我愛的城市生活）'}, {id:'W024',text:'財務自由'}, {id:'W068',text:'我想要有很多套房地產'}, {id:'W073',text:'我想要很有錢 可以世界玩透透'}]},
+      {name:'Authenticity 真實（不迎合他人，不是道德判準）', core:'Core 1 自由', w:[{id:'W015',text:'我想要身材很好，然後又長得很好看，又很有自信（我感覺我真的需要提眼肌，不然我每次都覺得我長得怪怪的）'}, {id:'W019',text:'我想要找到可以用社群媒體的方式，不要被那種thirst trap影響，想要別人覺得我好的那種thirst trap。我如果發社群媒體，絕不修圖，想要一直真實，也不想要只發很漂亮的東西，我想要找到使用的方式，建立我自己的社群規則，不被別人影響，也不在意別人的看法'}, {id:'W035',text:'我想要老二變大，女人喜歡，我也有自信（屌的大小）因為我覺得我屌好小。'}, {id:'W048',text:'如果可以的話也想當一個很真實的人，不做作，不迎合他人，可以很做自己'}, {id:'W076',text:'我想要可以真的很有自信，自然地吸引異性，而不是對有魅力異性感到自卑'}]},
+      {name:'Value Alignment 日常選擇符合我重視的東西', core:'Core 1 自由', w:[{id:'W016',text:'我不只要很會賺錢，我還要很會節稅，善用各種法律，各種避稅方式。（稅法裡的優惠條款）'}, {id:'W028',text:'有自己的公司，或是有自己的生意，我其實也好想要經營自己的生意。這幾年我一直被創業的念頭吸引，可以為自己的理想努力，為自己的目標付出，真的感覺很棒，而不是每天固定領薪水的感覺，一點都不好。'}, {id:'W031',text:'我想要很有「資訊」像是什麼政府補助的獎金、SBA FINANCE，有的沒的，各種東西的玩法我都可以知道，掌握資訊，俯瞰未來'}, {id:'W032',text:'我真的好想要每天起床之後 可以做自己喜歡的事情賺錢，不要一直被迫做不喜歡的事情賺錢'}, {id:'W040',text:'但我也想要可以做讓自己不痛苦的事情賺錢'}, {id:'W053',text:'我想要很會投資交易'}, {id:'W055',text:'如果通往自由的路讓我每天都想逃跑，那可能不是屬於我的路。'}]},
+    ]
+  },
+  growth:{
+    title:'投入與成長 Engagement & Growth', color:'#D9B25D',
+    def:'我有沒有真正投入、使用能力、持續變強？注意：純粹為達成某目標而學的技能只是手段，不算這根支柱——「充分使用並發展能力」本身讓人滿足，才算數。',
+    subs:[
+      {name:'Engagement / Flow 投入與心流', core:'Core 9 成長', w:[{id:'W002',text:'我想要每天有深度思考時間'}, {id:'W046',text:'我好像也蠻想演戲看看的，哈哈'}, {id:'W060',text:'我想要很會做音樂'}]},
+      {name:'Learning 學習', core:'Core 9 成長', w:[{id:'W007',text:'知識：知識才能把所有東西更提升一步，知識就是力量'}, {id:'W066',text:'我想要很聰明 能抓住各種賺錢機會'}, {id:'W077',text:'我想要很有某方面的知識（某領域很強）'}]},
+      {name:'Competence / Mastery 精通', core:'Core 9 成長・Core 6 創作', w:[{id:'W011',text:'鍛鍊我的前額葉（神經可塑性），讓我的腦袋即便年紀攀升還是能保持敏銳'}, {id:'W021',text:'我想要有能力，不再被瞧不起'}, {id:'W039',text:'我想要會算牌，去賭場大賺錢，玩到被賭場請出去'}, {id:'W045',text:'我蠻想要很會打德州撲克的，或是21點，不只刺激，打得好還可以賺錢'}, {id:'W050',text:'我想要很能善用我的adhd，把它變成一個超級秘密武器'}, {id:'W072',text:'我想要衝浪很厲害 很有成就感'}, {id:'W087',text:'我想很會賺錢'}]},
+      {name:'Challenge 挑戰', core:'Core 9 成長', w:[{id:'W094',text:'這幾天試著習慣搬回家住，我發現自己住家裡很容易產生安全感，因為食物住宿還有所有生活物品都不用自己付錢⋯久了真的會因為這種舒適感而缺乏那種「知道很多事情要自己來所以必須做某些事」的那種感覺。就是容易變成舒適圈，變成舒適圈之後就很難成長，我不想這樣。我想要可以持續成長。'}]},
+    ]
+  },
+  enjoyment:{
+    title:'享受與生命力 Enjoyment & Vitality', color:'#6FBF9A',
+    def:'我實際喜不喜歡這樣活，有沒有感覺自己在活？Pleasure ≠ Vitality——滑手機可能有 pleasure 但生命力很低，衝浪、音樂可能很累卻讓人強烈感到「我真的活著」。',
+    subs:[
+      {name:'Pleasure 愉悅', core:'Core 2 生命力', w:[{id:'W005',text:'快樂：在這個世上，唯一保證的東西，就是你會死。如果你有機會活著，那就要珍惜，並且盡可能地活成你喜歡的樣子'}, {id:'W018',text:'我不想要每次都要出國好好放鬆的時候，才覺得很開心，才覺得在天堂。我想要打造自己的天堂。每天的生活就是天堂，我想打造這樣的人生，bob marley說過you don\'t die and go to heaven, you live in heaven(when you\'re alive) 我真的想要過得開心'}, {id:'W033',text:'God, does money buy comfort... 我剛去了濟州島的君悅酒店，去做汗蒸幕，好奢華，好舒適⋯一切都讓人好放鬆。我想要有能力可以買到這種舒適，真的好想要，不過難道過程一定要是痛苦的嗎？我願意努力，但我想要做讓我開心的事情賺很多的錢，這難道是奢求嗎？'}, {id:'W051',text:'我想很會做菜'}, {id:'W061',text:'我想要活得開心'}]},
+      {name:'Play 玩樂', core:'Core 2 生命力・Core 7 探索', w:[{id:'W022',text:'常常衝浪'}, {id:'W036',text:'蠻想要可以去那種巴黎島過那種衝浪 打工度假的日子的 感覺好快樂呀。 也許我申請完學校可以去試試看。 勇敢的活一次。'}, {id:'W071',text:'JUMP計劃 （本來是想要靠Viagogo賣票這樣做，但失敗了，如果之後可以有另種收入方式讓我可以這樣，那會很不錯） 獲得跳躍資金後 → 轉移至一個 B 級城市生活 選擇如：里斯本、巴塞隆納、墨西哥城、布拉格...等高靈感城市 目的是：轉換環境、重啟靈感、提升語感與國際感、拓展視野 一邊生活、一邊練技能，持續尋找明確方向'}, {id:'W085',text:'我想看遍世界 嘗過世界各地的美食 認識世界各地的朋友'}]},
+      {name:'Curiosity 好奇', core:'Core 7 探索', w:[{id:'W036',text:'蠻想要可以去那種巴黎島過那種衝浪 打工度假的日子的 感覺好快樂呀。 也許我申請完學校可以去試試看。 勇敢的活一次。'}, {id:'W071',text:'JUMP計劃 （本來是想要靠Viagogo賣票這樣做，但失敗了，如果之後可以有另種收入方式讓我可以這樣，那會很不錯） 獲得跳躍資金後 → 轉移至一個 B 級城市生活 選擇如：里斯本、巴塞隆納、墨西哥城、布拉格...等高靈感城市 目的是：轉換環境、重啟靈感、提升語感與國際感、拓展視野 一邊生活、一邊練技能，持續尋找明確方向'}]},
+      {name:'Awe / Wonder 驚奇與讚嘆', core:'Core 7 探索・Core 2 生命力', w:[]},
+      {name:'Vitality 生命力本身', core:'Core 2 生命力', w:[{id:'W009',text:'我想要能夠很正向，即便有負能量的人事物在影響我，或是糟糕的事情發生，我也能保持我的正向，保持我的價值觀，解決問題，並且相信未來還有自己'}, {id:'W010',text:'我一定要打造我喜歡的生活模式，每天起床可以被正向、積極的心態'}, {id:'W034',text:'在這有限的生命中，每一天的生命都是一個禮物，我想要能好好珍惜每一天，並且好好活在每個當下。不過同時也要打造「我想要的生活、人生、努力成為我想成為的人」，想辦法邊好好享受生活、感謝生命，邊努力成為我想成為的人、打造我想要的人生'}, {id:'W079',text:'我想要有熱情之火 可以超級熱忱 做我愛的事情'}]},
+    ]
+  },
+  wob:{
+    title:'Way of Being', color:'#C9A227',
+    def:'我要成為怎樣的人？我要怎麼跟自己相處？這兩個問題合併成一個分支，跟 Life Quality（五大支柱）平行——回答的是「How I want to live」，不是「What I want life to contain」。Character Congruence（行為是否符合我認為自己應該成為的人）跟 Authenticity（忠於自己真正的價值）是兩個不同的判準，不能用 Agency 那套邏輯吃掉。而「我怎麼對待別人」（善良、正直）跟「我怎麼對待自己」（自我價值、自我接納）雖然是兩個不同方向，但都是這個分支要處理的：一個人可以對別人很好，但對自己極度苛刻——這仍然是 Way of Being 沒做好的地方。',
+    subs:[
+      {name:'Integrity 正直', core:'Core 10 人格', w:[{id:'W020',text:'我想要當正直的人，我想要當紳士'}]},
+      {name:'Character Congruence 言行一致（行為是否符合我想成為的人，例如紳士 vs 粗俗行為的落差）', core:'Core 10 人格・Core 11 自律', w:[{id:'W020',text:'我想要當正直的人，我想要當紳士'}]},
+      {name:'Kindness 善良（對別人）', core:'Core 10 人格', w:[{id:'W008',text:'幫助：助人為快樂之本'}, {id:'W047',text:'我想要當一個很善良的人'}]},
+      {name:'Courage 勇氣', core:'Core 10 人格', w:[]},
+      {name:'Gentleness 溫柔', core:'Core 10 人格', w:[{id:'W043',text:'我想要能很溫柔，但同時也有保護我的能量的能力。可以有能力應付那些欺壓/不禮貌者，但也能很溫柔的對那些柔軟的人。'}]},
+      {name:'Strength 力量', core:'Core 10 人格', w:[{id:'W043',text:'我想要能很溫柔，但同時也有保護我的能量的能力。可以有能力應付那些欺壓/不禮貌者，但也能很溫柔的對那些柔軟的人。'}]},
+      {name:'Dignity 尊嚴', core:'Core 10 人格', w:[{id:'W052',text:'我想要很有魅力'}]},
+      {name:'Self-Worth 自我價值（我是否基本認為自己有價值）', core:'目前無明確對應 Core——已知缺口', w:[]},
+      {name:'Self-Acceptance 自我接納（能不能接受真實不完美的自己）', core:'Core 5 外貌（來源是「條件改善後才接納」，不是無條件）', w:[{id:'W015',text:'我想要身材很好，然後又長得很好看，又很有自信（我感覺我真的需要提眼肌，不然我每次都覺得我長得怪怪的）'}, {id:'W035',text:'我想要老二變大，女人喜歡，我也有自信（屌的大小）因為我覺得我屌好小。'}]},
+      {name:'Self-Compassion 自我慈悲（失敗痛苦時如何對待自己）', core:'目前無明確對應 Core——已知缺口', w:[]},
+      {name:'Self-Confidence / Self-Efficacy 自信與自我效能（相信自己能應付挑戰）', core:'Core 5 外貌・Core 9 成長（全部是條件式：能力／外貌／被喜歡之後才有自信）', w:[{id:'W021',text:'我想要有能力，不再被瞧不起'}, {id:'W026',text:'被很多女生喜歡'}, {id:'W076',text:'我想要可以真的很有自信，自然地吸引異性，而不是對有魅力異性感到自卑'}, {id:'W087',text:'我想很會賺錢'}]},
+    ]
+  },
+  foundation:{
+    title:'基礎條件 Foundation', color:'#9FAE9C',
+    def:'我有沒有足夠條件讓上面的人生穩定運作？原則是 Enough, not Maximum——足夠就好，不是無限最大化。即使 Foundation 很差，Meaning 仍可能存在，所以這層是促成條件，不是「沒有它上面全部不存在」的硬性前提。',
+    subs:[
+      {name:'Physical Health 身體健康', core:'Core 4 健康', w:[{id:'W003',text:'健康：身體健康是一切的前提，沒有健康你有再多錢也花不到，只能拿去養醫生'}, {id:'W012',text:'我想要每天喝很多水 讓身體健康＆皮膚很好'}, {id:'W013',text:'我想要每天睡眠充足，讓每天頭腦都很清晰'}, {id:'W082',text:'每天攝取'}]},
+      {name:'Safety 基本安全', core:'Core 4 健康', w:[]},
+      {name:'Psychological Stability 心理穩定', core:'Core 11 自律', w:[{id:'W009',text:'我想要能夠很正向，即便有負能量的人事物在影響我，或是糟糕的事情發生，我也能保持我的正向，保持我的價值觀，解決問題，並且相信未來還有自己'}]},
+      {name:'Financial Sufficiency 財務足夠', core:'Core 1 自由（足夠的門檻，跟 Core1 追求更多選擇權要分清楚）', w:[]},
+    ]
+  },
+};
+let glaOpenKey=null;
+function renderGoodLife(){
+  const panel=document.getElementById('gla-detail');
+  if(panel) panel.style.display='none';
+  glaOpenKey=null;
+}
+document.querySelector('.gla-flow') && document.querySelector('.gla-flow').addEventListener('click', function(e){
+  const box=e.target.closest('[data-key]'); if(!box) return;
+  const key=box.dataset.key;
+  const panel=document.getElementById('gla-detail');
+  if(glaOpenKey===key){
+    panel.style.display='none';
+    glaOpenKey=null;
+    return;
+  }
+  const data=GLA_DATA[key]; if(!data) return;
+  glaOpenKey=key;
+  panel.style.display='block';
+  panel.innerHTML=`<button class="gla-close-btn" id="gla-close">✕</button>
+    <h3 style="color:${data.color}; padding-right:34px;">${data.title}</h3>
+    <div class="gla-def">${data.def}</div>
+    ${data.subs.map((s,i)=>`
+      <div class="gla-subitem" data-idx="${i}">
+        <div class="gla-subitem-head"><span class="name">${s.name}</span><span class="arrow">▸</span></div>
+        <div class="gla-subitem-core">
+          <div class="gla-core-line">我對應的 CORE：${s.core}</div>
+          ${s.w && s.w.length ? `<div class="gla-w-toggle">▸ 對應哪幾條原始慾望</div><div class="gla-w-list">${s.w.map(w=>`<div class="gla-w-item"><b>${w.id}</b>　${w.text}</div>`).join('')}</div>` : ''}
+        </div>
+      </div>
+    `).join('')}`;
+  panel.querySelectorAll('.gla-subitem').forEach(el=>{
+    el.querySelector('.gla-subitem-head').addEventListener('click', ()=>el.classList.toggle('open'));
+    const wt=el.querySelector('.gla-w-toggle');
+    if(wt) wt.addEventListener('click', (ev)=>{ ev.stopPropagation(); el.querySelector('.gla-w-list').classList.toggle('open'); wt.classList.toggle('open'); });
+  });
+  document.getElementById('gla-close').addEventListener('click', ()=>{ panel.style.display='none'; glaOpenKey=null; });
+  if(typeof panel.scrollIntoView==='function') panel.scrollIntoView({behavior:'smooth', block:'nearest'});
+});
+document.addEventListener('click', function(e){
+  if(glaOpenKey===null) return;
+  const panel=document.getElementById('gla-detail'); if(!panel || panel.style.display==='none') return;
+  const flow=document.querySelector('.gla-flow');
+  if(panel.contains(e.target)) return;
+  if(flow && flow.contains(e.target)) return;
+  panel.style.display='none';
+  glaOpenKey=null;
+});
+
 function renderAll(){
-  renderDashboard(); renderSchedule(); renderDaily(); renderWeekly(); renderMonthly(); renderLongTerm(); renderGoals(); renderCoresRef(); renderDataHub();
+  renderDashboard(); renderSchedule(); renderReview(); renderDaily(); renderWeekly(); renderMonthly(); renderLongTerm(); renderGoals(); renderCoresRef(); renderDataHub();
 }
 seedInitialData();
 renderAll();
