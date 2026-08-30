@@ -24,7 +24,8 @@
     --gold:#2563EB; --gold-light:#3B82F6; --priority:#E11D48;
   }
   *{box-sizing:border-box;}
-  body{margin:0; background:var(--bg); color:var(--text);
+  html{overscroll-behavior-y:none;}
+  body{margin:0; background:var(--bg); color:var(--text); overscroll-behavior-y:none;
     font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; line-height:1.6;}
   a{color:inherit;}
   header.top{background:var(--navy); color:#fff; padding:8px 14px; display:flex; flex-direction:column;
@@ -417,7 +418,7 @@
   .rd-ungrouped-label{font-size:11px; font-weight:800; color:var(--mid); letter-spacing:1px; margin:10px 0 8px; border-radius:8px; padding:4px 6px;}
   .rd-drop-target{background:rgba(99,102,241,.18); outline:2px dashed var(--gold); border-radius:8px;}
   .rd-toplevel{display:flex; flex-direction:column;}
-  .rd-toplevel-item{touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none;}
+  .rd-toplevel-item{user-select:none; -webkit-user-select:none;}
   .rd-entry{user-select:none; -webkit-user-select:none;}
   .rd-insert-line{height:3px; background:var(--gold); border-radius:2px; margin:2px 0 6px; box-shadow:0 0 6px rgba(99,102,241,.6);}
   .rd-droplist{min-height:6px;}
@@ -512,6 +513,11 @@
   @media (max-width:640px){ .core-ref .row{grid-template-columns:1fr;} }
   /* Prevent iOS auto-zoom on focus: any focused field under 16px triggers a forced zoom */
   input, textarea, select { font-size: 16px !important; }
+  .gp-back-to-top-btn{position:fixed; right:16px; bottom:24px; width:44px; height:44px; border-radius:50%;
+    background:var(--priority); color:#FFFFFF; border:none; font-size:20px; font-weight:800; cursor:pointer;
+    box-shadow:0 3px 12px rgba(0,0,0,.35); z-index:80; display:none; align-items:center; justify-content:center;
+    -webkit-tap-highlight-color:transparent;}
+  .gp-back-to-top-btn.show{display:flex;}
 </style>
 </head>
 <body>
@@ -691,6 +697,8 @@
       <p class="pagesub">明確的目標、具體的計畫、每天要做的事。早上跟睡前各看一次，提醒自己。</p>
       <div id="goalsplans-list"></div>
     </div>
+
+    <button id="gp-back-to-top" class="gp-back-to-top-btn" aria-label="回到最上面">↑</button>
   </section>
 
   <section class="section" id="sec-goals">
@@ -2174,17 +2182,19 @@ function wireRawDesireInteractions(){
 
   const DRAG_THRESHOLD=6;
 
-  // Top-level items (folders + ungrouped entries): whole-box drag, interleaved reorder with insertion line,
-  // OR drag an entry onto a folder summary to file it inside.
+  // Top-level items (folders + ungrouped entries): drag via the ☰ handle only
+  // (whole-box dragging blocked normal vertical page scroll on mobile).
   document.querySelectorAll('#rd-toplevel > .rd-toplevel-item').forEach(itemEl=>{
-    itemEl.addEventListener('pointerdown', e=>{
-      if(e.target.closest('.rd-droplist')) return; // let nested entries handle their own drag
+    const handle=itemEl.querySelector(':scope > .rd-drag-handle, :scope > summary > .rd-drag-handle');
+    if(!handle) return;
+    handle.addEventListener('pointerdown', e=>{
       e.preventDefault();
+      e.stopPropagation();
       const isFolder=itemEl.classList.contains('rd-folder-group');
       const container=document.getElementById('rd-toplevel');
       const startX=e.clientX, startY=e.clientY;
       let moved=false, dragging=true, assignTarget;
-      try{ itemEl.setPointerCapture(e.pointerId); }catch(err){}
+      try{ handle.setPointerCapture(e.pointerId); }catch(err){}
       function onMove(ev){
         if(!dragging) return;
         if(!moved){
@@ -2215,7 +2225,7 @@ function wireRawDesireInteractions(){
       }
       function onUp(ev){
         dragging=false;
-        try{ itemEl.releasePointerCapture(ev.pointerId); }catch(err){}
+        try{ handle.releasePointerCapture(ev.pointerId); }catch(err){}
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
         if(!moved) return;
@@ -2245,16 +2255,19 @@ function wireRawDesireInteractions(){
     });
   });
 
-  // Entries nested inside a folder: whole-box drag, reorder within folder,
+  // Entries nested inside a folder: drag via the ☰ handle only, reorder within folder,
   // OR drop onto a different folder / the top-level area to move them.
   document.querySelectorAll('.rd-droplist .rd-entry').forEach(entryEl=>{
-    entryEl.addEventListener('pointerdown', e=>{
+    const handle=entryEl.querySelector(':scope > .rd-drag-handle');
+    if(!handle) return;
+    handle.addEventListener('pointerdown', e=>{
       e.preventDefault();
+      e.stopPropagation();
       const container=entryEl.parentElement; // .rd-droplist
       const curFolderId=container.dataset.folder;
       const startX=e.clientX, startY=e.clientY;
       let moved=false, dragging=true, assignTarget;
-      try{ entryEl.setPointerCapture(e.pointerId); }catch(err){}
+      try{ handle.setPointerCapture(e.pointerId); }catch(err){}
       function onMove(ev){
         if(!dragging) return;
         if(!moved){
@@ -2299,7 +2312,7 @@ function wireRawDesireInteractions(){
       }
       function onUp(ev){
         dragging=false;
-        try{ entryEl.releasePointerCapture(ev.pointerId); }catch(err){}
+        try{ handle.releasePointerCapture(ev.pointerId); }catch(err){}
         document.removeEventListener('pointermove', onMove);
         document.removeEventListener('pointerup', onUp);
         if(!moved) return;
@@ -3741,6 +3754,17 @@ function renderAll(){
 }
 seedInitialData();
 renderAll();
+
+// Back-to-top button for the long 慾望＆目標＆計劃 page
+(function(){
+  const btn=document.getElementById('gp-back-to-top');
+  if(!btn) return;
+  btn.addEventListener('click', ()=>{ window.scrollTo({top:0, behavior:'smooth'}); });
+  window.addEventListener('scroll', ()=>{
+    const onGoalsPage=document.getElementById('sec-goalsplans').classList.contains('active');
+    btn.classList.toggle('show', onGoalsPage && window.scrollY>300);
+  }, {passive:true});
+})();
 
 // Auto-hide header on scroll down (mobile space-saving); reveal only after a
 // sustained upward scroll, so small jitters/bounce don't pop it back immediately.
