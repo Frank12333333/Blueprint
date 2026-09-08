@@ -154,12 +154,12 @@
     opacity:0; pointer-events:none; transition:background .22s ease, opacity .22s ease;}
   .strength-modal-overlay.show{background:rgba(0,0,0,.6); opacity:1; pointer-events:auto;}
   .strength-modal-box{background:var(--card); border:1px solid var(--gold); border-radius:var(--radius); padding:20px;
-    max-width:340px; width:100%; max-height:75vh; overflow-y:auto; transform:scale(.35);
+    max-width:340px; width:100%; max-height:82vh; overflow-y:auto; transform:scale(.35);
     transition:transform .32s cubic-bezier(.34,1.56,.64,1);}
   .strength-modal-overlay.show .strength-modal-box{transform:scale(1);}
   .strength-modal-title{font-size:15px; font-weight:800; color:var(--gold); margin-bottom:10px;}
-  .strength-modal-box .tgr-item-name{white-space:normal; font-size:12.5px;}
-  .strength-modal-box .tgr-item-desc{white-space:normal; overflow:visible; text-overflow:clip; font-size:11.5px;}
+  .strength-modal-box .tgr-item-name{white-space:normal !important; font-size:12.5px;}
+  .strength-modal-box .tgr-item-desc{white-space:normal !important; overflow:visible !important; text-overflow:clip !important; font-size:11.5px;}
   .strength-modal-box .tgr-list-item{margin-bottom:8px;}
   .exercise-combo-row .ec-body{display:flex; gap:5px; margin-top:6px;}
   .exercise-combo-row .ec-input-box{background:var(--bg); border:1px solid var(--rule); border-radius:8px; padding:6px 6px;
@@ -228,30 +228,27 @@
   .gla-top-sub{font-size:12px; color:#C4BEEA; margin-top:4px;}
   .gla-arrow{color:var(--mid); font-size:18px; line-height:1;}
   .gla-lifequality-label{text-align:center; font-size:11px; font-weight:800; color:var(--gold); letter-spacing:1px; margin:4px 0 8px;}
-  .gla-main-row{display:flex; gap:8px; width:100%; max-width:600px; align-items:stretch;}
-  .gla-pillars-col{flex:1 1 68%; display:flex; flex-direction:column; gap:8px; min-width:0;}
-  .gla-pillar-box{display:flex; flex-direction:row; align-items:baseline; justify-content:center; gap:8px; background:rgba(255,255,255,.03);
-    border:1.5px solid var(--pc); border-radius:12px; padding:14px 14px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent; text-align:center;}
-  .gla-pillar-box:active{background:var(--pc);}
-  .gla-pillar-box:active .pt, .gla-pillar-box:active .pq, .gla-pillar-box:active .pe{color:#FFFFFF;}
-  .gla-pillar-box .pt{font-size:16px; font-weight:800; color:var(--pc);}
-  .gla-pillar-box .pq{font-size:12px; color:var(--mid); flex:1;}
-  .gla-pillar-box .pe{font-size:11.5px; color:var(--text); font-weight:600; flex:none;}
-  .gla-pillar-static{cursor:default;}
-  .gla-pillar-static:active{background:rgba(255,255,255,.03);}
-  .gla-pillar-static:active .pt, .gla-pillar-static:active .pe{color:var(--pc);}
-  .gla-side-col{flex:1 1 32%; display:flex; flex-direction:column; min-width:0;}
-  .gla-side-box{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:rgba(255,255,255,.02);
-    border:1px dashed var(--mid); border-radius:10px; padding:8px 5px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
-  .gla-side-box:active{background:var(--mid);}
-  .gla-side-box:active .pt, .gla-side-box:active .pq{color:#FFFFFF;}
-  .gla-side-box .pt{font-size:10.5px; font-weight:800; color:var(--mid); text-align:center;}
-  .gla-side-box .pq{font-size:8.5px; color:var(--mid); text-align:center; opacity:.8; line-height:1.4;}
-  .gla-foundation-box{display:flex; flex-direction:column; align-items:center; gap:3px; background:var(--card); border:1px solid var(--rule);
-    border-radius:14px; padding:14px 20px; width:100%; max-width:520px; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
-  .gla-foundation-box:active{background:var(--rule);}
-  .gla-foundation-box .pt{font-size:14px; font-weight:800; color:var(--ink);}
-  .gla-foundation-box .pq{font-size:11px; color:var(--mid); text-align:center;}
+  .gla-line-wrap{width:100%; max-width:560px; padding:16px 2px 6px; box-sizing:border-box;}
+  .gla-line-track{position:relative; display:flex; align-items:flex-start; justify-content:space-between;}
+  .gla-line-bar{position:absolute; left:12px; right:12px; top:8px; height:2px; background:var(--rule);}
+  .gla-line-dot{position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; background:transparent;
+    border:none; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent; flex:1; min-width:0; padding:0 1px;}
+  .gla-dot-marker{width:16px; height:16px; border-radius:50%; background:var(--card); border:3px solid var(--pc); box-sizing:border-box;
+    transition:transform .15s ease;}
+  .gla-line-dot.active .gla-dot-marker{background:var(--pc); transform:scale(1.15);}
+  .gla-line-dot:active .gla-dot-marker{transform:scale(.9);}
+  .gla-dot-label{font-size:10.5px; font-weight:800; color:var(--mid); text-align:center; line-height:1.35;}
+  .gla-line-dot.active .gla-dot-label{color:var(--pc);}
+  .gla-dot-en{font-size:8px; font-weight:600; color:var(--mid); display:block; margin-top:1px;}
+  .gla-pillar-detail{width:100%; max-width:560px; background:var(--card); border:1px solid var(--rule); border-radius:var(--radius);
+    padding:16px 18px; margin-top:4px; box-sizing:border-box;}
+  .gla-pillar-detail-title{font-size:15px; font-weight:800; margin-bottom:8px;}
+  .gla-pillar-detail-p{font-size:12.5px; color:var(--mid); line-height:1.85; margin:0 0 10px; white-space:pre-line;}
+  .gla-pillar-detail-p:last-child{margin-bottom:0;}
+  .gla-pillar-detail-h{font-size:11px; font-weight:800; color:var(--gold); letter-spacing:.5px; margin:12px 0 4px;}
+  .gla-pillar-detail-h:first-child{margin-top:0;}
+  .gla-section-label{font-size:11px; font-weight:800; color:var(--mid); letter-spacing:1px; margin:2px 0 2px; text-align:center;}
+  .gla-foundation-core-q{font-size:11.5px; color:var(--mid); text-align:center; line-height:1.7; max-width:480px; margin:0 auto 4px; padding:0 10px;}
   .gla-detail{background:var(--card); border:1px solid var(--gold); border-radius:var(--radius); padding:18px; margin-top:6px;}
   .gla-detail h3{margin:0 0 6px; color:var(--ink); font-size:16px;}
   .gla-detail .gla-def{font-size:13px; color:var(--text); line-height:1.6; margin-bottom:14px;}
@@ -301,8 +298,6 @@
   .databtns button{background:var(--navy); color:#fff; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:12.5px; font-family:inherit; line-height:1.6;}
   #btn-ics-export{width:100%; text-align:center; padding:10px 14px;}
   #btn-rd-export{width:100%; text-align:center; padding:10px 14px;}
-  #btn-rd-trash{width:100%; text-align:center; padding:10px 14px; margin-top:8px; background:var(--card);
-    color:var(--text); border:1px solid var(--rule);}
   .rd-trash-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0;
     border-bottom:1px solid var(--rule); font-size:12.5px;}
   .rd-trash-item:last-child{border-bottom:none;}
@@ -420,9 +415,10 @@
   .rd-type-entry .rd-text{font-size:12.5px; color:var(--text); line-height:1.5;}
   .rd-type-empty{font-size:12px; color:var(--mid); padding:8px 10px; line-height:1.6;}
   .rd-type-desc{font-size:11.5px; color:var(--mid); line-height:1.7; margin:0 0 10px; padding:0 2px; white-space:pre-line;}
-  .rd-quick-row{display:flex; gap:10px; margin-bottom:12px;}
+  .rd-quick-row{display:flex; gap:8px; margin-bottom:12px;}
   .rd-fab{flex:1; background:var(--card); border:1px solid var(--gold); color:var(--gold); border-radius:10px;
-    padding:11px 10px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
+    padding:11px 6px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; -webkit-tap-highlight-color:transparent;}
+  .rd-fab-trash{border-color:var(--rule); color:var(--mid); flex:none; padding:11px 12px;}
   .rd-add-panel{background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); padding:14px;
     box-sizing:border-box; margin-bottom:14px;}
   .rd-add-panel textarea, .rd-add-panel input{width:100%; box-sizing:border-box; border:1px solid var(--rule); border-radius:8px;
@@ -446,6 +442,7 @@
     margin-bottom:14px; -webkit-tap-highlight-color:transparent;}
   .gla-howto{margin-bottom:14px;}
   .gla-howto-p{font-size:12.5px; color:var(--mid); line-height:1.8; margin:0 0 8px;}
+  .gla-origin-note{font-size:12px; color:var(--mid); line-height:1.8; text-align:center; margin:8px auto 16px; max-width:520px; padding:0 8px;}
   .gla-howto-h{font-size:11.5px; font-weight:800; color:var(--gold); letter-spacing:.5px; margin:14px 0 6px;}
   .gla-howto-h:first-child{margin-top:0;}
   .gla-howto-p:last-child{margin-bottom:0;}
@@ -770,6 +767,7 @@
       <div class="rd-quick-row">
         <button id="rd-add-desire-btn" class="rd-fab" aria-label="新增原始慾望">＋ 新增慾望</button>
         <button id="rd-add-folder-btn" class="rd-fab" aria-label="新增資料夾">＋ 新增資料夾</button>
+        <button id="btn-rd-trash" class="rd-fab rd-fab-trash" aria-label="垃圾桶">🗑️ 垃圾桶</button>
       </div>
       <div id="rd-add-desire-panel" class="rd-add-panel" style="display:none;">
         <textarea id="rd-new-text" rows="3" placeholder="打新的原始慾望..."></textarea>
@@ -797,7 +795,6 @@
       <div id="rd-list" style="margin-top:14px;"></div>
       <div class="databtns" style="margin-top:18px;">
         <button id="btn-rd-export">匯出全部原始慾望＆資料夾</button>
-        <button id="btn-rd-trash">🗑️ 垃圾桶（復原刪除的項目）</button>
       </div>
     </div>
 
@@ -888,6 +885,7 @@
 
   <section class="section" id="sec-goodlife">
     <h2 class="pagetitle" style="text-align:center;">幸福架構</h2>
+    <p class="gla-origin-note">這是整合 20 多本幸福學書籍後，歸納出的一套心理學上普遍適用的「幸福架構」。它的功能是：當你覺得不開心或說不上哪裡不對勁時，可以拿它來檢查自己是不是哪個維度缺油了——它是拿來「診斷」的，不是拿來盲目追求的目標。這套架構是統整出來的通用歸納，不代表你本人；真正讓你開心的，終究要回歸到你自己的內心。</p>
     <details class="gp-collapse gla-howto">
       <summary>儀表板，不是 KPI——這套架構怎麼用</summary>
       <div class="gp-collapse-body">
@@ -899,6 +897,8 @@
         <p class="gla-howto-p"><b>① 當成狀態診斷儀表板：</b>焦慮、迷惘、提不起勁的時候，點下面的五大項目或基礎條件，看診斷提問跟可以做的小行動——這就是在幫自己做一次自我掃描。</p>
         <p class="gla-howto-p"><b>② 當成篩選慾望與決策的過濾器：</b>面對新的選擇時（要不要接一個新專案、要不要買某個東西），問自己：這個決定主要在補充哪一個維度的養分？還是只是滿足一時爽快、甚至會破壞自主與底層健康的外部誘惑？</p>
         <p class="gla-howto-p"><b>③ 當成行動當下的沉浸開關：</b>決定要滿足生命力去運動或創作時，就全神貫注在身體感受或創作細節裡；決定要滿足歸屬感時，就全心聽眼前的人說話。行動的當下把架構整個忘掉——不要一邊做一邊評估「這有沒有讓我更幸福」，評估本身會打斷沉浸，幸福只會在你徹底忘記它的時候，作為副產品出現。</p>
+        <p class="gla-howto-h">如果一個慾望不在這五項裡怎麼辦？</p>
+        <p class="gla-howto-p">照樣追求。這套架構是學者對人類普遍狀態的歸納，不可能涵蓋你個體的每個奇思妙想。只要一個慾望能帶給你真實的滿足，且不破壞現實生活，它本身就是合法的追求，不需要向任何架構請示許可證。</p>
       </div>
     </details>
     <div class="gla-flow">
@@ -907,30 +907,60 @@
       </div>
       <div class="gla-arrow">↑</div>
 
-      <div class="gla-main-row">
-        <div class="gla-pillars-col">
-          <button class="gla-pillar-box" data-diag="agency" style="--pc:#6FA8D9;">
-            <span class="pt">自主真實</span><span class="pe">Agency</span>
+      <div class="gla-section-label">五大項目</div>
+      <div class="gla-line-wrap">
+        <div class="gla-line-track" id="gla-line-track">
+          <div class="gla-line-bar"></div>
+          <button class="gla-line-dot" data-diag="agency" style="--pc:#6FA8D9;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">自主真實<br><span class="gla-dot-en">Agency</span></span>
           </button>
-          <button class="gla-pillar-box" data-diag="belonging" style="--pc:#D98CA6;">
-            <span class="pt">愛與歸屬感</span><span class="pe">Relationships</span>
+          <button class="gla-line-dot" data-diag="belonging" style="--pc:#D98CA6;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">愛與歸屬感<br><span class="gla-dot-en">Relationships</span></span>
           </button>
-          <button class="gla-pillar-box" data-diag="vitality" style="--pc:#6FBF9A;">
-            <span class="pt">享受生命力</span><span class="pe">Enjoyment</span>
+          <button class="gla-line-dot" data-diag="vitality" style="--pc:#6FBF9A;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">享受生命力<br><span class="gla-dot-en">Enjoyment</span></span>
           </button>
-          <button class="gla-pillar-box" data-diag="growth" style="--pc:#D9B25D;">
-            <span class="pt">投入成長</span><span class="pe">Engagement</span>
+          <button class="gla-line-dot" data-diag="growth" style="--pc:#D9B25D;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">投入成長<br><span class="gla-dot-en">Engagement</span></span>
           </button>
-          <button class="gla-pillar-box" data-diag="meaning" style="--pc:#E08A7D;">
-            <span class="pt">意義</span><span class="pe">Meaning</span>
+          <button class="gla-line-dot" data-diag="meaning" style="--pc:#E08A7D;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">意義<br><span class="gla-dot-en">Meaning</span></span>
           </button>
         </div>
       </div>
-      <div class="gla-arrow">↑</div>
+      <div id="gla-pillar-detail" class="gla-pillar-detail" style="display:none;"></div>
 
-      <button class="gla-foundation-box" data-diag="foundation">
-        <span class="pt">基礎條件 Foundation</span>
-      </button>
+      <div class="gla-arrow" style="margin-top:14px;">↑</div>
+
+      <div class="gla-section-label">基礎條件 Foundation</div>
+      <p class="gla-foundation-core-q">核心問題：我是否具備足夠的基本條件，讓我能穩定地生活，並有能力追求我想要的人生？</p>
+      <div class="gla-line-wrap">
+        <div class="gla-line-track" id="gla-foundation-track">
+          <div class="gla-line-bar"></div>
+          <button class="gla-line-dot" data-diag="physical" style="--pc:#6FBF9A;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">身體健康<br><span class="gla-dot-en">Physical Health</span></span>
+          </button>
+          <button class="gla-line-dot" data-diag="psych" style="--pc:#D98CA6;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">心理健康與穩定<br><span class="gla-dot-en">Psychological Stability</span></span>
+          </button>
+          <button class="gla-line-dot" data-diag="safety" style="--pc:#6FA8D9;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">安全與基本穩定<br><span class="gla-dot-en">Safety &amp; Stability</span></span>
+          </button>
+          <button class="gla-line-dot" data-diag="financial" style="--pc:#C9A227;">
+            <span class="gla-dot-marker"></span>
+            <span class="gla-dot-label">財務充足性<br><span class="gla-dot-en">Financial Sufficiency</span></span>
+          </button>
+        </div>
+      </div>
+      <div id="gla-foundation-detail" class="gla-pillar-detail" style="display:none;"></div>
     </div>
   </section>
 
@@ -2201,22 +2231,12 @@ function renderRawDesires(){
     </details>`;
   };
 
-  const typeRowHtml=(w)=>{
-    const text=(w.text||'').replace(/</g,'&lt;');
-    return `<div class="rd-type-entry" data-id="${w.id}">
-      <span class="rd-id">${w.id}</span>
-      <span class="rd-text">${text}</span>
-      <button type="button" class="rd-more-btn" aria-label="更多選項">⋯</button>
-    </div>`;
-  };
   const typeSectionHtml=(typeKey)=>{
-    const ids=all.map(w=>w.id).filter(id=>DATA.rawDesireType[id]===typeKey);
     const isOpen = DATA.rawDesireTypeSectionOpen && DATA.rawDesireTypeSectionOpen[typeKey]===true;
     return `<details class="gp-collapse rd-type-category" data-type-key="${typeKey}"${isOpen?' open':''}>
-      <summary style="color:${RD_TYPE_COLORS[typeKey]}">${RD_TYPE_LABELS[typeKey]}（${ids.length}）</summary>
+      <summary style="color:${RD_TYPE_COLORS[typeKey]}">${RD_TYPE_LABELS[typeKey]}</summary>
       <div class="gp-collapse-body">
         <p class="rd-type-desc">${RD_TYPE_DESC[typeKey]}</p>
-        ${ids.length?ids.map(id=>typeRowHtml(byId[id])).join(''):'<div class="rd-type-empty">目前沒有標記——點慾望旁邊的「⋯」選「標記類型」</div>'}
       </div>
     </details>`;
   };
@@ -2462,15 +2482,6 @@ function wireRawDesireInteractions(){
       rdShowActionMenu(rect.left, rect.bottom+4, rdEntryActions(id, entryEl));
     });
   });
-  document.querySelectorAll('.rd-type-entry').forEach(entryEl=>{
-    const id=entryEl.dataset.id;
-    const moreBtn=entryEl.querySelector('.rd-more-btn');
-    if(moreBtn) moreBtn.addEventListener('click', e=>{
-      e.stopPropagation();
-      const rect=moreBtn.getBoundingClientRect();
-      rdShowActionMenu(rect.left, rect.bottom+4, rdEntryActions(id, entryEl));
-    });
-  });
   document.querySelectorAll('.rd-folder-group').forEach(details=>{
     const summary=details.querySelector('summary');
     const folderId=details.dataset.folderId;
@@ -2506,17 +2517,26 @@ function wireRawDesireInteractions(){
     });
   });
   document.querySelectorAll('.rd-folder-group').forEach(details=>{
-    details.addEventListener('toggle', ()=>{
+    const syncFolderState=()=>{
       DATA.rawDesireFolderCollapsed[details.dataset.folderId] = !details.open;
       save();
+    };
+    details.addEventListener('toggle', syncFolderState);
+    const summary=details.querySelector(':scope > summary');
+    if(summary) summary.addEventListener('click', e=>{
+      if(e.target.closest('.rd-drag-handle, .rd-folder-more-btn')) return;
+      setTimeout(syncFolderState, 0);
     });
   });
   document.querySelectorAll('.rd-type-category').forEach(details=>{
-    details.addEventListener('toggle', ()=>{
+    const syncTypeState=()=>{
       if(!DATA.rawDesireTypeSectionOpen) DATA.rawDesireTypeSectionOpen={};
       DATA.rawDesireTypeSectionOpen[details.dataset.typeKey] = details.open;
       save();
-    });
+    };
+    details.addEventListener('toggle', syncTypeState);
+    const summary=details.querySelector(':scope > summary');
+    if(summary) summary.addEventListener('click', ()=>setTimeout(syncTypeState, 0));
   });
 
   const DRAG_THRESHOLD=6;
@@ -4093,22 +4113,40 @@ const GLA_DATA={
   },
 };
 const GLA_DIAGNOSTIC={
-  foundation:{ title:'基礎條件 Foundation',
-    q:'最近睡得好嗎？身體有沒有長期的疲勞或緊繃感？財務上有沒有一直懸著的不確定感？',
-    action:'先排開不必要的行程，把睡眠跟運動補回來，去戶外走走。底層不穩時，硬逼自己追求意義或生命力只會更累。' },
+  physical:{ title:'身體健康 Physical Health',
+    def:'涵蓋基本身體健康、睡眠與恢復、體能與能量、疾病或疼痛控制、基本生理功能、營養與身體照護。重點不是「身體越完美越幸福」，而是身體狀態夠不夠支持你正常生活與行動。所以「健康」屬於這裡；但「六塊肌、變帥、特定體態」通常不算基礎條件，比較接近外貌或想要達成的成果，不是你能不能穩定生活的前提。',
+    q:'最近身體的基本功能，是不是足以支撐你正常生活與行動？睡眠、體能，有沒有被沒控制好的疼痛或疾病拖累？',
+    action:'先確認睡眠、營養、身體照護有沒有基本到位的地方——不是去追求體態完美，是先讓身體「夠用」。' },
+  psych:{ title:'心理健康與穩定 Psychological Stability',
+    def:'涵蓋基本心理健康、情緒穩定、有沒有嚴重到妨礙生活的焦慮或憂鬱、基本壓力承受能力、基本心理安全感、能不能維持日常功能。這裡要跟「自我關係」分開：「我現在嚴重焦慮到沒辦法工作」屬於這裡；但「我覺得自己不夠好」是自我價值感的課題，「失敗時一直羞辱自己」是自我慈悲的課題——這些屬於自我關係，不是基礎條件。',
+    q:'最近有沒有焦慮、憂鬱或壓力，已經嚴重到影響日常生活功能？',
+    action:'如果已經到了妨礙生活的程度，先處理這個，不要先要求自己有自信或自我接納——那是另一個層次的課題，順序不一樣。' },
+  safety:{ title:'安全與基本生活穩定 Safety & Stability',
+    def:'涵蓋人身安全、穩定住所、食物飲水等基本生活資源、基本醫療可及性、不處於持續威脅或暴力環境、基本法律與生活穩定——不至於隨時失去最基本的生活條件。核心是：你的基本生存與生活環境，是否夠安全、夠穩？這不是要求人生完全沒有風險，這一塊很容易被忽略，卻是最根本的。',
+    q:'現在的生活環境跟處境裡，有沒有讓你持續處於警戒、不敢放鬆的地方？',
+    action:'辨認出具體是哪個環境或哪件事讓你不安，看看能不能先建立基本的穩定跟緩衝。' },
+  financial:{ title:'財務充足性 Financial Sufficiency',
+    def:'這裡刻意用「充足」而不是「財富」。涵蓋能不能支付基本生活、處理必要支出、基本緊急預備能力、不因財務問題長期處於生存焦慮。最重要的界線：這裡處理的是「夠用的錢」，不是「最多的錢」。「我需要足夠收入付房租、吃飯、醫療」屬於這裡；但「我希望資產一億，因為想完全不用工作、環遊世界」已經超過基礎條件的範圍，服務的其實是自主／自由或生活風格，不能整包丟進這裡。',
+    q:'現在的收入，能不能支付基本生活所需，還是長期處於生存焦慮？',
+    action:'先確認基本開銷跟緊急預備金有沒有著落——這跟「想賺到多少錢」是兩件事，不要混在一起看。' },
   agency:{ title:'自主真實 Agency',
+    def:'你的時間跟選擇，有多少是自己真心決定的，而不是被外界推著走的。對應自決理論（Self-Determination Theory）裡的自主性——這不是「為所欲為」，而是行動跟你內心真正認同的方向一致。',
     q:'最近的時間，有多少是「不得不」，多少是「我自己決定」？',
     action:'一天裡留至少 30 分鐘完全不被打擾、自己決定要做什麼的空白時間。' },
   belonging:{ title:'愛與歸屬感 Relationships',
+    def:'跟真正在乎的人有沒有深度、真實的連結，而不是表面應酬。哈佛長達 80 年的幸福研究發現，深度的被理解與連結是幸福感最終極的來源，比財富、名聲都更能預測晚年是否快樂。',
     q:'最近有沒有跟能讓你放鬆、真正被理解的人深度連結過？',
     action:'主動約一個能帶給你平靜或力量的人聊聊，或好好陪伴家人、伴侶。' },
   vitality:{ title:'享受生命力 Enjoyment',
+    def:'身體感官是活著的，還是麻木的——有沒有真實地在感知生活，而不是機械式地撐過每一天。這是最容易被長期忽略、卻一旦補上就立刻有感的一項。',
     q:'身體的感官是麻木的，還是活著的？最近有沒有在感知生活，還是只是在應付？',
     action:'去做能喚醒身體感官的事——衝浪、做音樂、認真吃一頓飯、接觸自然。' },
   growth:{ title:'投入成長 Engagement',
+    def:'有沒有進入心流、被一件有點難度的事完全吸住注意力。對應自決理論裡的「勝任感」——不是達成了什麼成就，而是投入本身帶來的專注跟掌握感。',
     q:'最近有沒有進入心流？還是只是機械式重複、滑手機打發時間？',
     action:'挑一件帶點挑戰性的事（學新東西、創作、解一個難題），專注做 45 分鐘。' },
   meaning:{ title:'意義 Meaning',
+    def:'現在做的事，有沒有一絲超越個人利益的價值——不用是偉大的使命，哪怕只是覺得自己在往想去的方向前進，或這件事對某個人有幫助。這是哲學上 Eudaimonia（自我實現）的核心。',
     q:'現在做的事，有沒有一絲超越自己利益的價值？',
     action:'試著換個角度看手上的工作，或從小地方幫身邊的人一把。' },
 };
@@ -4239,14 +4277,39 @@ document.getElementById('people-chapter-next')?.addEventListener('click', ()=>{
   }
 });
 renderPeopleTOC();
-document.querySelector('.gla-flow') && document.querySelector('.gla-flow').addEventListener('click', function(e){
-  const box=e.target.closest('[data-diag]'); if(!box) return;
-  const data=GLA_DIAGNOSTIC[box.dataset.diag]; if(!data) return;
-  showInfoModal(data.title, null, [
-    {n:'診斷提問', d:data.q},
-    {n:'如果偏低，可以做', d:data.action},
-  ], true, null, e);
-});
+
+function glaWireDotLine(trackId, panelId){
+  const track=document.getElementById(trackId);
+  const panel=document.getElementById(panelId);
+  if(!track || !panel) return;
+  function renderDetail(key){
+    const data=GLA_DIAGNOSTIC[key]; if(!data) return;
+    panel.style.display='block';
+    panel.innerHTML=`
+      <div class="gla-pillar-detail-title" style="color:${track.querySelector('[data-diag="'+key+'"]')?.style.getPropertyValue('--pc')||'var(--gold)'}">${data.title}</div>
+      <p class="gla-pillar-detail-p">${data.def}</p>
+      <p class="gla-pillar-detail-h">診斷提問</p>
+      <p class="gla-pillar-detail-p">${data.q}</p>
+      <p class="gla-pillar-detail-h">如果偏低，可以做</p>
+      <p class="gla-pillar-detail-p">${data.action}</p>
+    `;
+  }
+  track.querySelectorAll('.gla-line-dot').forEach(dot=>{
+    dot.addEventListener('click', ()=>{
+      const wasActive=dot.classList.contains('active');
+      track.querySelectorAll('.gla-line-dot').forEach(d=>d.classList.remove('active'));
+      if(wasActive){
+        panel.style.display='none';
+        panel.innerHTML='';
+      } else {
+        dot.classList.add('active');
+        renderDetail(dot.dataset.diag);
+      }
+    });
+  });
+}
+glaWireDotLine('gla-line-track', 'gla-pillar-detail');
+glaWireDotLine('gla-foundation-track', 'gla-foundation-detail');
 function renderAll(){
   renderDashboard(); renderSchedule(); renderDailyRecords(); renderReview(); renderGoalsPlans(); renderRawDesires(); renderDaily(); renderWeekly(); renderMonthly(); renderLongTerm(); renderGoals(); renderCoresRef(); renderDataHub();
 }
